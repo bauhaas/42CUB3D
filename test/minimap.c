@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/13 02:40:52 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/13 17:58:49 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void	render_minimap_wall_square(int x, int y, int size, t_img *img)
+void	render_minimap_square(int x, int y, int size, t_cub3d *cub3d)
 {
 	int i;
 	int j;
@@ -31,35 +31,57 @@ void	render_minimap_wall_square(int x, int y, int size, t_img *img)
 		j = 0;
 		while (j < size)
 		{
-			my_mlx_pixel_put(img, x + j, y + i, GRAY);
+			my_mlx_pixel_put(&cub3d->img, x + j, y + i, GRAY);
 			j++;
 		}
 		i++;
 	}
 }
 
-void	render_view_line(int x, int y, int size, t_img *img)
+void	render_view_line(int x, int y, t_cub3d *cub3d)
 {
-	int i;
-	int j;
+	t_coord	last;
+	t_line	line;
+	int		err[2];
 
-	i = 0;
-	j = 0;
-	while (i < size)
+	last.y = y + sin(cub3d->player.rot_ang) * 20;
+	last.x = x + cos(cub3d->player.rot_ang) * 20;
+	line.first.x = abs(last.x - x);
+	line.first.y = abs(last.y - y);
+	line.last.x = x < last.x ? 1 : -1;
+	line.last.y = y < last.y ? 1 : -1;
+	err[0] = (line.first.x > line.first.y ? line.first.x : -line.first.y) / 2;
+	while (1)
 	{
-		my_mlx_pixel_put(img, x + 4.5 + j, y + 4.5 + i, WHITE);
-		i++;
+		my_mlx_pixel_put(&cub3d->img, x + 4.5, y + 4.5, WHITE);
+		if (x == last.x && y == last.y)
+			return ;
+		err[1] = err[0];
+		if (err[1] > -line.first.x)
+		{
+			err[0] -= line.first.y;
+			x += line.last.x;
+		}
+		if (err[1] < line.first.y)
+		{
+			err[0] += line.first.x;
+			y += line.last.y;
+		}
 	}
 }
 
-void	render_player(t_img *img, t_player *player)
+void	render_player(t_cub3d *cub3d)
 {
-	int x;
-	int y;
+	t_coord init_pos;
+	t_coord last_line_pos;
 
-	x = player->x;
-	y = player->y;
-	render_minimap_wall_square(x * MINI_SIZE / 2 + 10, y * MINI_SIZE / 2 + 10,
-			player->radius, img);
-	render_view_line(x * MINI_SIZE / 2 + 10, y * MINI_SIZE / 2 + 10, 20, img);
+	last_line_pos.y = cub3d->player.y + sin(cub3d->player.rot_ang) * 20;
+	last_line_pos.x = cub3d->player.x + cos(cub3d->player.rot_ang) * 20;
+	init_pos.x = cub3d->player.x;
+	init_pos.y = cub3d->player.y;
+
+	// TO DO: CHANGE PARAMS TO ADAPAT WITH T_COORD
+	render_minimap_square(init_pos.x * MINI_SIZE / 2 + 20, init_pos.y * MINI_SIZE / 2 + 20,
+			cub3d->player.radius, cub3d);
+	render_view_line(init_pos.x * MINI_SIZE / 2 + 20, init_pos.y * MINI_SIZE / 2 + 20, cub3d);
 }

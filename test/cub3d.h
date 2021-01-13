@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/13 02:36:30 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/13 17:49:03 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,9 @@
 **					 var equal to 1/10 of my resolution (width and height)
 */
 
-# define MINI_SIZE	20
+# define MINI_SIZE	40
 # define MAP_ROWS	10
 # define MAP_COLS	10
-
-typedef struct	s_win
-{
-	void		*mlx_p;
-	void		*win_p;
-}				t_win;
 
 typedef struct	s_player
 {
@@ -84,6 +78,24 @@ typedef struct	s_img
 	int			endian;
 }				t_img;
 
+typedef struct	s_coord
+{
+	int			x;
+	int			y;
+}				t_coord;
+
+typedef struct	s_line
+{
+	t_coord		first;
+	t_coord		last;
+}				t_line;
+
+typedef struct	s_win
+{
+	void		*mlx_p;
+	void		*win_p;
+}				t_win;
+
 typedef struct	s_cub3d
 {
 	t_map		map;
@@ -92,7 +104,7 @@ typedef struct	s_cub3d
 	t_player	player;
 }				t_cub3d;
 
-int				key_pressed(int keycode, t_player *player);
+int				key_pressed(int keycode, t_cub3d *cub3d);
 int				key_released(int keycode, t_player *player);
 
 void			init_player(t_player *player);
@@ -100,9 +112,12 @@ void			init_map(t_map *map);
 void			init_img(t_img *img, t_win *win);
 void			init_win(t_win *win);
 
-void			render_player(t_img *img, t_player *player);
-void			render_minimap();
-void			render_minimap_wall_square(int x, int y, int size, t_img *img);
-void			render_view_line(int x, int y, int size, t_img *img);
+void			render_player(t_cub3d *cub3d);
+void			render_minimap(t_cub3d *cub3d);
+void			render_minimap_square(int x, int y, int size, t_cub3d *cub3d);
+void			render_view_line(int x, int y, t_cub3d *cub3d);
+
+void			update(t_cub3d *cub3d);
+void			render(t_cub3d *cub3d);
 
 #endif

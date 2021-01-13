@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/13 02:43:26 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/13 17:50:20 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,24 @@ const int grid[10][10] = {
 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 	};
 
-/*
-void update(t_player *player)
+
+void update(t_cub3d *cub3d)
 {
-	player->rot_ang += player->turn_d * player->rot_speed;
+
+	int mov_step;
+
+	cub3d->player.rot_ang += cub3d->player.turn_d * cub3d->player.rot_speed;
+	
+	//move player dot
+	mov_step = cub3d->player.walk_d * cub3d->player.mov_speed;
+	cub3d->player.x += cos(cub3d->player.rot_ang) * mov_step;
+	cub3d->player.y += sin(cub3d->player.rot_ang) * mov_step;
+
+	printf("new rot ang : %f\n", cub3d->player.rot_ang);
+	render(cub3d);
 }
 
-void render(t_player *player)
-{
-	init_player(player);
-	update(player);
-}
-*/
-
-void	render_minimap(t_img *img)
+void	render_minimap(t_cub3d *cub3d)
 {
 	int i = 0;
 	int j = 0;
@@ -57,7 +61,7 @@ void	render_minimap(t_img *img)
 		{
 			if (grid[i][j] == 1)
 			{
-				render_minimap_wall_square(j + j_pix_pos, i + i_pix_pos, MINI_SIZE, img);
+				render_minimap_square(j + j_pix_pos, i + i_pix_pos, MINI_SIZE, cub3d);
 			}
 			j_pix_pos += MINI_SIZE;
 			j++;
@@ -67,29 +71,32 @@ void	render_minimap(t_img *img)
 	}
 }
 
+void	render(t_cub3d *cub3d)
+{
+	init_img(&cub3d->img, &cub3d->win);
+	render_minimap(cub3d);	
+	render_player(cub3d);
+	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->img.img, 10, 10);
+}
+
 int main()
 {
-	t_img		img;
-	t_win		win;
-	t_player	player;
-	t_map		map;
+	t_cub3d		cub3d;
 
-	win.mlx_p = mlx_init();
-	win.win_p = mlx_new_window(win.mlx_p, 500, 500, "cub3d");
+	//INIT
+	init_win(&cub3d.win);
+	cub3d.win.mlx_p = mlx_init();
+	cub3d.win.win_p = mlx_new_window(cub3d.win.mlx_p, 1000, 1000, "cub3d");
+	init_img(&cub3d.img, &cub3d.win);
+	init_player(&cub3d.player);
+	init_map(&cub3d.map);
 
-	//init_win(&win);
-	init_img(&img, &win);
-	init_player(&player);
-	init_map(&map);
-
-	render_minimap(&img);
-	render_player(&img, &player);
+	//RENDER
+	render(&cub3d);
 
 	//KEY EVENTS
-	mlx_hook(win.win_p, 2, 1L<<0, key_pressed, &player);
-	mlx_hook(win.win_p, 3, 1L<<1, key_released, &player);
+	mlx_hook(cub3d.win.win_p, 2, 1L<<0, key_pressed, &cub3d);
+	mlx_hook(cub3d.win.win_p, 3, 1L<<1, key_released, &cub3d.player);
 
-	///DISPLAY ALL
-	mlx_put_image_to_window(win.mlx_p, win.win_p, img.img, 10, 10);
-	mlx_loop(win.mlx_p);
+	mlx_loop(cub3d.win.mlx_p);
 }
