@@ -14,25 +14,25 @@
 
 int		key_pressed(int keycode, t_player *player)
 {
-	if(keycode == 'w')
+	if (keycode == 'w')
 	{
 		player->walk_d = 1;
 		printf("keycode : %d\n", keycode);
 		printf("walk_direction : %d\n", player->walk_d);
 	}
-	else if(keycode == 's')
+	else if (keycode == 's')
 	{
 		player->walk_d = -1;
 		printf("keycode : %d\n", keycode);
 		printf("walk_d : %d\n", player->walk_d);
 	}
-	if(keycode == 'a')
+	if (keycode == 'a')
 	{
 		player->turn_d = -1;
 		printf("keycode : %d\n", keycode);
 		printf("walk_d : %d\n", player->turn_d);
 	}
-	if(keycode == 'd')
+	if (keycode == 'd')
 	{
 		player->turn_d = 1;
 		printf("keycode : %d\n", keycode);
@@ -42,25 +42,25 @@ int		key_pressed(int keycode, t_player *player)
 
 int		key_released(int keycode, t_player *player)
 {
-	if(keycode == 'w')
+	if (keycode == 'w')
 	{
 		player->walk_d = 0;
 		printf("keycode : %d\n", keycode);
 		printf("walk_d : %d\n", player->walk_d);
 	}
-	else if(keycode == 's')
+	else if (keycode == 's')
 	{
 		player->walk_d = 0;
 		printf("keycode : %d\n", keycode);
 		printf("walk_d : %d\n", player->walk_d);
 	}
-	if(keycode == 'a')
+	if (keycode == 'a')
 	{
 		player->turn_d = 0;
 		printf("keycode : %d\n", keycode);
 		printf("walk_d : %d\n", player->turn_d);
 	}
-	if(keycode == 'd')
+	if (keycode == 'd')
 	{
 		player->turn_d = 0;
 		printf("keycode : %d\n", keycode);

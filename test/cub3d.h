@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/12 18:13:31 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/13 02:36:30 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,19 @@
 # define WHITE	0x00FFFFFF
 
 /*
-**
+** 	WIP: MINI_SIZE : size of cube on minimap. Need to define a width and height
+**					 var equal to 1/10 of my resolution (width and height)
 */
 
 # define MINI_SIZE	20
+# define MAP_ROWS	10
+# define MAP_COLS	10
+
+typedef struct	s_win
+{
+	void		*mlx_p;
+	void		*win_p;
+}				t_win;
 
 typedef struct	s_player
 {
@@ -60,25 +69,40 @@ typedef struct	s_player
 	float		rot_speed;
 }				t_player;
 
-typedef struct	s_data
+typedef struct	s_map
+{
+	int			cols;
+	int			rows;
+}				t_map;
+
+typedef struct	s_img
 {
 	void		*img;
 	char		*addr;
 	int			bits_per_pixel;
 	int			line_length;
 	int			endian;
-}				t_data;
+}				t_img;
 
-typedef struct	s_params
+typedef struct	s_cub3d
 {
-	void		*mlx;
-	void		*win;
-}				t_params;
+	t_map		map;
+	t_img		img;
+	t_win		win;
+	t_player	player;
+}				t_cub3d;
 
-int		key_pressed(int keycode, t_player *player);
-int		key_released(int keycode, t_player *player);
+int				key_pressed(int keycode, t_player *player);
+int				key_released(int keycode, t_player *player);
 
-void	draw_player(t_data *img, t_player *player);
-void	view_line_draw(int x, int y, int size, t_data *img);
+void			init_player(t_player *player);
+void			init_map(t_map *map);
+void			init_img(t_img *img, t_win *win);
+void			init_win(t_win *win);
+
+void			render_player(t_img *img, t_player *player);
+void			render_minimap();
+void			render_minimap_wall_square(int x, int y, int size, t_img *img);
+void			render_view_line(int x, int y, int size, t_img *img);
 
 #endif
