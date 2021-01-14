@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 01:12:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/13 02:41:32 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/14 16:45:33 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ void	init_player(t_player *player)
 	player->turn_d = 0;
 	player->walk_d = 0;
 	player->rot_ang = M_PI / 2;
-	player->rot_speed = 2 * (M_PI / 180);
-	player->mov_speed = 2;
+	player->rot_speed = 3 * (M_PI / 180);
+	player->mov_speed = 10;
 }
 
 void	init_img(t_img *img, t_win *win)
 {
-	img->img = mlx_new_image(win->mlx_p, 500, 500);
+	img->img = mlx_new_image(win->mlx_p, WIN_WID, WIN_HEI);
 	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel,
 			&img->line_length, &img->endian);
 }
