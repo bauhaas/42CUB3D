@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/13 17:49:03 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/14 16:50:10 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,12 @@
 **					 var equal to 1/10 of my resolution (width and height)
 */
 
-# define MINI_SIZE	40
+# define MINI_SIZE	80
 # define MAP_ROWS	10
 # define MAP_COLS	10
+# define TRUE 1
+# define WIN_WID 1000
+# define WIN_HEI 1000
 
 typedef struct	s_player
 {
@@ -113,6 +116,7 @@ void			init_img(t_img *img, t_win *win);
 void			init_win(t_win *win);
 
 void			render_player(t_cub3d *cub3d);
+void			render_init_player(t_cub3d *cub3d);
 void			render_minimap(t_cub3d *cub3d);
 void			render_minimap_square(int x, int y, int size, t_cub3d *cub3d);
 void			render_view_line(int x, int y, t_cub3d *cub3d);

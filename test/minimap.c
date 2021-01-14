@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/13 17:58:49 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/14 16:47:22 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 {
 	char *dst;
 
-	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
+	if( x >= 0 && x <= WIN_WID  && y >= 0 && y <= WIN_HEI)
+	{
+		dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
+		*(unsigned int*)dst = color;
+	}
 }
 
 void	render_minimap_square(int x, int y, int size, t_cub3d *cub3d)
@@ -77,6 +80,23 @@ void	render_player(t_cub3d *cub3d)
 
 	last_line_pos.y = cub3d->player.y + sin(cub3d->player.rot_ang) * 20;
 	last_line_pos.x = cub3d->player.x + cos(cub3d->player.rot_ang) * 20;
+	init_pos.x += cub3d->player.x;
+	init_pos.y += cub3d->player.y;
+
+	// TO DO: CHANGE PARAMS TO ADAPAT WITH T_COORD
+	render_minimap_square(init_pos.x, init_pos.y,
+			cub3d->player.radius, cub3d);
+	render_view_line(init_pos.x, init_pos.y, cub3d);
+}
+
+
+void	render_init_player(t_cub3d *cub3d)
+{
+	t_coord init_pos;
+	t_coord last_line_pos;
+
+	last_line_pos.y = cub3d->player.y + sin(cub3d->player.rot_ang) * 20;
+	last_line_pos.x = cub3d->player.x + cos(cub3d->player.rot_ang) * 20;
 	init_pos.x = cub3d->player.x;
 	init_pos.y = cub3d->player.y;
 
@@ -84,4 +104,5 @@ void	render_player(t_cub3d *cub3d)
 	render_minimap_square(init_pos.x * MINI_SIZE / 2 + 20, init_pos.y * MINI_SIZE / 2 + 20,
 			cub3d->player.radius, cub3d);
 	render_view_line(init_pos.x * MINI_SIZE / 2 + 20, init_pos.y * MINI_SIZE / 2 + 20, cub3d);
+
 }
