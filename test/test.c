@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/14 17:04:31 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/16 16:49:56 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,26 @@ const int grid[10][10] = {
 	};
 
 
+t_ray *cast_all_rays(t_cub3d *cub3d)
+{
+	t_ray	*rays;
+	float	ray_ang;
+	int i;
+
+	i = 0;
+	rays = malloc(sizeof(t_ray) * NUM_RAYS);
+	if(!rays)
+		return 0;
+	ray_ang = cub3d->player.rot_ang - FOV / 2;
+	while(i < NUM_RAYS)
+	{
+		rays[i].ray_ang = ray_ang;
+		ray_ang += FOV / NUM_RAYS;
+		i++;
+	}
+	return(rays);
+}
+
 int grid_is_wall(int x, int y)
 {
 	int grid_x = x / MINI_SIZE;
@@ -41,13 +61,11 @@ int grid_is_wall(int x, int y)
 	// TO FIX : player pixel appear just after border
 	if(grid_x >= MAP_COLS || grid_y >= MAP_ROWS)
 		return TRUE;
-	//return(grid[grid_y][grid_x] != 0);
-	return 0;
+	return(grid[grid_y][grid_x] != 0);
 }
 
 void update(t_cub3d *cub3d)
 {
-
 	int mov_step;
 	int new_player_x;
 	int new_player_y;
@@ -56,17 +74,18 @@ void update(t_cub3d *cub3d)
 	
 	//move player dot
 	mov_step = cub3d->player.walk_d * cub3d->player.mov_speed;
-	new_player_x = cub3d->player.x + cos(cub3d->player.rot_ang) * mov_step;
-	new_player_y = cub3d->player.y + sin(cub3d->player.rot_ang) * mov_step;
+	new_player_x = cub3d->player.pos.x + cos(cub3d->player.rot_ang) * mov_step;
+	new_player_y = cub3d->player.pos.y + sin(cub3d->player.rot_ang) * mov_step;
 
 	//BONUS COLLISION
 	//NEED TO BE FIXED 
-	if(grid_is_wall(new_player_x, new_player_y) == 0)
+	
+	if(!grid_is_wall(new_player_x, new_player_y))
 	{
-		cub3d->player.x = new_player_x;
-		cub3d->player.y = new_player_y;
+		cub3d->player.pos.x = new_player_x;
+		cub3d->player.pos.y = new_player_y;
 	}
-
+	
 	printf("new rot ang : %f\n", cub3d->player.rot_ang);
 	render(cub3d);
 }
@@ -96,19 +115,21 @@ void	render_minimap(t_cub3d *cub3d)
 	}
 }
 
-void	init_render(t_cub3d *cub3d)
-{
-	render_minimap(cub3d);
-	render_init_player(cub3d);
-	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->img.img, 0, 0);
-}
-
-
 void	render(t_cub3d *cub3d)
 {
+	t_ray *rays;
+	int i = 0;
+
 	init_img(&cub3d->img, &cub3d->win);
 	render_minimap(cub3d);	
 	render_player(cub3d);
+	rays = cast_all_rays(cub3d);
+	while(i < NUM_RAYS)
+	{
+		render_ray(cub3d, rays[i]);
+		i++;
+	}
+	free(rays);
 	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->img.img, 0, 0);
 }
 
@@ -125,7 +146,7 @@ int main()
 	init_map(&cub3d.map);
 
 	//RENDER
-	init_render(&cub3d);
+	render(&cub3d);
 
 	//KEY EVENTS
 	mlx_hook(cub3d.win.win_p, 2, 1L<<0, key_pressed, &cub3d);
