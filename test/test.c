@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/16 16:49:56 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/18 17:02:25 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,13 @@ const int grid[10][10] = {
 	};
 
 
-t_ray *cast_all_rays(t_cub3d *cub3d)
+float	normalize(float ray_ang)
 {
-	t_ray	*rays;
-	float	ray_ang;
-	int i;
-
-	i = 0;
-	rays = malloc(sizeof(t_ray) * NUM_RAYS);
-	if(!rays)
-		return 0;
-	ray_ang = cub3d->player.rot_ang - FOV / 2;
-	while(i < NUM_RAYS)
+	ray_ang = fmod(ray_ang, (2 * M_PI));
+	if(ray_ang < 0)
 	{
-		rays[i].ray_ang = ray_ang;
-		ray_ang += FOV / NUM_RAYS;
-		i++;
+		ray_ang += 2 * M_PI;
 	}
-	return(rays);
 }
 
 int grid_is_wall(int x, int y)
@@ -62,6 +51,91 @@ int grid_is_wall(int x, int y)
 	if(grid_x >= MAP_COLS || grid_y >= MAP_ROWS)
 		return TRUE;
 	return(grid[grid_y][grid_x] != 0);
+}
+
+/*
+void	cast(t_ray ray, t_cub3d *cub3d)
+{
+	float xstep;
+	float ystep;
+	float xintercept;
+	float yintercept;
+	
+
+	int foud_hor_wall = 1;
+	float wall_hit_x = 0;
+	float wall_hit_y = 0;
+
+	//HORITZONTAL
+	//
+	//find y cordinate of the clostest hori grid intersec
+	yintercept = cub3d->player.pos.y / MINI_SIZE * MINI_SIZE;
+	yintercept +=  ray.facing_down ? MINI_SIZE : 0;
+	// find x coordinate of the closest horizontal grid intersec
+	xintercept = cub3d->player.pos.x + (yintercept - cub3d->player.pos.y) / tan(ray.ray_ang);
+
+	//calculate incre;ent of xstep and ystep
+	ystep = MINI_SIZE;
+	ystep *= ray.facing_up ? -1 : 1;
+	
+	xstep = MINI_SIZE / tan(ray.ray_ang);
+	xstep *= (ray.facing_left && xstep > 0) ? -1 : 1;
+	xstep *= (ray.facing_right && xstep < 0) ? -1 : 1;
+	
+	float next_hor_x = xintercept;
+	float next_hor_y = yintercept;
+	t_line line;
+
+	if(ray.facing_up)
+		next_hor_y--;
+	//incre;ent xstep and ystep till a wall is find
+	while(next_hor_x >= 0 && next_hor_x <= WIN_WID && next_hor_y >= 0 && next_hor_y <= WIN_HEI)
+	{
+		if(grid_is_wall(next_hor_x, next_hor_y))
+		{
+			//we found wall
+			wall_hit_y = next_hor_y;
+			wall_hit_x = next_hor_x;
+			foud_hor_wall = 0;
+		
+			line.start.x = cub3d->player.pos.x;
+			line.start.y = cub3d->player.pos.y;
+			line.end.x = wall_hit_x;
+			line.end.y = wall_hit_y;
+			render_view_line(&line, cub3d, WHITE);
+			break;
+		}
+		else
+		{
+			next_hor_x += xstep;
+			next_hor_x += ystep;
+		}
+	}
+	//VERTICAL
+}
+*/
+
+t_ray *cast_all_rays(t_cub3d *cub3d)
+{
+	t_ray	*rays;
+	float	ray_ang;
+	int i;
+
+	i = 0;
+	rays = malloc(sizeof(t_ray) * NUM_RAYS);
+	if(!rays)
+		return 0;
+	ray_ang = cub3d->player.rot_ang - FOV / 2;
+	//ray_ang = normalize(ray_ang);
+	while(i < NUM_RAYS)
+	{
+		rays[i].ray_ang = ray_ang;
+		init_ray(rays[i], ray_ang);
+		//cast(rays[i], cub3d);
+		ray_ang += FOV / NUM_RAYS;
+		i++;
+	}
+	return(rays);
 }
 
 void update(t_cub3d *cub3d)
@@ -123,6 +197,7 @@ void	render(t_cub3d *cub3d)
 	init_img(&cub3d->img, &cub3d->win);
 	render_minimap(cub3d);	
 	render_player(cub3d);
+	
 	rays = cast_all_rays(cub3d);
 	while(i < NUM_RAYS)
 	{

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 01:12:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/15 17:47:05 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/18 14:35:44 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,14 @@ void	init_win(t_win *win)
 	win->win_p = NULL;
 }
 
-void init_ray(t_ray *ray)
+void init_ray(t_ray ray, float ray_ang)
 {
-	ray->ray_ang = 0;
+	ray.ray_ang = ray_ang;
+	ray.wall_hit_x = 0;
+	ray.wall_hit_y = 0;
+	ray.distance = 0;
+	ray.facing_down = ray_ang > 0 && ray_ang < M_PI;
+	ray.facing_up = !ray.facing_down;
+	ray.facing_right = ray_ang < 0.5 * M_PI || ray_ang > 1.5 * M_PI;
+	ray.facing_left = !ray.facing_left;
 }

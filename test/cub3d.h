@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/16 16:46:32 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/18 16:43:49 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@
 
 typedef struct	s_coord
 {
-	int			x;
-	int			y;
+	float			x;
+	float			y;
 }				t_coord;
 
 typedef struct	s_player
@@ -104,6 +104,13 @@ typedef struct	s_win
 typedef struct	s_ray
 {
 	float		ray_ang;
+	float		wall_hit_x;
+	float		wall_hit_y;
+	float		distance;
+	float		facing_up;
+	float		facing_down;
+	float		facing_right;
+	float		facing_left;
 }				t_ray;
 
 typedef struct	s_cub3d
@@ -122,11 +129,12 @@ void			init_player(t_player *player);
 void			init_map(t_map *map);
 void			init_img(t_img *img, t_win *win);
 void			init_win(t_win *win);
-void			init_ray(t_ray *ray);
+void			init_ray(t_ray ray, float ray_ang);
 
 void			render_player(t_cub3d *cub3d);
 void			render_minimap(t_cub3d *cub3d);
 void			render_minimap_square(int x, int y, int size, t_cub3d *cub3d);
+//void			render_minimap_square(float x, float y, int size, t_cub3d *cub3d);
 void			render_view_line(t_line *line, t_cub3d *cub3d, int color);
 void			render_ray(t_cub3d *cub3d, t_ray rays);
 
