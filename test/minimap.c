@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/18 17:04:06 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/18 18:56:58 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,20 +41,52 @@ void	render_minimap_square(int x, int y, int size, t_cub3d *cub3d)
 	}
 }
 
+/*
+**	Bresenham line algorithm
+*/ 
+
 void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
 {
-	float t;
-	float x; 
-	float y;
-
-	t = 0;
-	while(t < 1)
+	
+	int e2;
+	float dx =  abs(line->end.x -line->start.x);
+	float sx = line->start.x < line->end.x ? 1 : -1;
+	float dy = -abs(line->end.y - line->start.y);
+	float sy = line->start.y < line->end.y ? 1 : -1;
+	float err = dx+dy;  /* error value e_xy */
+	while (1)   /* loop */
 	{
-		x = line->start.x + (line->end.x - line->start.x)*t;
-		y = line->start.y + (line->end.y - line->start.y)*t;
-		my_mlx_pixel_put(&cub3d->img, x + cub3d->player.radius / 2, y + cub3d->player.radius / 2, color);
-		t += 0.01;
-	}
+		my_mlx_pixel_put(&cub3d->img, line->start.x + cub3d->player.radius / 2, line->start.y + cub3d->player.radius / 2, color);
+		if (line->start.x == line->end.x && line->start.y == line->end.y)
+			break ;
+		e2 = 2*err;
+		if (e2 >= dy) /* e_xy+e_x > 0 */
+		{
+			err += dy;
+			line->start.x += sx;
+		}
+		if (e2 <= dx) /* e_xy+e_y < 0 */
+		{
+			err += dx;
+			line->start.y += sy;
+		}
+
+	}	
+	
+		/*
+	   float t;
+	   float x; 
+	   float y;
+
+	   t = 0;
+	   while(t < 1)
+	   {
+	   x = line->start.x + (line->end.x - line->start.x)*t;
+	   y = line->start.y + (line->end.y - line->start.y)*t;
+	   my_mlx_pixel_put(&cub3d->img, x + cub3d->player.radius / 2, y + cub3d->player.radius / 2, color);
+	   t += 0.01;
+	   }
+	   */
 }
 
 void	render_player(t_cub3d *cub3d)

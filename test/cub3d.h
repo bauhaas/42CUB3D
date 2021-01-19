@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/18 16:43:49 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/19 08:21:49 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@
 
 typedef struct	s_coord
 {
-	float			x;
-	float			y;
+	int			x;
+	int			y;
 }				t_coord;
 
 typedef struct	s_player
@@ -140,5 +140,8 @@ void			render_ray(t_cub3d *cub3d, t_ray rays);
 
 void			update(t_cub3d *cub3d);
 void			render(t_cub3d *cub3d);
+
+void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
+
 
 #endif
