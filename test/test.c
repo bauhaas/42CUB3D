@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/18 19:12:24 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/19 14:15:19 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,17 @@ const int grid[10][10] = {
 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
 
-/*
-   float	normalize(float ray_ang)
-   {
-   ray_ang = fmod(ray_ang, (2 * M_PI));
-   if(ray_ang < 0)
-   {
-   ray_ang += 2 * M_PI;
-   }
-   }
-   */
+float	normalize(float ray_ang)
+{
+	ray_ang = fmod(ray_ang, (2 * M_PI));
+	if(ray_ang < 0)
+	{
+		ray_ang += 2 * M_PI;
+	}
+	return(ray_ang);
+}
+
+
 int grid_is_wall(int x, int y)
 {
 	int grid_x = x / MINI_SIZE;
@@ -53,7 +54,7 @@ int grid_is_wall(int x, int y)
 	return(grid[grid_y][grid_x] != 0);
 }
 
-
+/*
 void	cast(t_ray ray, t_cub3d *cub3d)
 {
 	float xstep;
@@ -67,8 +68,6 @@ void	cast(t_ray ray, t_cub3d *cub3d)
 	float wall_hit_y = 0;
 
 	//HORITZONTAL
-	//
-	//find y cordinate of the clostest hori grid intersec
 	yintercept = cub3d->player.pos.y / MINI_SIZE * MINI_SIZE;
 	yintercept +=  ray.facing_down ? MINI_SIZE : 0;
 	// find x coordinate of the closest horizontal grid intersec
@@ -113,7 +112,7 @@ void	cast(t_ray ray, t_cub3d *cub3d)
 	}
 	//VERTICAL
 }
-
+*/
 
 t_ray *cast_all_rays(t_cub3d *cub3d)
 {
@@ -126,12 +125,12 @@ t_ray *cast_all_rays(t_cub3d *cub3d)
 	if(!rays)
 		return 0;
 	ray_ang = cub3d->player.rot_ang - FOV / 2;
-	//ray_ang = normalize(ray_ang);
+	ray_ang = normalize(ray_ang);
 	while(i < NUM_RAYS)
 	{
 		rays[i].ray_ang = ray_ang;
 		init_ray(rays[i], ray_ang);
-		cast(rays[i], cub3d);
+		//cast(rays[i], cub3d);
 		ray_ang += FOV / NUM_RAYS;
 		i++;
 	}
@@ -159,8 +158,7 @@ void update(t_cub3d *cub3d)
 		cub3d->player.pos.x = new_player_x;
 		cub3d->player.pos.y = new_player_y;
 	}
-
-	printf("new rot ang : %f\n", cub3d->player.rot_ang);
+	//printf("new rot ang : %f\n", cub3d->player.rot_ang);
 	render(cub3d);
 }
 
@@ -196,17 +194,14 @@ void	render(t_cub3d *cub3d)
 
 	init_img(&cub3d->img, &cub3d->win);
 	render_minimap(cub3d);	
-	render_player(cub3d);
-
 	rays = cast_all_rays(cub3d);
-	/*
 	while(i < NUM_RAYS)
 	{
 		render_ray(cub3d, rays[i]);
 		i++;
 	}
-	*/
 	free(rays);
+	render_player(cub3d);
 	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->img.img, 0, 0);
 }
 

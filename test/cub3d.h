@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/19 08:21:49 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/19 13:55:49 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@
 
 typedef struct	s_coord
 {
-	int			x;
-	int			y;
+	float		x;
+	float		y;
 }				t_coord;
 
 typedef struct	s_player
