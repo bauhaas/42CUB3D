@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/20 11:23:57 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/20 12:36:23 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,19 @@ const int grid[11][15] = {
 float	normalize(float ray_ang)
 {
 	ray_ang = fmod(ray_ang, (2 * M_PI));
-	while(ray_ang < 0)
+	if(ray_ang < 0)
 	{
 		ray_ang += 2 * M_PI;
 	}
 	return(ray_ang);
 }
 
-int grid_is_wall(int x, int y)
+int grid_is_wall(float x, float y)
 {
-	//win borders
 	if(x < 0 || x > WIN_WID || y < 0 || y > WIN_HEI)
 		return TRUE;
 	int grid_x = floor(x / TILE_SIZE);
 	int grid_y = floor(y / TILE_SIZE);
-	//minimap borders
 	// TO FIX : player pixel appear just after border
 	if(grid_x >= MAP_COLS || grid_y >= MAP_ROWS)
 		return TRUE;
@@ -63,21 +61,25 @@ void	cast(t_ray *ray, t_cub3d *cub3d)
 	float xintercept;
 	float yintercept;
 
-	//int foud_hor_wall = 0;
+	int found_hor_wall = 0;
 	float wall_hit_x = 0;
 	float wall_hit_y = 0;
 
-	printf("right: %d\n", ray->facing_right);
-	printf("left : %d\n", ray->facing_left);
-	printf("up :   %d\n", ray->facing_up);
-	printf("down : %d\n\n", ray->facing_down);
-	printf("ray_ang : %f\n\n", ray->ray_ang);
+	//printf("right: %d\n", ray->facing_right);
+	//printf("left : %d\n", ray->facing_left);
+	//printf("up :   %d\n", ray->facing_up);
+	//printf("down : %d\n\n", ray->facing_down);
+	//printf("ray_ang : %f\n\n", ray->ray_ang);
 	//HORITZONTAL  ->
-	yintercept = cub3d->player.pos.y / TILE_SIZE * TILE_SIZE; //minisize = tilesize
+	yintercept = floor(cub3d->player.pos.y / TILE_SIZE) * TILE_SIZE; //minisize = tilesize
 	yintercept +=  ray->facing_down ? TILE_SIZE : 0;
 	// find x coordinate of the closest horizontal grid intersec
 	xintercept = cub3d->player.pos.x + (yintercept - cub3d->player.pos.y) / tan(ray->ray_ang);
 
+	//printf("yintercept : %f\n", yintercept);
+	//printf("playerx : %f\n", cub3d->player.pos.x);
+	//printf("playery : %f\n", cub3d->player.pos.y);
+	//printf("xintercept : %f\n", xintercept);
 	//calculate incre;ent of xstep and ystep
 	ystep = TILE_SIZE;
 	ystep *= ray->facing_up ? -1 : 1;
@@ -85,13 +87,18 @@ void	cast(t_ray *ray, t_cub3d *cub3d)
 	xstep = TILE_SIZE / tan(ray->ray_ang);
 	xstep *= (ray->facing_left && xstep > 0) ? -1 : 1;
 	xstep *= (ray->facing_right && xstep < 0) ? -1 : 1;
-
+	
+	//printf("y_step : %f\n", ystep);
+	//printf("x_step : %f\n", xstep);
 	float next_hor_x = xintercept;
 	float next_hor_y = yintercept;
+
+	//printf("next_hor_x : %f\n", next_hor_x);
 	t_line line;
 
 	if(ray->facing_up)
 		next_hor_y--;
+	//printf("next_hor_y : %f\n", next_hor_y);
 	//increment xstep and ystep till a wall is find
 	while(next_hor_x >= 0 && next_hor_x <= WIN_WID && next_hor_y >= 0 && next_hor_y <= WIN_HEI)
 	{
@@ -100,8 +107,12 @@ void	cast(t_ray *ray, t_cub3d *cub3d)
 			//we found wall
 			wall_hit_y = next_hor_y;
 			wall_hit_x = next_hor_x;
-			//found_hor_wall = 1;
-
+			//printf("loop next_hor_y : %f\n", next_hor_y);
+			//printf("loop next_hor_x : %f\n", next_hor_x);
+			//printf("wallhitx : %f\n", wall_hit_x);
+			//printf("wallhity : %f\n", wall_hit_y);
+			found_hor_wall = 1;
+			
 			line.start.x = cub3d->player.pos.x;
 			line.start.y = cub3d->player.pos.y;
 			line.end.x = wall_hit_x;
@@ -112,7 +123,8 @@ void	cast(t_ray *ray, t_cub3d *cub3d)
 		else
 		{
 			next_hor_x += xstep;
-			next_hor_x += ystep;
+			next_hor_y += ystep;
+			//printf("test\n");
 		}
 	}
 	//VERTICAL
@@ -127,6 +139,7 @@ t_ray *cast_all_rays(t_cub3d *cub3d)
 
 	i = 0;
 	rays = malloc(sizeof(t_ray));
+	//rays = malloc(sizeof(t_ray) * NUM_RAYS);
 	if(!rays)
 		return 0;
 	ray_ang = cub3d->player.rot_ang - (FOV / 2);
@@ -164,7 +177,7 @@ void update(t_cub3d *cub3d)
 		cub3d->player.pos.x = new_player_x;
 		cub3d->player.pos.y = new_player_y;
 	}
-	printf("new rot ang : %f\n", cub3d->player.rot_ang);
+	//printf("new rot ang : %f\n", cub3d->player.rot_ang);
 	render(cub3d);
 }
 
@@ -204,10 +217,9 @@ void	render(t_cub3d *cub3d)
 	//while(i < NUM_RAYS)
 	//{
 		render_ray(cub3d, rays[i]);
-		//render_ray(cub3d, rays[999]);
-		i++;
+	//	i++;
 	//}
-	//free(rays);
+	free(rays);
 	render_player(cub3d);
 	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->img.img, 0, 0);
 }
