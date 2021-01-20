@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/20 12:36:23 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/20 16:08:41 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,13 @@ int grid_is_wall(float x, float y)
 	return(grid[grid_y][grid_x] != 0);
 }
 
+#include <float.h>
+
+float		distance_points(float x1, float y1, float x2, float y2)
+{
+	return(sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
+}
+
 void	cast(t_ray *ray, t_cub3d *cub3d)
 {
 	float xstep;
@@ -61,9 +68,12 @@ void	cast(t_ray *ray, t_cub3d *cub3d)
 	float xintercept;
 	float yintercept;
 
+	//////
+	////// HORIZONTAL
+	//////
 	int found_hor_wall = 0;
-	float wall_hit_x = 0;
-	float wall_hit_y = 0;
+	float hz_wall_hit_x = 0;
+	float hz_wall_hit_y = 0;
 
 	//printf("right: %d\n", ray->facing_right);
 	//printf("left : %d\n", ray->facing_left);
@@ -90,44 +100,138 @@ void	cast(t_ray *ray, t_cub3d *cub3d)
 	
 	//printf("y_step : %f\n", ystep);
 	//printf("x_step : %f\n", xstep);
-	float next_hor_x = xintercept;
-	float next_hor_y = yintercept;
+	float hz_next_hor_x = xintercept;
+	float hz_next_hor_y = yintercept;
 
-	//printf("next_hor_x : %f\n", next_hor_x);
-	t_line line;
+	//printf("hz_next_hor_x : %f\n", hz_next_hor_x);
+	t_line vline;
 
 	if(ray->facing_up)
-		next_hor_y--;
-	//printf("next_hor_y : %f\n", next_hor_y);
+		hz_next_hor_y--;
+	//printf("hz_next_hor_y : %f\n", hz_next_hor_y);
 	//increment xstep and ystep till a wall is find
-	while(next_hor_x >= 0 && next_hor_x <= WIN_WID && next_hor_y >= 0 && next_hor_y <= WIN_HEI)
+	while(hz_next_hor_x >= 0 && hz_next_hor_x <= WIN_WID && hz_next_hor_y >= 0 && hz_next_hor_y <= WIN_HEI)
 	{
-		if(grid_is_wall(next_hor_x, next_hor_y))
+		if(grid_is_wall(hz_next_hor_x, hz_next_hor_y))
 		{
 			//we found wall
-			wall_hit_y = next_hor_y;
-			wall_hit_x = next_hor_x;
-			//printf("loop next_hor_y : %f\n", next_hor_y);
-			//printf("loop next_hor_x : %f\n", next_hor_x);
-			//printf("wallhitx : %f\n", wall_hit_x);
-			//printf("wallhity : %f\n", wall_hit_y);
+			hz_wall_hit_y = hz_next_hor_y;
+			hz_wall_hit_x = hz_next_hor_x;
+			//printf("loop hz_next_hor_y : %f\n", hz_next_hor_y);
+			//printf("loop hz_next_hor_x : %f\n", hz_next_hor_x);
+			//printf("wallhitx : %f\n", hz_wall_hit_x);
+			//printf("wallhity : %f\n", hz_wall_hit_y);
 			found_hor_wall = 1;
 			
-			line.start.x = cub3d->player.pos.x;
-			line.start.y = cub3d->player.pos.y;
-			line.end.x = wall_hit_x;
-			line.end.y = wall_hit_y;
-			render_view_line(&line, cub3d, GREEN);
+			//vline.start.x = cub3d->player.pos.x;
+			//vline.start.y = cub3d->player.pos.y;
+			//vline.end.x = hz_wall_hit_x;
+			//vline.end.y = hz_wall_hit_y;
+			//render_view_line(&vline, cub3d, GREEN);
 			break;
 		}
 		else
 		{
-			next_hor_x += xstep;
-			next_hor_y += ystep;
+			hz_next_hor_x += xstep;
+			hz_next_hor_y += ystep;
 			//printf("test\n");
 		}
 	}
+	
 	//VERTICAL
+	//VERTICAL
+	//VERTICAL
+	//VERTICAL
+	int found_ver_wall = 0;
+	float vt_wall_hit_x = 0;
+	float vt_wall_hit_y = 0;
+
+	//printf("right: %d\n", ray->facing_right);
+	//printf("left : %d\n", ray->facing_left);
+	//printf("up :   %d\n", ray->facing_up);
+	//printf("down : %d\n\n", ray->facing_down);
+	//printf("ray_ang : %f\n\n", ray->ray_ang);
+	xintercept = floor(cub3d->player.pos.x / TILE_SIZE) * TILE_SIZE; //minisize = tilesize
+	xintercept +=  ray->facing_right ? TILE_SIZE : 0;
+	// find x coordinate of the closest horizontal grid intersec
+	yintercept = cub3d->player.pos.y + (xintercept - cub3d->player.pos.x) * tan(ray->ray_ang);
+
+	//printf("yintercept : %f\n", yintercept);
+	//printf("playerx : %f\n", cub3d->player.pos.x);
+	//printf("playery : %f\n", cub3d->player.pos.y);
+	//printf("xintercept : %f\n", xintercept);
+	//calculate incre;ent of xstep and ystep
+	xstep = TILE_SIZE;
+	xstep *= ray->facing_left ? -1 : 1;
+
+	ystep = TILE_SIZE * tan(ray->ray_ang);
+	ystep *= (ray->facing_up && ystep > 0) ? -1 : 1;
+	ystep *= (ray->facing_down && ystep < 0) ? -1 : 1;
+	
+	//printf("y_step : %f\n", ystep);
+	//printf("x_step : %f\n", xstep);
+	float vt_next_hor_x = xintercept;
+	float vt_next_hor_y = yintercept;
+
+	//printf("vt_next_hor_x : %f\n", vt_next_hor_x);
+	t_line line;
+
+	if(ray->facing_left)
+		vt_next_hor_x--;
+	//printf("vt_next_hor_y : %f\n", vt_next_hor_y);
+	//increment xstep and ystep till a wall is find
+	while(vt_next_hor_x >= 0 && vt_next_hor_x <= WIN_WID && vt_next_hor_y >= 0 && vt_next_hor_y <= WIN_HEI)
+	{
+		if(grid_is_wall(vt_next_hor_x, vt_next_hor_y))
+		{
+			//we found wall
+			vt_wall_hit_y = vt_next_hor_y;
+			vt_wall_hit_x = vt_next_hor_x;
+			//printf("loop vt_next_hor_y : %f\n", vt_next_hor_y);
+			//printf("loop vt_next_hor_x : %f\n", vt_next_hor_x);
+			//printf("wallhitx : %f\n", vt_wall_hit_x);
+			//printf("wallhity : %f\n", vt_wall_hit_y);
+			found_ver_wall = 1;
+			
+			//line.start.x = cub3d->player.pos.x;
+			//line.start.y = cub3d->player.pos.y;
+			//line.end.x = vt_wall_hit_x;
+			//line.end.y = vt_wall_hit_y;
+			//render_view_line(&line, cub3d, GREEN);
+			break;
+		}
+		else
+		{
+			vt_next_hor_x += xstep;
+			vt_next_hor_y += ystep;
+			//printf("test\n");
+		}
+	}
+
+
+	// find both hw and vt distance and choos the smallest value
+	float hz_distance = (found_hor_wall)
+		? distance_points(cub3d->player.pos.x, cub3d->player.pos.y, hz_wall_hit_x, hz_wall_hit_y)
+		: FLT_MAX;
+			printf("hz_dist : %f\n", hz_distance);
+	float vt_distance = (found_ver_wall)
+		? distance_points(cub3d->player.pos.x, cub3d->player.pos.y, vt_wall_hit_x, vt_wall_hit_y)
+		: FLT_MAX;
+			printf("vt_dist : %f\n", vt_distance);
+	ray->wall_hit_x = (hz_distance < vt_distance) ? hz_wall_hit_x : vt_wall_hit_x;
+		//	printf("wall_hit_x : %f\n", ray->wall_hit_x);
+	ray->wall_hit_y = (hz_distance < vt_distance) ? hz_wall_hit_y : vt_wall_hit_y;
+		//	printf("wall_hit_y : %f\n", ray->wall_hit_y);
+	ray->distance = (hz_distance < vt_distance) ? hz_distance : vt_distance;
+			printf("distance : %f\n", ray->distance);
+	ray->was_vt_hit = (vt_distance < hz_distance);
+		//	printf("was_vt_hit : %d\n", ray->was_vt_hit);
+
+			line.start.x = cub3d->player.pos.x;
+			line.start.y = cub3d->player.pos.y;
+			line.end.x = ray->wall_hit_x;
+			line.end.y = ray->wall_hit_y;
+			render_view_line(&line, cub3d, GREEN);
 }
 
 
@@ -147,6 +251,7 @@ t_ray *cast_all_rays(t_cub3d *cub3d)
 	while(i < 1)
 	{
 		rays->ray_ang = normalize(ray_ang);
+		printf("ray rot ang : %f\n", rays->ray_ang);
 	//	printf("ray_ang after : %f\n\n", rays->ray_ang);
 		init_ray(rays, rays->ray_ang);
 		cast(rays, cub3d);
@@ -178,7 +283,7 @@ void update(t_cub3d *cub3d)
 		cub3d->player.pos.y = new_player_y;
 	}
 	//printf("new rot ang : %f\n", cub3d->player.rot_ang);
-	render(cub3d);
+	//render(cub3d);
 }
 
 void	render_minimap(t_cub3d *cub3d)
@@ -208,18 +313,18 @@ void	render_minimap(t_cub3d *cub3d)
 
 void	render(t_cub3d *cub3d)
 {
-	t_ray *rays;
 	int i = 0;
 
 	init_img(&cub3d->img, &cub3d->win);
+	update(cub3d);
 	render_minimap(cub3d);	
-	rays = cast_all_rays(cub3d);
+	cub3d->rays = cast_all_rays(cub3d);
 	//while(i < NUM_RAYS)
 	//{
-		render_ray(cub3d, rays[i]);
+		render_ray(cub3d, i);
 	//	i++;
 	//}
-	free(rays);
+	free(cub3d->rays);
 	render_player(cub3d);
 	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->img.img, 0, 0);
 }
