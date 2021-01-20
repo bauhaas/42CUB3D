@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/19 13:55:49 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/19 16:41:01 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@
 # define TRUE 1
 # define WIN_WID 1000
 # define WIN_HEI 1000
-# define FOV  90 * (M_PI / 180)
+# define FOV  60 * (M_PI / 180)
 # define WALL_STIP_WIDTH 1
 # define NUM_RAYS WIN_WID / WALL_STIP_WIDTH
 
@@ -107,10 +107,10 @@ typedef struct	s_ray
 	float		wall_hit_x;
 	float		wall_hit_y;
 	float		distance;
-	float		facing_up;
-	float		facing_down;
-	float		facing_right;
-	float		facing_left;
+	int		facing_up;
+	int		facing_down;
+	int		facing_right;
+	int		facing_left;
 }				t_ray;
 
 typedef struct	s_cub3d
@@ -129,7 +129,7 @@ void			init_player(t_player *player);
 void			init_map(t_map *map);
 void			init_img(t_img *img, t_win *win);
 void			init_win(t_win *win);
-void			init_ray(t_ray ray, float ray_ang);
+void			init_ray(t_ray *ray, float ray_ang);
 
 void			render_player(t_cub3d *cub3d);
 void			render_minimap(t_cub3d *cub3d);

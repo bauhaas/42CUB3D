@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/19 14:16:30 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/20 09:40:07 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	render_minimap_square(int x, int y, int size, t_cub3d *cub3d)
 
 void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
 {
-/*	
+/*
 	int e2;
 	float dx =  abs(line->end.x -line->start.x);
 	float sx = line->start.x < line->end.x ? 1 : -1;
@@ -70,7 +70,6 @@ void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
 			err += dx;
 			line->start.y += sy;
 		}
-
 	}	
 	*/
 		
@@ -86,7 +85,6 @@ void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
 	   my_mlx_pixel_put(&cub3d->img, x + cub3d->player.radius / 2, y + cub3d->player.radius / 2, color);
 	   t += 0.01;
 	   }
-	   
 }
 
 void	render_player(t_cub3d *cub3d)
@@ -112,8 +110,8 @@ void	render_ray(t_cub3d *cub3d, t_ray ray)
 	line.start.y = 0;
 	line.start.x += cub3d->player.pos.x;
 	line.start.y += cub3d->player.pos.y;
-	line.end.y = line.start.y + sin(ray.ray_ang) * 100;
-	line.end.x = line.start.x + cos(ray.ray_ang) * 100;
+	line.end.y = line.start.y + sin(ray.ray_ang) * 30;
+	line.end.x = line.start.x + cos(ray.ray_ang) * 30;
 	render_view_line(&line, cub3d, BLUE);
 	return ;
 }

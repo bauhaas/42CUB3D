@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/19 14:15:19 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/20 09:59:26 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ float	normalize(float ray_ang)
 	return(ray_ang);
 }
 
-
 int grid_is_wall(int x, int y)
 {
 	int grid_x = x / MINI_SIZE;
@@ -54,48 +53,51 @@ int grid_is_wall(int x, int y)
 	return(grid[grid_y][grid_x] != 0);
 }
 
-/*
-void	cast(t_ray ray, t_cub3d *cub3d)
+void	cast(t_ray *ray, t_cub3d *cub3d)
 {
 	float xstep;
 	float ystep;
 	float xintercept;
 	float yintercept;
 
-
-	int foud_hor_wall = 1;
+	//int foud_hor_wall = 0;
 	float wall_hit_x = 0;
 	float wall_hit_y = 0;
 
-	//HORITZONTAL
-	yintercept = cub3d->player.pos.y / MINI_SIZE * MINI_SIZE;
-	yintercept +=  ray.facing_down ? MINI_SIZE : 0;
+	printf("right: %d\n", ray->facing_right);
+	printf("left : %d\n", ray->facing_left);
+	printf("up :   %d\n", ray->facing_up);
+	printf("down : %d\n\n", ray->facing_down);
+	printf("ray_ang : %f\n\n", ray->ray_ang);
+	//HORITZONTAL  ->
+	yintercept = cub3d->player.pos.y / MINI_SIZE * MINI_SIZE; //minisize = tilesize
+	yintercept +=  ray->facing_down ? MINI_SIZE : 0;
 	// find x coordinate of the closest horizontal grid intersec
-	xintercept = cub3d->player.pos.x + (yintercept - cub3d->player.pos.y) / tan(ray.ray_ang);
+	xintercept = cub3d->player.pos.x + (yintercept - cub3d->player.pos.y) / tan(ray->ray_ang);
 
 	//calculate incre;ent of xstep and ystep
 	ystep = MINI_SIZE;
-	ystep *= ray.facing_up ? -1 : 1;
+	ystep *= ray->facing_up ? -1 : 1;
 
-	xstep = MINI_SIZE / tan(ray.ray_ang);
-	xstep *= (ray.facing_left && xstep > 0) ? -1 : 1;
-	xstep *= (ray.facing_right && xstep < 0) ? -1 : 1;
+	xstep = MINI_SIZE / tan(ray->ray_ang);
+	xstep *= (ray->facing_left && xstep > 0) ? -1 : 1;
+	xstep *= (ray->facing_right && xstep < 0) ? -1 : 1;
 
 	float next_hor_x = xintercept;
 	float next_hor_y = yintercept;
 	t_line line;
 
-	if(ray.facing_up)
+	if(ray->facing_up)
 		next_hor_y--;
-	//incre;ent xstep and ystep till a wall is find
-	while(next_hor_x >= 0 && next_hor_x <= WIN_WID && next_hor_y >= 0 && next_hor_y <= WIN_HEI)
+	//increment xstep and ystep till a wall is find
+	while(next_hor_x >= 0 && next_hor_x <= 1000 && next_hor_y >= 0 && next_hor_y <= 1000)
 	{
 		if(grid_is_wall(next_hor_x, next_hor_y))
 		{
 			//we found wall
 			wall_hit_y = next_hor_y;
 			wall_hit_x = next_hor_x;
-			foud_hor_wall = 0;
+			//found_hor_wall = 1;
 
 			line.start.x = cub3d->player.pos.x;
 			line.start.y = cub3d->player.pos.y;
@@ -112,7 +114,7 @@ void	cast(t_ray ray, t_cub3d *cub3d)
 	}
 	//VERTICAL
 }
-*/
+
 
 t_ray *cast_all_rays(t_cub3d *cub3d)
 {
@@ -121,19 +123,20 @@ t_ray *cast_all_rays(t_cub3d *cub3d)
 	int i;
 
 	i = 0;
-	rays = malloc(sizeof(t_ray) * NUM_RAYS);
+	rays = malloc(sizeof(t_ray));
 	if(!rays)
 		return 0;
-	ray_ang = cub3d->player.rot_ang - FOV / 2;
-	ray_ang = normalize(ray_ang);
-	while(i < NUM_RAYS)
-	{
-		rays[i].ray_ang = ray_ang;
-		init_ray(rays[i], ray_ang);
-		//cast(rays[i], cub3d);
+	ray_ang = cub3d->player.rot_ang - (FOV / 2);
+	printf("ray_ang before : %f\n\n", ray_ang);
+	//while(i < NUM_RAYS)
+	//{
+		rays->ray_ang = normalize(ray_ang);
+		printf("ray_ang after : %f\n\n", rays->ray_ang);
+		init_ray(rays, rays->ray_ang);
+		cast(rays, cub3d);
 		ray_ang += FOV / NUM_RAYS;
-		i++;
-	}
+	//	i++;
+	//}
 	return(rays);
 }
 
@@ -158,7 +161,7 @@ void update(t_cub3d *cub3d)
 		cub3d->player.pos.x = new_player_x;
 		cub3d->player.pos.y = new_player_y;
 	}
-	//printf("new rot ang : %f\n", cub3d->player.rot_ang);
+	printf("new rot ang : %f\n", cub3d->player.rot_ang);
 	render(cub3d);
 }
 
@@ -195,12 +198,13 @@ void	render(t_cub3d *cub3d)
 	init_img(&cub3d->img, &cub3d->win);
 	render_minimap(cub3d);	
 	rays = cast_all_rays(cub3d);
-	while(i < NUM_RAYS)
-	{
+	//while(i < NUM_RAYS)
+	//{
 		render_ray(cub3d, rays[i]);
+		//render_ray(cub3d, rays[999]);
 		i++;
-	}
-	free(rays);
+	//}
+	//free(rays);
 	render_player(cub3d);
 	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->img.img, 0, 0);
 }
