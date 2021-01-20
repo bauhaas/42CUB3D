@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/14 16:47:22 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/20 10:38:39 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,68 +41,78 @@ void	render_minimap_square(int x, int y, int size, t_cub3d *cub3d)
 	}
 }
 
-void	render_view_line(int x, int y, t_cub3d *cub3d)
-{
-	t_coord	last;
-	t_line	line;
-	int		err[2];
+/*
+**	Bresenham line algorithm
+*/ 
 
-	last.y = y + sin(cub3d->player.rot_ang) * 20;
-	last.x = x + cos(cub3d->player.rot_ang) * 20;
-	line.first.x = abs(last.x - x);
-	line.first.y = abs(last.y - y);
-	line.last.x = x < last.x ? 1 : -1;
-	line.last.y = y < last.y ? 1 : -1;
-	err[0] = (line.first.x > line.first.y ? line.first.x : -line.first.y) / 2;
-	while (1)
+void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
+{
+/*
+	int e2;
+	float dx =  abs(line->end.x -line->start.x);
+	float sx = line->start.x < line->end.x ? 1 : -1;
+	float dy = -abs(line->end.y - line->start.y);
+	float sy = line->start.y < line->end.y ? 1 : -1;
+	float err = dx+dy;
+	while (1) 
 	{
-		my_mlx_pixel_put(&cub3d->img, x + 4.5, y + 4.5, WHITE);
-		if (x == last.x && y == last.y)
-			return ;
-		err[1] = err[0];
-		if (err[1] > -line.first.x)
+		my_mlx_pixel_put(&cub3d->img, line->start.x + cub3d->player.radius / 2, line->start.y + cub3d->player.radius / 2, color);
+		if (line->start.x == line->end.x && line->start.y == line->end.y)
+			break ;
+		e2 = 2*err;
+		if (e2 >= dy)
 		{
-			err[0] -= line.first.y;
-			x += line.last.x;
+			err += dy;
+			line->start.x += sx;
 		}
-		if (err[1] < line.first.y)
+		if (e2 <= dx)
 		{
-			err[0] += line.first.x;
-			y += line.last.y;
+			err += dx;
+			line->start.y += sy;
 		}
-	}
+	}	
+	*/
+		
+	   float t;
+	   float x; 
+	   float y;
+
+	   t = 0;
+	   while(t < 1)
+	   {
+	   x = line->start.x + (line->end.x - line->start.x)*t;
+	   y = line->start.y + (line->end.y - line->start.y)*t;
+	   my_mlx_pixel_put(&cub3d->img, x + cub3d->player.radius / 2, y + cub3d->player.radius / 2, color);
+	   t += 0.01;
+	   }
 }
 
 void	render_player(t_cub3d *cub3d)
 {
-	t_coord init_pos;
-	t_coord last_line_pos;
+	t_line line;
 
-	last_line_pos.y = cub3d->player.y + sin(cub3d->player.rot_ang) * 20;
-	last_line_pos.x = cub3d->player.x + cos(cub3d->player.rot_ang) * 20;
-	init_pos.x += cub3d->player.x;
-	init_pos.y += cub3d->player.y;
+	line.start.x = 0;
+	line.start.y = 0;
+	line.start.x += cub3d->player.pos.x;
+	line.start.y += cub3d->player.pos.y;
+	line.end.y = line.start.y + sin(cub3d->player.rot_ang) * 30;
+	line.end.x = line.start.x + cos(cub3d->player.rot_ang) * 30;
 
-	// TO DO: CHANGE PARAMS TO ADAPAT WITH T_COORD
-	render_minimap_square(init_pos.x, init_pos.y,
-			cub3d->player.radius, cub3d);
-	render_view_line(init_pos.x, init_pos.y, cub3d);
+	render_minimap_square(line.start.x, line.start.y, cub3d->player.radius, cub3d);
+	render_view_line(&line, cub3d, WHITE);
 }
 
-
-void	render_init_player(t_cub3d *cub3d)
+void	render_ray(t_cub3d *cub3d, t_ray ray)
 {
-	t_coord init_pos;
-	t_coord last_line_pos;
+	t_line line;
 
-	last_line_pos.y = cub3d->player.y + sin(cub3d->player.rot_ang) * 20;
-	last_line_pos.x = cub3d->player.x + cos(cub3d->player.rot_ang) * 20;
-	init_pos.x = cub3d->player.x;
-	init_pos.y = cub3d->player.y;
-
-	// TO DO: CHANGE PARAMS TO ADAPAT WITH T_COORD
-	render_minimap_square(init_pos.x * MINI_SIZE / 2 + 20, init_pos.y * MINI_SIZE / 2 + 20,
-			cub3d->player.radius, cub3d);
-	render_view_line(init_pos.x * MINI_SIZE / 2 + 20, init_pos.y * MINI_SIZE / 2 + 20, cub3d);
-
+	line.start.x = 0;
+	line.start.y = 0;
+	line.start.x += cub3d->player.pos.x;
+	line.start.y += cub3d->player.pos.y;
+	line.end.y = line.start.y + sin(ray.ray_ang) * 30;
+	line.end.x = line.start.x + cos(ray.ray_ang) * 30;
+	render_view_line(&line, cub3d, BLUE);
+	return ;
 }
+

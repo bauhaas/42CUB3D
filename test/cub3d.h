@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/14 16:50:10 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/20 10:31:19 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,33 @@
 # define GRAY	0x00808080
 # define BLUE	0x000000FF
 # define WHITE	0x00FFFFFF
+# define GREEN	0x0000CC00
+# define RED	0x00FF0000
 
 /*
 ** 	WIP: MINI_SIZE : size of cube on minimap. Need to define a width and height
 **					 var equal to 1/10 of my resolution (width and height)
 */
 
-# define MINI_SIZE	80
-# define MAP_ROWS	10
-# define MAP_COLS	10
+# define TILE_SIZE	32
+# define MAP_ROWS	11
+# define MAP_COLS	15
 # define TRUE 1
-# define WIN_WID 1000
-# define WIN_HEI 1000
+# define WIN_WID TILE_SIZE * MAP_COLS
+# define WIN_HEI TILE_SIZE * MAP_ROWS
+# define FOV  60 * (M_PI / 180)
+# define WALL_STIP_WIDTH 1
+# define NUM_RAYS WIN_WID / WALL_STIP_WIDTH
+
+typedef struct	s_coord
+{
+	float		x;
+	float		y;
+}				t_coord;
 
 typedef struct	s_player
 {
-	int			x;
-	int			y;
+	t_coord		pos;
 	int			radius;
 	int			turn_d;
 	int			rot_d;
@@ -81,16 +91,10 @@ typedef struct	s_img
 	int			endian;
 }				t_img;
 
-typedef struct	s_coord
-{
-	int			x;
-	int			y;
-}				t_coord;
-
 typedef struct	s_line
 {
-	t_coord		first;
-	t_coord		last;
+	t_coord		start;
+	t_coord		end;
 }				t_line;
 
 typedef struct	s_win
@@ -99,12 +103,25 @@ typedef struct	s_win
 	void		*win_p;
 }				t_win;
 
+typedef struct	s_ray
+{
+	float		ray_ang;
+	float		wall_hit_x;
+	float		wall_hit_y;
+	float		distance;
+	int		facing_up;
+	int		facing_down;
+	int		facing_right;
+	int		facing_left;
+}				t_ray;
+
 typedef struct	s_cub3d
 {
 	t_map		map;
 	t_img		img;
 	t_win		win;
 	t_player	player;
+	t_ray		ray;
 }				t_cub3d;
 
 int				key_pressed(int keycode, t_cub3d *cub3d);
@@ -114,14 +131,19 @@ void			init_player(t_player *player);
 void			init_map(t_map *map);
 void			init_img(t_img *img, t_win *win);
 void			init_win(t_win *win);
+void			init_ray(t_ray *ray, float ray_ang);
 
 void			render_player(t_cub3d *cub3d);
-void			render_init_player(t_cub3d *cub3d);
 void			render_minimap(t_cub3d *cub3d);
 void			render_minimap_square(int x, int y, int size, t_cub3d *cub3d);
-void			render_view_line(int x, int y, t_cub3d *cub3d);
+//void			render_minimap_square(float x, float y, int size, t_cub3d *cub3d);
+void			render_view_line(t_line *line, t_cub3d *cub3d, int color);
+void			render_ray(t_cub3d *cub3d, t_ray rays);
 
 void			update(t_cub3d *cub3d);
 void			render(t_cub3d *cub3d);
+
+void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 01:12:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/14 16:45:33 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/20 11:07:15 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ void	init_map(t_map *map)
 
 void	init_player(t_player *player)
 {
-	player->x = 2;
-	player->y = 2;
-	player->radius = 9;
+	player->pos.x = WIN_WID / 2;
+	player->pos.y = WIN_HEI / 2;
+	player->radius = 6;
 	player->turn_d = 0;
 	player->walk_d = 0;
 	player->rot_ang = M_PI / 2;
+	player->mov_speed = 2.0;
 	player->rot_speed = 3 * (M_PI / 180);
-	player->mov_speed = 10;
 }
 
 void	init_img(t_img *img, t_win *win)
@@ -41,4 +41,17 @@ void	init_win(t_win *win)
 {
 	win->mlx_p = NULL;
 	win->win_p = NULL;
+}
+
+void init_ray(t_ray *ray, float ray_ang)
+{
+	ray->ray_ang = ray_ang;
+	//printf("ray_ang init : %f\n\n", ray->ray_ang);
+	ray->wall_hit_x = 0;
+	ray->wall_hit_y = 0;
+	ray->distance = 0;
+	ray->facing_down = ray_ang > 0 && ray_ang < M_PI;
+	ray->facing_up = !ray->facing_down;
+	ray->facing_right = ray_ang < 0.5 * M_PI || ray_ang > 1.5 * M_PI;
+	ray->facing_left = !ray->facing_right;
 }
