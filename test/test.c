@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/20 09:59:26 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/20 10:09:40 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ const int grid[10][10] = {
 float	normalize(float ray_ang)
 {
 	ray_ang = fmod(ray_ang, (2 * M_PI));
-	if(ray_ang < 0)
+	while(ray_ang < 0)
 	{
 		ray_ang += 2 * M_PI;
 	}
@@ -103,7 +103,7 @@ void	cast(t_ray *ray, t_cub3d *cub3d)
 			line.start.y = cub3d->player.pos.y;
 			line.end.x = wall_hit_x;
 			line.end.y = wall_hit_y;
-			render_view_line(&line, cub3d, WHITE);
+			render_view_line(&line, cub3d, GREEN);
 			break;
 		}
 		else

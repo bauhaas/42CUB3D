@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/19 16:41:01 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/20 10:06:28 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@
 # define GRAY	0x00808080
 # define BLUE	0x000000FF
 # define WHITE	0x00FFFFFF
+# define GREEN	0x0000CC00
+# define RED	0x00FF0000
 
 /*
 ** 	WIP: MINI_SIZE : size of cube on minimap. Need to define a width and height
