@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/20 16:08:41 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/20 17:01:26 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,13 +242,14 @@ t_ray *cast_all_rays(t_cub3d *cub3d)
 	int i;
 
 	i = 0;
-	rays = malloc(sizeof(t_ray));
-	//rays = malloc(sizeof(t_ray) * NUM_RAYS);
+	//rays = malloc(sizeof(t_ray));
+	rays = malloc(sizeof(t_ray) * NUM_RAYS);
 	if(!rays)
 		return 0;
 	ray_ang = cub3d->player.rot_ang - (FOV / 2);
 	//printf("ray_ang before : %f\n\n", ray_ang);
 	while(i < 1)
+	//while(i < NUM_RAYS)
 	{
 		rays->ray_ang = normalize(ray_ang);
 		printf("ray rot ang : %f\n", rays->ray_ang);
@@ -321,7 +322,7 @@ void	render(t_cub3d *cub3d)
 	cub3d->rays = cast_all_rays(cub3d);
 	//while(i < NUM_RAYS)
 	//{
-		render_ray(cub3d, i);
+	//render_ray(cub3d, i);
 	//	i++;
 	//}
 	free(cub3d->rays);
@@ -344,6 +345,7 @@ int main()
 	//RENDER
 	render(&cub3d);
 
+	printf("RAYS NuMBERS :%d\n", NUM_RAYS);
 	//KEY EVENTS
 	mlx_hook(cub3d.win.win_p, 2, 1L<<0, key_pressed, &cub3d);
 	mlx_hook(cub3d.win.win_p, 3, 1L<<1, key_released, &cub3d.player);

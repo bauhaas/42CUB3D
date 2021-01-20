@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/20 16:09:05 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/20 16:59:06 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@
 # define FALSE 0
 # define WIN_WID TILE_SIZE * MAP_COLS
 # define WIN_HEI TILE_SIZE * MAP_ROWS
-# define FOV  60 * (M_PI / 180)
+# define FOV  90 * (M_PI / 180)
 # define WALL_STIP_WIDTH 1
 # define NUM_RAYS WIN_WID / WALL_STIP_WIDTH
 
