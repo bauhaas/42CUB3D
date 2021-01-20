@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/20 10:06:28 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/20 10:31:19 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@
 **					 var equal to 1/10 of my resolution (width and height)
 */
 
-# define MINI_SIZE	80
-# define MAP_ROWS	10
-# define MAP_COLS	10
+# define TILE_SIZE	32
+# define MAP_ROWS	11
+# define MAP_COLS	15
 # define TRUE 1
-# define WIN_WID 1000
-# define WIN_HEI 1000
+# define WIN_WID TILE_SIZE * MAP_COLS
+# define WIN_HEI TILE_SIZE * MAP_ROWS
 # define FOV  60 * (M_PI / 180)
 # define WALL_STIP_WIDTH 1
 # define NUM_RAYS WIN_WID / WALL_STIP_WIDTH

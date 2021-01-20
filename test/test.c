@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/20 10:09:40 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/20 11:23:57 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,21 @@
 
 #include "cub3d.h"
 
-const int grid[10][10] = {
-	{0, 0, 0, 1, 1, 1, 1, 1, 1, 1},
-	{0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
-	{1, 0, 0, 0, 1, 1, 0, 0, 1, 1},
-	{1, 0, 0, 0, 1, 1, 1, 0, 1, 1},
-	{1, 0, 0, 0, 1, 1, 1, 0, 1, 1},
-	{1, 0, 0, 0, 1, 1, 1, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 1, 1, 0, 0, 1},
-	{1, 0, 0, 0, 1, 1, 1, 0, 0, 1},
-	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+const int grid[11][15] = {
+	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
+	{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1},
+	{1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
+
+
 
 float	normalize(float ray_ang)
 {
@@ -41,11 +44,11 @@ float	normalize(float ray_ang)
 
 int grid_is_wall(int x, int y)
 {
-	int grid_x = x / MINI_SIZE;
-	int grid_y = y / MINI_SIZE;
 	//win borders
 	if(x < 0 || x > WIN_WID || y < 0 || y > WIN_HEI)
 		return TRUE;
+	int grid_x = floor(x / TILE_SIZE);
+	int grid_y = floor(y / TILE_SIZE);
 	//minimap borders
 	// TO FIX : player pixel appear just after border
 	if(grid_x >= MAP_COLS || grid_y >= MAP_ROWS)
@@ -70,16 +73,16 @@ void	cast(t_ray *ray, t_cub3d *cub3d)
 	printf("down : %d\n\n", ray->facing_down);
 	printf("ray_ang : %f\n\n", ray->ray_ang);
 	//HORITZONTAL  ->
-	yintercept = cub3d->player.pos.y / MINI_SIZE * MINI_SIZE; //minisize = tilesize
-	yintercept +=  ray->facing_down ? MINI_SIZE : 0;
+	yintercept = cub3d->player.pos.y / TILE_SIZE * TILE_SIZE; //minisize = tilesize
+	yintercept +=  ray->facing_down ? TILE_SIZE : 0;
 	// find x coordinate of the closest horizontal grid intersec
 	xintercept = cub3d->player.pos.x + (yintercept - cub3d->player.pos.y) / tan(ray->ray_ang);
 
 	//calculate incre;ent of xstep and ystep
-	ystep = MINI_SIZE;
+	ystep = TILE_SIZE;
 	ystep *= ray->facing_up ? -1 : 1;
 
-	xstep = MINI_SIZE / tan(ray->ray_ang);
+	xstep = TILE_SIZE / tan(ray->ray_ang);
 	xstep *= (ray->facing_left && xstep > 0) ? -1 : 1;
 	xstep *= (ray->facing_right && xstep < 0) ? -1 : 1;
 
@@ -90,7 +93,7 @@ void	cast(t_ray *ray, t_cub3d *cub3d)
 	if(ray->facing_up)
 		next_hor_y--;
 	//increment xstep and ystep till a wall is find
-	while(next_hor_x >= 0 && next_hor_x <= 1000 && next_hor_y >= 0 && next_hor_y <= 1000)
+	while(next_hor_x >= 0 && next_hor_x <= WIN_WID && next_hor_y >= 0 && next_hor_y <= WIN_HEI)
 	{
 		if(grid_is_wall(next_hor_x, next_hor_y))
 		{
@@ -127,24 +130,24 @@ t_ray *cast_all_rays(t_cub3d *cub3d)
 	if(!rays)
 		return 0;
 	ray_ang = cub3d->player.rot_ang - (FOV / 2);
-	printf("ray_ang before : %f\n\n", ray_ang);
-	//while(i < NUM_RAYS)
-	//{
+	//printf("ray_ang before : %f\n\n", ray_ang);
+	while(i < 1)
+	{
 		rays->ray_ang = normalize(ray_ang);
-		printf("ray_ang after : %f\n\n", rays->ray_ang);
+	//	printf("ray_ang after : %f\n\n", rays->ray_ang);
 		init_ray(rays, rays->ray_ang);
 		cast(rays, cub3d);
 		ray_ang += FOV / NUM_RAYS;
-	//	i++;
-	//}
+		i++;
+	}
 	return(rays);
 }
 
 void update(t_cub3d *cub3d)
 {
-	int mov_step;
-	int new_player_x;
-	int new_player_y;
+	float mov_step;
+	float new_player_x;
+	float new_player_y;
 
 	cub3d->player.rot_ang += cub3d->player.turn_d * cub3d->player.rot_speed;
 
@@ -180,13 +183,13 @@ void	render_minimap(t_cub3d *cub3d)
 		{
 			if (grid[i][j] == 1)
 			{
-				render_minimap_square(j + j_pix_pos, i + i_pix_pos, MINI_SIZE, cub3d);
+				render_minimap_square(j + j_pix_pos, i + i_pix_pos, TILE_SIZE, cub3d);
 			}
-			j_pix_pos += MINI_SIZE;
+			j_pix_pos += TILE_SIZE;
 			j++;
 		}
 		i++;
-		i_pix_pos += MINI_SIZE;
+		i_pix_pos += TILE_SIZE;
 	}
 }
 

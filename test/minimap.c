@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/20 09:40:07 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/20 10:38:39 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ void	render_player(t_cub3d *cub3d)
 	line.start.y = 0;
 	line.start.x += cub3d->player.pos.x;
 	line.start.y += cub3d->player.pos.y;
-	line.end.y = line.start.y + sin(cub3d->player.rot_ang) * 120;
-	line.end.x = line.start.x + cos(cub3d->player.rot_ang) * 120;
+	line.end.y = line.start.y + sin(cub3d->player.rot_ang) * 30;
+	line.end.x = line.start.x + cos(cub3d->player.rot_ang) * 30;
 
 	render_minimap_square(line.start.x, line.start.y, cub3d->player.radius, cub3d);
 	render_view_line(&line, cub3d, WHITE);
