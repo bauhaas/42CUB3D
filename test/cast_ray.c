@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 17:50:16 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/22 15:46:21 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/22 17:08:24 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,20 @@ t_ray *cast_all_rays(t_cub3d *cub3d)
 	if(!rays)
 		return 0;
 	ray_ang = cub3d->player.rot_ang - (FOV / 2);
-	//printf("ray_ang before : %f\n\n", ray_ang);
-	while(i < 1)
-	//while(i < NUM_RAYS)
+	
+	//printf("FOV: %f\n", FOV);
+	//printf("NUM_RAYS: %f\n", NUM_RAYS);
+	int num = NUM_RAYS;
+	//printf("ray incr: %f\n", (FOV / num));
+	//printf("ray incr: %f\n", (FOV / NUM_RAYS));
+	//while(i < 1)
+	while(i < NUM_RAYS)
 	{
 		rays->ray_ang = normalize(ray_ang);
 		init_ray(rays, rays->ray_ang);
 		cast(rays, cub3d);
-		ray_ang += FOV / NUM_RAYS;
-		//printf("ray ang : %f\n", ray_ang);
+		ray_ang = ray_ang + (FOV / num);
+		//ray_ang = ray_ang + (FOV / NUM_RAYS);
 		i++;
 	}
 	return(rays);
