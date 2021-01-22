@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/22 19:13:49 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/22 21:02:40 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,26 +45,21 @@ void	render_minimap(t_cub3d *cub3d)
 {
 	int i;
 	int j;
-	int i_pix_pos;
-	int j_pix_pos;
 
 	i = 0;
-	i_pix_pos = 0;
 	while (i < MAP_ROWS )
 	{
 		j = 0;
-		j_pix_pos = 0;
 		while (j < MAP_COLS)
 		{
 			if (cub3d->grid[i][j] == '1')
 			{
-				render_minimap_square(j + j_pix_pos, i + i_pix_pos, TILE_SIZE, cub3d);
+				//render_minimap_square((j * TILE_SIZE), (i * TILE_SIZE), TILE_SIZE, cub3d);
+				render_minimap_square(MINIMAP_SCALE * (j * TILE_SIZE), MINIMAP_SCALE * (i * TILE_SIZE), MINIMAP_SCALE * TILE_SIZE, cub3d);
 			}
-			j_pix_pos += TILE_SIZE;
 			j++;
 		}
 		i++;
-		i_pix_pos += TILE_SIZE;
 	}
 }
 
@@ -99,32 +94,32 @@ void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
 		}
 	}	
 	*/
-		
-	   float t;
-	   float x; 
-	   float y;
 
-	   t = 0;
-	   while(t < 1)
-	   {
-	   x = line->start.x + (line->end.x - line->start.x)*t;
-	   y = line->start.y + (line->end.y - line->start.y)*t;
-	   //my_mlx_pixel_put(&cub3d->img, x + cub3d->player.radius / 2, y + cub3d->player.radius / 2, color);
-	   my_mlx_pixel_put(&cub3d->img, x + cub3d->player.radius, y + cub3d->player.radius, color);
-	   t += 0.001;
-	   }
-	
+	float t;
+	float x; 
+	float y;
+
+	t = 0;
+	while(t < 1)
+	{
+	x = line->start.x + (line->end.x - line->start.x)*t - 6;
+	y = line->start.y + (line->end.y - line->start.y)*t - 6;
+	my_mlx_pixel_put(&cub3d->img, x + cub3d->player.radius, y + cub3d->player.radius, color);
+	t += 0.001;
+	}
 }
 
 void	render_player(t_cub3d *cub3d)
 {
 	t_line line;
 
-	line.start.x = cub3d->player.pos.x;
-	line.start.y = cub3d->player.pos.y;
-	line.end.y = line.start.y + sin(cub3d->player.rot_ang) * 30;
-	line.end.x = line.start.x + cos(cub3d->player.rot_ang) * 30;
+	line.start.x = MINIMAP_SCALE * cub3d->player.pos.x;
+	line.start.y = MINIMAP_SCALE * cub3d->player.pos.y;
+	//line.start.x = cub3d->player.pos.x;
+	//line.start.y = cub3d->player.pos.y;
+	line.end.y = line.start.y + sin(cub3d->player.rot_ang) * (TILE_SIZE / 2);
+	line.end.x = line.start.x + cos(cub3d->player.rot_ang) * (TILE_SIZE / 2);
 
-	//render_minimap_square(line.start.x + 5, line.start.y + 5, cub3d->player.radius, cub3d);
+	//render_minimap_square(line.start.x - 3, line.start.y - 3, cub3d->player.radius, cub3d);
 	render_view_line(&line, cub3d, WHITE);
 }

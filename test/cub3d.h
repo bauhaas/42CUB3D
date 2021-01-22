@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/22 19:38:41 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/22 21:02:30 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,6 @@
 # define GREEN	0x0000CC00
 # define RED	0x00FF0000
 
-/*
-** 	WIP: TILE_SIZE : size of cube on minimap. Need to define a width and height
-**					 var equal to 1/10 of my resolution (width and height)
-*/
-
 # define TILE_SIZE	32
 # define MAP_ROWS	11
 # define MAP_COLS	15
@@ -59,6 +54,7 @@
 # define FOV  90 * (M_PI / 180)
 # define WALL_STIP_WIDTH 1
 # define NUM_RAYS WIN_WID / WALL_STIP_WIDTH
+# define MINIMAP_SCALE 0.5
 
 typedef struct	s_coord
 {
