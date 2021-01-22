@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:45:15 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/22 16:28:06 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/22 19:48:49 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,15 @@ t_dcast	fill_vt_data(t_cub3d *cub3d, t_ray *ray)
 void 	vt_cast(t_ray *ray, t_cub3d *cub3d)
 {
 	t_dcast	vt_data;
+	int i;
 
+	i = 0;
 	vt_data = fill_vt_data(cub3d, ray);
 	if(ray->is_left)
-		vt_data.next_x--;
+		i = 1;
 	while(vt_data.next_x >= 0 && vt_data.next_x <= WIN_WID && vt_data.next_y >= 0 && vt_data.next_y <= WIN_HEI)
 	{
-		if(grid_is_wall(vt_data.next_x, vt_data.next_y, cub3d))
+		if(grid_is_wall(vt_data.next_x - i, vt_data.next_y, cub3d))
 		{
 			vt_data.hit_y = vt_data.next_y;
 			vt_data.hit_x = vt_data.next_x;
@@ -72,4 +74,3 @@ void 	vt_cast(t_ray *ray, t_cub3d *cub3d)
 	ray->vt_hit.y = vt_data.hit_y;
 	ray->found_vt_wall = vt_data.found_wall;
 }
-
