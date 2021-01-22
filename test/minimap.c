@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/22 13:14:47 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/22 19:13:49 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,40 +120,11 @@ void	render_player(t_cub3d *cub3d)
 {
 	t_line line;
 
-	line.start.x = 0;
-	line.start.y = 0;
-	line.start.x += cub3d->player.pos.x;
-	line.start.y += cub3d->player.pos.y;
+	line.start.x = cub3d->player.pos.x;
+	line.start.y = cub3d->player.pos.y;
 	line.end.y = line.start.y + sin(cub3d->player.rot_ang) * 30;
 	line.end.x = line.start.x + cos(cub3d->player.rot_ang) * 30;
 
-	//render_minimap_square(line.start.x, line.start.y, cub3d->player.radius, cub3d);
+	//render_minimap_square(line.start.x + 5, line.start.y + 5, cub3d->player.radius, cub3d);
 	render_view_line(&line, cub3d, WHITE);
 }
-
-//
-//void	render_ray(t_cub3d *cub3d, int i)
-//{
-//	t_line line;
-//
-//	line.start.x = 0;
-//	line.start.y = 0;
-//	line.start.x += cub3d->player.pos.x;
-//	line.start.y += cub3d->player.pos.y;
-//	//line.end.y = line.start.y + sin(cub3d->player.pos.y) * 30;
-//	//line.end.x = line.start.x + cos(cub3d->player.pos.x) * 30;
-//	//line.end.y = line.start.y + sin(cub3d->rays[i].ray_ang) * 30;
-//	//line.end.x = line.start.x + cos(cub3d->rays[i].ray_ang) * 30;
-//	/*line.end.y = cub3d->rays[i].wall_hit_x;
-//	line.end.x = cub3d->rays[i].wall_hit_y;
-//			printf("render wall_hit_x : %f\n", cub3d->rays[i].wall_hit_x);
-//			printf("render wall_hit_y : %f\n", cub3d->rays[i].wall_hit_y);
-//			printf("render line_end_x : %f\n", line.end.x);
-//			printf("render line-end_y : %f\n", line.end.y);
-//			printf("render p.x : %f\n", cub3d->player.pos.x);
-//			printf("render p.y : %f\n", cub3d->player.pos.y);
-//			printf("render ray ray ang : %f\n", cub3d->rays[i].ray_ang);*/
-//	//render_view_line(&line, cub3d, BLUE);
-//	return ;
-//}
-//

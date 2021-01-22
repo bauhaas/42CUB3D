@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/22 17:11:45 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/22 18:49:01 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ typedef struct	s_ray
 	float		wall_hit_y;
 	t_coord		vt_hit;
 	t_coord		hz_hit;
+	t_line		line;
 	int			found_hz_wall;
 	int			found_vt_wall;
 	float		distance;
@@ -161,7 +162,6 @@ void			render_player(t_cub3d *cub3d);
 void			render_minimap(t_cub3d *cub3d);
 void			render_minimap_square(int x, int y, int size, t_cub3d *cub3d);
 void			render_view_line(t_line *line, t_cub3d *cub3d, int color);
-void			render_ray(t_cub3d *cub3d, int i);
 
 void			update(t_cub3d *cub3d);
 void			render(t_cub3d *cub3d);

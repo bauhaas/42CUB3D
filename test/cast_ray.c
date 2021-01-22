@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 17:50:16 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/22 17:08:24 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/22 19:17:01 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ t_ray *cast_all_rays(t_cub3d *cub3d)
 	int i;
 
 	i = 0;
-	//rays = malloc(sizeof(t_ray));
 	rays = malloc(sizeof(t_ray) * NUM_RAYS);
 	if(!rays)
 		return 0;
@@ -56,7 +55,6 @@ t_ray *cast_all_rays(t_cub3d *cub3d)
 	int num = NUM_RAYS;
 	//printf("ray incr: %f\n", (FOV / num));
 	//printf("ray incr: %f\n", (FOV / NUM_RAYS));
-	//while(i < 1)
 	while(i < NUM_RAYS)
 	{
 		rays->ray_ang = normalize(ray_ang);
