@@ -6,61 +6,12 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/20 17:01:26 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/22 14:44:52 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
- ** gcc -I /usr/local/include test.c key_events.c minimap.c init.c -L /usr/local/lib -lmlx -lXext -lX11
- */
-
 #include "cub3d.h"
-
-const int grid[11][15] = {
-	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
-	{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1},
-	{1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-};
-
-
-
-float	normalize(float ray_ang)
-{
-	ray_ang = fmod(ray_ang, (2 * M_PI));
-	if(ray_ang < 0)
-	{
-		ray_ang += 2 * M_PI;
-	}
-	return(ray_ang);
-}
-
-int grid_is_wall(float x, float y)
-{
-	if(x < 0 || x > WIN_WID || y < 0 || y > WIN_HEI)
-		return TRUE;
-	int grid_x = floor(x / TILE_SIZE);
-	int grid_y = floor(y / TILE_SIZE);
-	// TO FIX : player pixel appear just after border
-	if(grid_x >= MAP_COLS || grid_y >= MAP_ROWS)
-		return TRUE;
-	return(grid[grid_y][grid_x] != 0);
-}
-
-#include <float.h>
-
-float		distance_points(float x1, float y1, float x2, float y2)
-{
-	return(sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
-}
-
+/*
 void	cast(t_ray *ray, t_cub3d *cub3d)
 {
 	float xstep;
@@ -112,7 +63,7 @@ void	cast(t_ray *ray, t_cub3d *cub3d)
 	//increment xstep and ystep till a wall is find
 	while(hz_next_hor_x >= 0 && hz_next_hor_x <= WIN_WID && hz_next_hor_y >= 0 && hz_next_hor_y <= WIN_HEI)
 	{
-		if(grid_is_wall(hz_next_hor_x, hz_next_hor_y))
+		if(grid_is_wall(hz_next_hor_x, hz_next_hor_y, cub3d))
 		{
 			//we found wall
 			hz_wall_hit_y = hz_next_hor_y;
@@ -182,7 +133,7 @@ void	cast(t_ray *ray, t_cub3d *cub3d)
 	//increment xstep and ystep till a wall is find
 	while(vt_next_hor_x >= 0 && vt_next_hor_x <= WIN_WID && vt_next_hor_y >= 0 && vt_next_hor_y <= WIN_HEI)
 	{
-		if(grid_is_wall(vt_next_hor_x, vt_next_hor_y))
+		if(grid_is_wall(vt_next_hor_x, vt_next_hor_y, cub3d))
 		{
 			//we found wall
 			vt_wall_hit_y = vt_next_hor_y;
@@ -233,34 +184,7 @@ void	cast(t_ray *ray, t_cub3d *cub3d)
 			line.end.y = ray->wall_hit_y;
 			render_view_line(&line, cub3d, GREEN);
 }
-
-
-t_ray *cast_all_rays(t_cub3d *cub3d)
-{
-	t_ray	*rays;
-	float	ray_ang;
-	int i;
-
-	i = 0;
-	//rays = malloc(sizeof(t_ray));
-	rays = malloc(sizeof(t_ray) * NUM_RAYS);
-	if(!rays)
-		return 0;
-	ray_ang = cub3d->player.rot_ang - (FOV / 2);
-	//printf("ray_ang before : %f\n\n", ray_ang);
-	while(i < 1)
-	//while(i < NUM_RAYS)
-	{
-		rays->ray_ang = normalize(ray_ang);
-		printf("ray rot ang : %f\n", rays->ray_ang);
-	//	printf("ray_ang after : %f\n\n", rays->ray_ang);
-		init_ray(rays, rays->ray_ang);
-		cast(rays, cub3d);
-		ray_ang += FOV / NUM_RAYS;
-		i++;
-	}
-	return(rays);
-}
+*/
 
 void update(t_cub3d *cub3d)
 {
@@ -269,6 +193,7 @@ void update(t_cub3d *cub3d)
 	float new_player_y;
 
 	cub3d->player.rot_ang += cub3d->player.turn_d * cub3d->player.rot_speed;
+	cub3d->player.rot_ang = normalize(cub3d->player.rot_ang);
 
 	//move player dot
 	mov_step = cub3d->player.walk_d * cub3d->player.mov_speed;
@@ -278,38 +203,13 @@ void update(t_cub3d *cub3d)
 	//BONUS COLLISION
 	//NEED TO BE FIXED 
 
-	if(!grid_is_wall(new_player_x, new_player_y))
+	if(!grid_is_wall(new_player_x, new_player_y, cub3d))
 	{
 		cub3d->player.pos.x = new_player_x;
 		cub3d->player.pos.y = new_player_y;
 	}
 	//printf("new rot ang : %f\n", cub3d->player.rot_ang);
 	//render(cub3d);
-}
-
-void	render_minimap(t_cub3d *cub3d)
-{
-	int i = 0;
-	int j = 0;
-	int i_pix_pos = 0;
-	int j_pix_pos = 0;
-
-	while (i < MAP_ROWS )
-	{
-		j = 0;
-		j_pix_pos = 0;
-		while (j < MAP_COLS)
-		{
-			if (grid[i][j] == 1)
-			{
-				render_minimap_square(j + j_pix_pos, i + i_pix_pos, TILE_SIZE, cub3d);
-			}
-			j_pix_pos += TILE_SIZE;
-			j++;
-		}
-		i++;
-		i_pix_pos += TILE_SIZE;
-	}
 }
 
 void	render(t_cub3d *cub3d)
@@ -333,7 +233,8 @@ void	render(t_cub3d *cub3d)
 int main()
 {
 	t_cub3d		cub3d;
-
+	char		**grid;
+	
 	//INIT
 	init_win(&cub3d.win);
 	cub3d.win.mlx_p = mlx_init();
@@ -342,6 +243,20 @@ int main()
 	init_player(&cub3d.player);
 	init_map(&cub3d.map);
 
+	grid =  malloc(sizeof(char*) * 11);
+	grid[0] = "111111111111111";
+	grid[1] = "100000000000101";
+	grid[2] = "100001000000101";
+	grid[3] = "111100000010101";
+	grid[4] = "100000000010101";
+	grid[5] = "100000001111101";
+	grid[6] = "100000000000001";
+	grid[7] = "100000000000001";
+	grid[8] = "111111100111101";
+	grid[9] = "100000000000001";
+	grid[10] = "111111111111111";
+	cub3d.grid = grid;
+	
 	//RENDER
 	render(&cub3d);
 

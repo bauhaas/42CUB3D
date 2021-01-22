@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/20 16:59:06 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/22 14:49:39 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
+# include <float.h>
 # include "mlx.h"
 
 /*
@@ -56,7 +57,7 @@
 # define WIN_WID TILE_SIZE * MAP_COLS
 # define WIN_HEI TILE_SIZE * MAP_ROWS
 # define FOV  90 * (M_PI / 180)
-# define WALL_STIP_WIDTH 1
+# define WALL_STIP_WIDTH 1 
 # define NUM_RAYS WIN_WID / WALL_STIP_WIDTH
 
 typedef struct	s_coord
@@ -109,12 +110,16 @@ typedef struct	s_ray
 	float		ray_ang;
 	float		wall_hit_x;
 	float		wall_hit_y;
+	t_coord		vt_hit;
+	t_coord		hz_hit;
+	int			found_hz_wall;
+	int			found_vt_wall;
 	float		distance;
 	int			was_vt_hit;
-	int		facing_up;
-	int		facing_down;
-	int		facing_right;
-	int		facing_left;
+	int			facing_up;
+	int			facing_down;
+	int			facing_right;
+	int			facing_left;
 }				t_ray;
 
 typedef struct	s_cub3d
@@ -124,6 +129,7 @@ typedef struct	s_cub3d
 	t_win		win;
 	t_player	player;
 	t_ray		*rays;
+	char		**grid;
 }				t_cub3d;
 
 int				key_pressed(int keycode, t_cub3d *cub3d);
@@ -134,19 +140,24 @@ void			init_map(t_map *map);
 void			init_img(t_img *img, t_win *win);
 void			init_win(t_win *win);
 void			init_ray(t_ray *ray, float ray_ang);
-//void			init_ray(t_ray ray, float ray_ang);
 
 void			render_player(t_cub3d *cub3d);
 void			render_minimap(t_cub3d *cub3d);
 void			render_minimap_square(int x, int y, int size, t_cub3d *cub3d);
-//void			render_minimap_square(float x, float y, int size, t_cub3d *cub3d);
 void			render_view_line(t_line *line, t_cub3d *cub3d, int color);
 void			render_ray(t_cub3d *cub3d, int i);
 
 void			update(t_cub3d *cub3d);
 void			render(t_cub3d *cub3d);
 
-void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
+void			my_mlx_pixel_put(t_img *img, int x, int y, int color);
 
+
+t_ray			*cast_all_rays(t_cub3d *cub3d);
+void			cast(t_ray *ray, t_cub3d *cub3d);
+
+int				grid_is_wall(float x, float y, t_cub3d *cub3d);
+float			normalize(float ray_ang);
+float			p_dist(float x1, float y1, float x2, float y2);
 
 #endif
