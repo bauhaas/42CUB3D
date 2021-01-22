@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 01:12:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/20 11:07:15 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/22 15:13:34 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	init_player(t_player *player)
 	player->turn_d = 0;
 	player->walk_d = 0;
 	player->rot_ang = M_PI / 2;
-	player->mov_speed = 2.0;
+	player->mov_speed = 6.0;
 	player->rot_speed = 3 * (M_PI / 180);
 }
 
@@ -50,8 +50,9 @@ void init_ray(t_ray *ray, float ray_ang)
 	ray->wall_hit_x = 0;
 	ray->wall_hit_y = 0;
 	ray->distance = 0;
-	ray->facing_down = ray_ang > 0 && ray_ang < M_PI;
-	ray->facing_up = !ray->facing_down;
-	ray->facing_right = ray_ang < 0.5 * M_PI || ray_ang > 1.5 * M_PI;
-	ray->facing_left = !ray->facing_right;
+	//ray->was_vt_hit = FALSE;
+	ray->is_down = ray_ang > 0 && ray_ang < M_PI;
+	ray->is_up = !ray->is_down;
+	ray->is_right = ray_ang < 0.5 * M_PI || ray_ang > 1.5 * M_PI;
+	ray->is_left = !ray->is_right;
 }
