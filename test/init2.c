@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:24:15 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/22 15:24:31 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/22 20:59:12 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,14 @@ t_line	init_line(t_coord a, t_coord b)
 {
 	t_line line;
 
-	line.start.x = a.x;
-	line.start.y = a.y;
-	line.end.x = b.x;
-	line.end.y = b.y;
+	line.start.x = MINIMAP_SCALE * a.x;
+	line.start.y = MINIMAP_SCALE * a.y;
+	line.end.x = MINIMAP_SCALE * b.x;
+	line.end.y = MINIMAP_SCALE * b.y;
+	//line.start.x = a.x;
+	//line.start.y = a.y;
+	//line.end.x = b.x;
+	//line.end.y = b.y;
 	return(line);
 }
 
