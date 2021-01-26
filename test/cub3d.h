@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/22 21:02:30 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/26 17:12:12 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@
 # define WHITE	0x00FFFFFF
 # define GREEN	0x0000CC00
 # define RED	0x00FF0000
+# define BLACK	0x00000000
 
 # define TILE_SIZE	32
 # define MAP_ROWS	11
@@ -52,6 +53,7 @@
 # define WIN_WID TILE_SIZE * MAP_COLS
 # define WIN_HEI TILE_SIZE * MAP_ROWS
 # define FOV  90 * (M_PI / 180)
+# define DIST_PROJ_PLANE ((WIN_WID / 2) / tan(FOV / 2))
 # define WALL_STIP_WIDTH 1
 # define NUM_RAYS WIN_WID / WALL_STIP_WIDTH
 # define MINIMAP_SCALE 0.5
@@ -150,6 +152,7 @@ void			init_player(t_player *player);
 void			init_map(t_map *map);
 void			init_img(t_img *img, t_win *win);
 void			init_win(t_win *win);
+//void			init_ray(t_ray ray, float ray_ang);
 void			init_ray(t_ray *ray, float ray_ang);
 t_line			init_line(t_coord a, t_coord b);
 t_coord			init_coord(float a, float b);
@@ -166,7 +169,9 @@ void			my_mlx_pixel_put(t_img *img, int x, int y, int color);
 
 void			hz_cast(t_ray *ray, t_cub3d *cub3d);
 void			vt_cast(t_ray *ray, t_cub3d *cub3d);
-void			cast(t_ray *ray, t_cub3d *cub3d);
+t_ray			cast(t_ray ray, t_cub3d *cub3d);
+//t_ray			*cast(t_ray *ray, t_cub3d *cub3d);
+//t_ray			**cast_all_rays(t_cub3d *cub3d);
 t_ray			*cast_all_rays(t_cub3d *cub3d);
 
 int				grid_is_wall(float x, float y, t_cub3d *cub3d);

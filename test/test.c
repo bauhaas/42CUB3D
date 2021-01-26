@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/22 18:56:22 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/26 17:26:06 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,54 @@ void update(t_cub3d *cub3d)
 	}
 }
 
+void		rect(float x, float y, float x2, float y2, t_cub3d *cub3d)
+{
+	int			i;
+	int			j;
+
+	j = 0;
+	while (j < x2)
+	{
+		i = 0;
+		while (i < y2)
+		{
+			my_mlx_pixel_put(&cub3d->img, x + j, y + i, WHITE);
+			i++;
+		}
+		j++;
+	}
+}
+
+void	render_3d_walls(t_ray *rays, t_cub3d *cub3d)
+{
+	int i;
+	int wall_strip_height;
+	float correct_fisheye_distance;
+	float distance_projection_plane;
+	float ray_distance;
+	i = 0;
+	while(i < NUM_RAYS)
+	{
+	//	distance_projection_plane = (WIN_WID / 2) / tan(FOV / 2);
+		ray_distance = rays[i].distance;
+		correct_fisheye_distance = rays[i].distance * cos(rays[i].ray_ang - cub3d->player.rot_ang);
+		wall_strip_height = (TILE_SIZE / correct_fisheye_distance) * DIST_PROJ_PLANE;
+	//	wall_strip_height = (TILE_SIZE / ray_distance) * distance_projection_plane;
+		rect((i * WALL_STIP_WIDTH), ((WIN_HEI / 2) - (wall_strip_height / 2)), WALL_STIP_WIDTH, wall_strip_height, cub3d);
+		i++;
+	}
+}
+
 void	render(t_cub3d *cub3d)
 {
-	int i = 0;
+	t_ray *rays;
 
 	init_img(&cub3d->img, &cub3d->win);
 	update(cub3d);
+	rays = cast_all_rays(cub3d);
+	render_3d_walls(rays, cub3d);
 	render_minimap(cub3d);	
-	cub3d->rays = cast_all_rays(cub3d);
-	free(cub3d->rays);
+	free(rays);
 	render_player(cub3d);
 	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->img.img, 0, 0);
 }
