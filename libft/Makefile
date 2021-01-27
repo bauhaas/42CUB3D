@@ -6,7 +6,7 @@
 #    By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/17 13:18:59 by bahaas            #+#    #+#              #
-#    Updated: 2021/01/11 12:03:34 by bahaas           ###   ########.fr        #
+#    Updated: 2021/01/27 20:03:51 by bahaas           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ OBJS_GNL	= ${SRCS_GNL:.c=.o}
 .c.o:
 			${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
-$(NAME):	${OBJS}
+$(NAME):	gnl
 			ar rc ${NAME} ${OBJS}
 
 all:		${NAME}

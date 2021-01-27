@@ -6,25 +6,27 @@
 #    By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/11 12:08:52 by bahaas            #+#    #+#              #
-#    Updated: 2021/01/11 12:31:01 by bahaas           ###   ########.fr        #
+#    Updated: 2021/01/27 23:57:10 by bahaas           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= cub3D
+SRCS	= srcs/test.c srcs/init.c srcs/init2.c srcs/cast_hz.c srcs/cast_vt.c srcs/cast_ray.c srcs/minimap.c srcs/utils_raycasting.c srcs/key_events.c srcs/parsing.c
 CC		= gcc
-CFLAGS	= -Wextra -Werror -Wall
+#CFLAGS	= -Wextra -Werror -Wall
+CFLAGS	=  
 RM		= rm -f
-LIB_D	= libft
-MLX_D	= minilibx
-OBJS	= ${addprefix srcs/,${SRCS:.c=.o}}
+LIB_D	= ./libft
+MLX_D	= ./minilibx
+HEADER	= -I /includes
+OBJS	= ${SRCS:.c=.o}
 
 .c.o:
-			${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
+			${CC} ${HEADER} -c $< -o ${<:.c=.o}
 
 $(NAME):	${OBJS}
 			make -C ${LIB_D}
-			make -C ${MLX_D}
-			${CC} ${CFLAGS} ${OBJS} -o ${NAME}
+			${CC} ${HEADER} ${OBJS} -o ${NAME} -L ${LIB_D} -lft -L ${MLX_D} -lmlx -lXext -lX11 -lm
 
 all:		${NAME}
 
@@ -36,4 +38,8 @@ fclean:		clean
 
 re:			fclean all
 
-.PHONY:		all clean fclean re
+
+run:		all
+			./${NAME}
+
+.PHONY:		all clean fclean re run

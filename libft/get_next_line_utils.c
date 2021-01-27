@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/12 13:24:58 by bahaas            #+#    #+#             */
-/*   Updated: 2020/11/26 00:04:14 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/27 23:51:07 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*ft_strdup(const char *s)
 ** ft_strdup("") in case where start > ft_strlen(s) to save space and
 ** not use ft_calloc
 */
-
+/*
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	size_t	i;
@@ -97,7 +97,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	str[i] = '\0';
 	return (str);
 }
-
+*/
 /*
 ** Free the actual tmp_buf to avoid leaks by multiplying my call to this
 ** fucntion during my reading loop. Create string to store the memory of
