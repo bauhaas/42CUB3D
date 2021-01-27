@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 01:12:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/26 19:23:57 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/27 17:43:37 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	init_map(t_map *map)
 
 void	init_player(t_player *player)
 {
-	player->pos.x = WIN_WID / 2;
-	player->pos.y = WIN_HEI / 2;
+	player->pos.x = WIN_WID / 2 + 0.001;
+	player->pos.y = WIN_HEI / 2 + 0.001;
 	player->radius = 6;
 	player->turn_d = 0;
 	player->walk_d = 0;

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/27 15:13:23 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/27 16:46:51 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@
 # define DIST_PROJ_PLANE ((WIN_WID / 2) / tan(FOV / 2))
 # define WALL_STIP_WIDTH 1
 # define NUM_RAYS WIN_WID / WALL_STIP_WIDTH
-# define MINIMAP_SCALE 0.5
+# define MINIMAP_SCALE 1
 
 typedef struct	s_coord
 {

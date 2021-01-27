@@ -6,13 +6,11 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/27 15:30:43 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/27 18:23:03 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-int32_t* color_buffer = NULL;
 
 void update(t_cub3d *cub3d)
 {
@@ -53,61 +51,7 @@ void		rect(float x, float y, float x2, float y2, t_cub3d *cub3d, int color)
 		j++;
 	}
 }
-/*
-void				init_texture(t_cub3d cub3d)
-{
 
-	//cub3d.text->addr = NULL;
-	//cub3d.text->data = NULL;
-	//cub3d.text->file = NULL;
-//	cub3d.text->width = 0;
-//	cub3d.text->height = 0;
-//	cub3d.text->bits_per_pixel = 0;
-//	cub3d.text->line_length = 0;
-//	cub3d.text->endian = 0;
-}
-
-static int			valid_texture(t_cub3d *cub3d, char *file, int nb)
-{
-	int				fd;
-
-	fd = open(file, O_RDONLY);
-	close(fd);
-	cub3d->text->file = strdup(file);
-	return (TRUE);
-}
-
-int					load_textures(t_cub3d *cub3d)
-{
-	cub3d->text->addr = mlx_xpm_file_to_image(cub3d->win.mlx_p,
-			cub3d->text->file, &cub3d->text->width, &cub3d->text->height);
-	if (cub3d->text->addr)
-	{
-		cub3d->text->data = mlx_get_data_addr(cub3d->text->addr,
-				&cub3d->text->bits_per_pixel,
-				&cub3d->text->line_length, &cub3d->text->endian);
-	}
-	else
-		return (FALSE);
-	return (TRUE);
-}
-
-int		get_texture_color(t_cub3d *cub3d, int x, int y)
-{
-	char	*dst;
-
-	if (y < 0)
-		y = 0;
-	if (x < 0)
-		x = 0;
-	if (y > cub3d->text->height)
-		y = cub3d->text->height;
-	if (x > cub3d->text->width)
-		x = cub3d->text->width;
-	dst = cub3d->text->addr + (y * cub3d->text->line_length + x * cub3d->text->bits_per_pixel / 8);
-	return (*(unsigned int*)dst);
-}
-*/
 void	render_3d_walls(t_ray *rays, t_cub3d *cub3d)
 {
 	int		i;
@@ -131,6 +75,8 @@ void	render_3d_walls(t_ray *rays, t_cub3d *cub3d)
 		ray_distance = rays[i].distance;
 		perp_distance = rays[i].distance * cos(rays[i].ray_ang - cub3d->player.rot_ang);
 		wall_strip_height = (TILE_SIZE / perp_distance) * DIST_PROJ_PLANE;
+		//int x = WIN_HEI / 2;
+		//while(x < WIN_HEI)
 		int x = top_pixel + 1;
 		while(x < WIN_HEI)
 		{
@@ -139,6 +85,7 @@ void	render_3d_walls(t_ray *rays, t_cub3d *cub3d)
 		}
 		int y = 0;
 		while(y < top_pixel + 1)
+		//while(y < WIN_HEI / 2)
 		{
 			my_mlx_pixel_put(&cub3d->img, i, y, BLUE);
 			y++;
@@ -167,28 +114,17 @@ void	render_3d_walls(t_ray *rays, t_cub3d *cub3d)
 	}
 }
 
-void	clear_color_buffer(int32_t color)
-{
-	for(int x = 0; x < WIN_WID; x++)
-	{
-		for(int y = 0; y < WIN_HEI; y++)
-			color_buffer[(WIN_WID * y) + x] = color;
-	}
-}
-
 void	render(t_cub3d *cub3d)
 {
 	t_ray *rays;
 
 	init_img(&cub3d->img, &cub3d->win);
 	update(cub3d);
-	clear_color_buffer(RED);
 	rays = cast_all_rays(cub3d);
-
-	//render_3d_walls(rays, cub3d);
-	render_minimap(cub3d);	
+//	render_minimap(cub3d);	
+	render_3d_walls(rays, cub3d);
 	free(rays);
-	render_player(cub3d);
+//	render_player(cub3d);
 	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->img.img, 0, 0);
 }
 
@@ -206,10 +142,7 @@ int main()
 	init_player(&cub3d.player);
 	init_map(&cub3d.map);
 	//init_texture(cub3d);
-	//
 	
-	color_buffer = (int32_t *)malloc(sizeof(int32_t) * (int32_t)(WIN_WID * WIN_HEI));
-
 	grid =  malloc(sizeof(char*) * 11);
 	grid[0] = "111111111111111";
 	grid[1] = "100000000000101";

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/26 19:48:20 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/27 17:27:01 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	render_minimap_square(int x, int y, int size, t_cub3d *cub3d)
 		i++;
 	}
 }
-/*
+
 void	render_minimap_square_back(int x, int y, int size, t_cub3d *cub3d)
 {
 	int i;
@@ -52,13 +52,13 @@ void	render_minimap_square_back(int x, int y, int size, t_cub3d *cub3d)
 		j = 0;
 		while (j < size)
 		{
-			my_mlx_pixel_put(&cub3d->img, x + j, y + i, BLACK);
+			my_mlx_pixel_put(&cub3d->img, x + j, y + i, BLUE);
 			j++;
 		}
 		i++;
 	}
 }
-*/
+
 void	render_minimap(t_cub3d *cub3d)
 {
 	int i;
@@ -73,13 +73,14 @@ void	render_minimap(t_cub3d *cub3d)
 			if (cub3d->grid[i][j] == '1')
 			{
 				//render_minimap_square((j * TILE_SIZE), (i * TILE_SIZE), TILE_SIZE, cub3d);
+				//render_minimap_square(MINIMAP_SCALE * (j * TILE_SIZE) + j, MINIMAP_SCALE * (i * TILE_SIZE) + i, MINIMAP_SCALE * TILE_SIZE, cub3d);
 				render_minimap_square(MINIMAP_SCALE * (j * TILE_SIZE), MINIMAP_SCALE * (i * TILE_SIZE), MINIMAP_SCALE * TILE_SIZE, cub3d);
 			}
-			/*
-			if (cub3d->grid[i][j] != '0')
+		/*	
+			if (cub3d->grid[i][j] == '0')
 			{
 				//render_minimap_square((j * TILE_SIZE), (i * TILE_SIZE), TILE_SIZE, cub3d);
-				render_minimap_square_back(MINIMAP_SCALE * (j * TILE_SIZE), MINIMAP_SCALE * (i * TILE_SIZE), MINIMAP_SCALE * TILE_SIZE, cub3d);
+				render_minimap_square_back(MINIMAP_SCALE * (j * TILE_SIZE) + j, MINIMAP_SCALE * (i * TILE_SIZE) + i, MINIMAP_SCALE * TILE_SIZE, cub3d);
 			}*/
 			j++;
 		}
@@ -102,9 +103,12 @@ void	render_minimap(t_cub3d *cub3d)
 	float err = dx+dy;
 	while (1) 
 	{
-		my_mlx_pixel_put(&cub3d->img, line->start.x + cub3d->player.radius / 2, line->start.y + cub3d->player.radius / 2, color);
+		my_mlx_pixel_put(&cub3d->img, line->start.x, line->start.y, WHITE);
 		if (line->start.x == line->end.x && line->start.y == line->end.y)
+		{
+			printf("test\n");
 			break ;
+		}
 		e2 = 2*err;
 		if (e2 >= dy)
 		{
@@ -117,7 +121,7 @@ void	render_minimap(t_cub3d *cub3d)
 			line->start.y += sy;
 		}
 	}	
-	*/
+*/
 /*
 	float t;
 	float x; 

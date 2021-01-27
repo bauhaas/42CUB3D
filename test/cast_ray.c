@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 17:50:16 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/27 15:26:49 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/27 18:42:58 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_ray	cast(t_ray ray, t_cub3d *cub3d)
 	//printf("vt_hitx = %f\n", ray.vt_hit.x);
 	//printf("vt_hity = %f\n", ray.vt_hit.y);
 	//printf("vt_dist = %f\n", vt_dist);
+	//printf("found_vt_wall = %d\n", ray.found_vt_wall);
 	//printf("hz_dist = %f\n", hz_dist);
 	ray.wall_hit_x = (hz_dist < vt_dist) ? ray.hz_hit.x : ray.vt_hit.x;
 	ray.wall_hit_y = (hz_dist < vt_dist) ? ray.hz_hit.y : ray.vt_hit.y;
@@ -41,7 +42,7 @@ t_ray	cast(t_ray ray, t_cub3d *cub3d)
 	//printf("wall hit x = %f\n", wall_hit.x);
 	//printf("wall hit y = %f\n", wall_hit.y);
 	line = init_line(cub3d->player.pos, wall_hit);
-	render_view_line(&line, cub3d, GREEN);
+//	render_view_line(&line, cub3d, GREEN);
 	return(ray);
 }
 
@@ -58,9 +59,10 @@ t_ray *cast_all_rays(t_cub3d *cub3d)
 	//ray_ang = cub3d->player.rot_ang - (FOV / 2);
 	
 	int num = NUM_RAYS;
-/*	
-	printf("num: %d\n", num);
-	printf("NUM_RAYS: %d\n", NUM_RAYS);
+	
+//	printf("num: %d\n", num);
+//	printf("NUM_RAYS: %d\n", NUM_RAYS);
+/*
 	printf("ray incr: %f\n", (FOV / (int)NUM_RAYS));
 	printf("ray incr: %f\n", (FOV / 480));
 	printf("ray incr: %f\n", (FOV / num));
@@ -71,7 +73,7 @@ t_ray *cast_all_rays(t_cub3d *cub3d)
 		rays[i].ray_ang = normalize(ray_ang);
 		init_ray(&rays[i], rays[i].ray_ang);
 		rays[i] = cast(rays[i], cub3d);
-		ray_ang = ray_ang + (FOV / num);
+		//ray_ang = ray_ang + (FOV / num);
 		i++;
 	}
 	return(rays);
