@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 01:12:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/25 22:24:24 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/26 19:23:57 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,40 +37,20 @@ void	init_img(t_img *img, t_win *win)
 			&img->line_length, &img->endian);
 }
 
-void	init_win(t_win *win)
+int	init_win(t_win *win)
 {
 	win->mlx_p = NULL;
 	win->win_p = NULL;
+	return TRUE;
 }
-/*
-void init_ray(t_ray *ray, float ray_ang)
-{
-	printf("ray_ang init : %f\n\n", ray_ang);
-	ray.ray_ang = ray_ang;
-	//printf("ray_ang init : %f\n\n", ray.ray_ang);
-	ray.wall_hit_x = 0;
-	ray.wall_hit_y = 0;
-	ray.distance = 0;
-	//ray.was_vt_hit = FALSE;
-	//ray.is_down = ray_ang > 0 && ray_ang < 3.14;
-	if(ray_ang > 0 && ray_ang < M_PI)
-		ray.is_down = 0;
-	else
-		ray.is_down = 1;
-	ray.is_up = !ray.is_down;
-	ray.is_right = ray_ang < 0.5 * 3.14 || ray_ang > 1.5 * 3.14;
-	ray.is_left = !ray.is_right;
-}
-*/
 
 void init_ray(t_ray *ray, float ray_ang)
 {
 	ray->ray_ang = ray_ang;
-	//printf("ray_ang init : %f\n\n", ray->ray_ang);
 	ray->wall_hit_x = 0;
 	ray->wall_hit_y = 0;
 	ray->distance = 0;
-	//ray->was_vt_hit = FALSE;
+	ray->was_vt_hit = FALSE;
 	ray->is_down = ray_ang > 0 && ray_ang < M_PI;
 	ray->is_up = !ray->is_down;
 	ray->is_right = ray_ang < 0.5 * M_PI || ray_ang > 1.5 * M_PI;

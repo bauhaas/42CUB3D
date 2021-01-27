@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/26 17:12:12 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/27 15:13:23 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 # include <stdlib.h>
 # include <math.h>
 # include <float.h>
+# include <fcntl.h>
+# include <unistd.h>
+# include <string.h>
 # include "mlx.h"
 
 /*
@@ -45,7 +48,7 @@
 # define RED	0x00FF0000
 # define BLACK	0x00000000
 
-# define TILE_SIZE	32
+# define TILE_SIZE	64
 # define MAP_ROWS	11
 # define MAP_COLS	15
 # define TRUE 1
@@ -128,12 +131,24 @@ typedef struct	s_ray
 	int			found_hz_wall;
 	int			found_vt_wall;
 	float		distance;
-	//int			was_vt_hit;
+	int			was_vt_hit;
 	int			is_up;
 	int			is_down;
 	int			is_right;
 	int			is_left;
 }				t_ray;
+
+typedef struct	s_text
+{
+	void			*addr;
+	char			*data;
+	char			*file;
+	int				width;
+	int				height;
+	int				bits_per_pixel;
+	int				line_length;
+	int				endian;
+}				t_text;
 
 typedef struct	s_cub3d
 {
@@ -142,6 +157,7 @@ typedef struct	s_cub3d
 	t_win		win;
 	t_player	player;
 	t_ray		*rays;
+	t_text		*text;
 	char		**grid;
 }				t_cub3d;
 
@@ -151,8 +167,7 @@ int				key_released(int keycode, t_player *player);
 void			init_player(t_player *player);
 void			init_map(t_map *map);
 void			init_img(t_img *img, t_win *win);
-void			init_win(t_win *win);
-//void			init_ray(t_ray ray, float ray_ang);
+int				init_win(t_win *win);
 void			init_ray(t_ray *ray, float ray_ang);
 t_line			init_line(t_coord a, t_coord b);
 t_coord			init_coord(float a, float b);
@@ -170,8 +185,6 @@ void			my_mlx_pixel_put(t_img *img, int x, int y, int color);
 void			hz_cast(t_ray *ray, t_cub3d *cub3d);
 void			vt_cast(t_ray *ray, t_cub3d *cub3d);
 t_ray			cast(t_ray ray, t_cub3d *cub3d);
-//t_ray			*cast(t_ray *ray, t_cub3d *cub3d);
-//t_ray			**cast_all_rays(t_cub3d *cub3d);
 t_ray			*cast_all_rays(t_cub3d *cub3d);
 
 int				grid_is_wall(float x, float y, t_cub3d *cub3d);

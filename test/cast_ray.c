@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 17:50:16 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/26 17:25:43 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/27 15:26:49 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_ray	cast(t_ray ray, t_cub3d *cub3d)
 	ray.wall_hit_x = (hz_dist < vt_dist) ? ray.hz_hit.x : ray.vt_hit.x;
 	ray.wall_hit_y = (hz_dist < vt_dist) ? ray.hz_hit.y : ray.vt_hit.y;
 	ray.distance = (hz_dist < vt_dist) ? hz_dist : vt_dist;
-	//ray.was_vt_hit = (vt_dist < hz_dist);
+	ray.was_vt_hit = (vt_dist < hz_dist);
 	wall_hit = init_coord(ray.wall_hit_x, ray.wall_hit_y);
 	//printf("wall hit x = %f\n", wall_hit.x);
 	//printf("wall hit y = %f\n", wall_hit.y);
@@ -55,7 +55,7 @@ t_ray *cast_all_rays(t_cub3d *cub3d)
 	rays = malloc(sizeof(t_ray) * NUM_RAYS);
 	if(!rays)
 		return 0;
-	ray_ang = cub3d->player.rot_ang - (FOV / 2);
+	//ray_ang = cub3d->player.rot_ang - (FOV / 2);
 	
 	int num = NUM_RAYS;
 /*	
@@ -67,6 +67,7 @@ t_ray *cast_all_rays(t_cub3d *cub3d)
 	*/
 	while(i < NUM_RAYS)
 	{
+		ray_ang = cub3d->player.rot_ang + atan((i - NUM_RAYS / 2) / DIST_PROJ_PLANE);
 		rays[i].ray_ang = normalize(ray_ang);
 		init_ray(&rays[i], rays[i].ray_ang);
 		rays[i] = cast(rays[i], cub3d);

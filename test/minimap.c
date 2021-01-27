@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/23 20:10:27 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/26 19:48:20 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ void	render_minimap(t_cub3d *cub3d)
 **	Bresenham line algorithm
 */ 
 
-void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
-{
+//void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
+//{
 /*
 	float e2;
 	float dx =  abs(line->end.x -line->start.x);
@@ -118,7 +118,7 @@ void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
 		}
 	}	
 	*/
-
+/*
 	float t;
 	float x; 
 	float y;
@@ -130,6 +130,29 @@ void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
 	y = line->start.y + (line->end.y - line->start.y)*t - 6;
 	my_mlx_pixel_put(&cub3d->img, x + cub3d->player.radius, y + cub3d->player.radius, color);
 	t += 0.001;
+	}
+*/
+
+/*
+ * DDA Line Algorithm
+*/
+
+void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
+{
+	int delta_x = line->end.x - line->start.x;
+	int delta_y = line->end.y - line->start.y;
+
+	int longest_side = (abs(delta_x) >= abs(delta_y)) ? abs(delta_x) : abs(delta_y);
+	float x_inc = delta_x / (float)longest_side;
+	float y_inc = delta_y / (float)longest_side;
+
+	float curr_x = line->start.x;
+	float curr_y = line->start.y;
+	for(int i = 0; i < longest_side; i++)
+	{
+		my_mlx_pixel_put(&cub3d->img, round(curr_x), round(curr_y), color);
+		curr_x += x_inc;
+		curr_y += y_inc;
 	}
 }
 
