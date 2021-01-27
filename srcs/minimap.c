@@ -6,11 +6,11 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/27 17:27:01 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/27 23:55:13 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../includes/cub3d.h"
 
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 {
@@ -72,16 +72,12 @@ void	render_minimap(t_cub3d *cub3d)
 		{
 			if (cub3d->grid[i][j] == '1')
 			{
-				//render_minimap_square((j * TILE_SIZE), (i * TILE_SIZE), TILE_SIZE, cub3d);
-				//render_minimap_square(MINIMAP_SCALE * (j * TILE_SIZE) + j, MINIMAP_SCALE * (i * TILE_SIZE) + i, MINIMAP_SCALE * TILE_SIZE, cub3d);
 				render_minimap_square(MINIMAP_SCALE * (j * TILE_SIZE), MINIMAP_SCALE * (i * TILE_SIZE), MINIMAP_SCALE * TILE_SIZE, cub3d);
 			}
-		/*	
 			if (cub3d->grid[i][j] == '0')
 			{
-				//render_minimap_square((j * TILE_SIZE), (i * TILE_SIZE), TILE_SIZE, cub3d);
 				render_minimap_square_back(MINIMAP_SCALE * (j * TILE_SIZE) + j, MINIMAP_SCALE * (i * TILE_SIZE) + i, MINIMAP_SCALE * TILE_SIZE, cub3d);
-			}*/
+			}
 			j++;
 		}
 		i++;
@@ -92,8 +88,6 @@ void	render_minimap(t_cub3d *cub3d)
 **	Bresenham line algorithm
 */ 
 
-//void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
-//{
 /*
 	float e2;
 	float dx =  abs(line->end.x -line->start.x);
@@ -166,11 +160,7 @@ void	render_player(t_cub3d *cub3d)
 
 	line.start.x = MINIMAP_SCALE * cub3d->player.pos.x;
 	line.start.y = MINIMAP_SCALE * cub3d->player.pos.y;
-	//line.start.x = cub3d->player.pos.x;
-	//line.start.y = cub3d->player.pos.y;
 	line.end.y = line.start.y + sin(cub3d->player.rot_ang) * (TILE_SIZE / 2);
 	line.end.x = line.start.x + cos(cub3d->player.rot_ang) * (TILE_SIZE / 2);
-
-	//render_minimap_square(line.start.x - 3, line.start.y - 3, cub3d->player.radius, cub3d);
 	render_view_line(&line, cub3d, WHITE);
 }

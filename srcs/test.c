@@ -6,11 +6,11 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/27 18:23:03 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/27 23:54:14 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../includes/cub3d.h"
 
 void update(t_cub3d *cub3d)
 {
@@ -77,7 +77,7 @@ void	render_3d_walls(t_ray *rays, t_cub3d *cub3d)
 		wall_strip_height = (TILE_SIZE / perp_distance) * DIST_PROJ_PLANE;
 		//int x = WIN_HEI / 2;
 		//while(x < WIN_HEI)
-		int x = top_pixel + 1;
+		int x = top_pixel;
 		while(x < WIN_HEI)
 		{
 			my_mlx_pixel_put(&cub3d->img, i, x, RED);

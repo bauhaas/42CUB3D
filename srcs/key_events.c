@@ -6,11 +6,11 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 18:04:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/20 14:39:12 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/27 23:55:06 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../includes/cub3d.h"
 
 int		key_pressed(int keycode, t_cub3d *cub3d)
 {

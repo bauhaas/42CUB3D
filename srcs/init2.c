@@ -6,11 +6,11 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:24:15 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/22 20:59:12 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/27 23:55:00 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../includes/cub3d.h"
 
 t_line	init_line(t_coord a, t_coord b)
 {

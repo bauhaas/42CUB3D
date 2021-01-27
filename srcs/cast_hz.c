@@ -6,11 +6,11 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:42:58 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/22 19:48:56 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/27 23:54:32 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../includes/cub3d.h"
 
 t_dcast	fill_hz_data(t_cub3d *cub3d, t_ray *ray)
 {
