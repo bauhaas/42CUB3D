@@ -6,7 +6,7 @@
 #    By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/11 12:08:52 by bahaas            #+#    #+#              #
-#    Updated: 2021/01/27 23:57:10 by bahaas           ###   ########.fr        #
+#    Updated: 2021/01/28 00:18:08 by bahaas           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,6 @@ fclean:		clean
 			${RM} ${NAME}
 
 re:			fclean all
-
 
 run:		all
 			./${NAME}

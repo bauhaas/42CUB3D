@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/27 23:54:14 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/28 01:33:18 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	render(t_cub3d *cub3d)
 //	render_player(cub3d);
 	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->img.img, 0, 0);
 }
-
+/*
 int main()
 {
 	t_cub3d		cub3d;
@@ -166,4 +166,4 @@ int main()
 		mlx_hook(cub3d.win.win_p, 3, 1L<<1, key_released, &cub3d.player);
 		mlx_loop(cub3d.win.mlx_p);
 	}
-}
+}*/

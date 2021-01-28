@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/27 19:58:30 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/01/28 03:13:27 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ typedef struct	s_win
 	void		*mlx_p;
 	void		*win_p;
 	char		*name;
+	int			hei;
+	int			wid;
 }				t_win;
 
 typedef struct	s_dcast
@@ -152,6 +154,11 @@ typedef struct	s_text
 	int				endian;
 }				t_text;
 
+typedef struct	s_data
+{
+	
+}				t_data;
+
 typedef struct	s_cub3d
 {
 	t_map		map;
@@ -161,6 +168,7 @@ typedef struct	s_cub3d
 	t_ray		*rays;
 	t_text		*text;
 	char		**grid;
+	t_data		data;
 }				t_cub3d;
 
 int				key_pressed(int keycode, t_cub3d *cub3d);
