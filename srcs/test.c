@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/28 01:33:18 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/01 22:47:02 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,22 +127,21 @@ void	render(t_cub3d *cub3d)
 //	render_player(cub3d);
 	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->img.img, 0, 0);
 }
-/*
-int main()
+
+void init_game(t_cub3d *cub3d)
 {
-	t_cub3d		cub3d;
 	int cub3d_running;
 	char		**grid;
 
 	//INIT
-	cub3d_running = init_win(&cub3d.win);
-	cub3d.win.mlx_p = mlx_init();
-	cub3d.win.win_p = mlx_new_window(cub3d.win.mlx_p, WIN_WID, WIN_HEI, "cub3d");
-	init_img(&cub3d.img, &cub3d.win);
-	init_player(&cub3d.player);
-	init_map(&cub3d.map);
+	cub3d_running = init_win(&cub3d->win);
+	cub3d->win.mlx_p = mlx_init();
+	cub3d->win.win_p = mlx_new_window(cub3d->win.mlx_p, WIN_WID, WIN_HEI, "cub3d");
+	init_img(&cub3d->img, &cub3d->win);
+	init_player(&cub3d->player);
+	//init_map(&cub3d->map);
 	//init_texture(cub3d);
-	
+/*	
 	grid =  malloc(sizeof(char*) * 11);
 	grid[0] = "111111111111111";
 	grid[1] = "100000000000101";
@@ -156,14 +155,14 @@ int main()
 	grid[9] = "100000000000001";
 	grid[10] = "111111111111111";
 	cub3d.grid = grid;
-
+*/
 	//RENDER
 	while(cub3d_running)
 	{
-		render(&cub3d);
+		render(cub3d);
 		//KEY EVENTS
-		mlx_hook(cub3d.win.win_p, 2, 1L<<0, key_pressed, &cub3d);
-		mlx_hook(cub3d.win.win_p, 3, 1L<<1, key_released, &cub3d.player);
-		mlx_loop(cub3d.win.mlx_p);
+		mlx_hook(cub3d->win.win_p, 2, 1L<<0, key_pressed, cub3d);
+		mlx_hook(cub3d->win.win_p, 3, 1L<<1, key_released, &cub3d->player);
+		mlx_loop(cub3d->win.mlx_p);
 	}
-}*/
+}

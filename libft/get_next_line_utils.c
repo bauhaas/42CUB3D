@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/12 13:24:58 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/27 23:51:07 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/01 19:04:25 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 	}
 	return (tmp_dest);
 }
-
+/*
 size_t	ft_strlen(const char *s)
 {
 	int	i;
@@ -50,7 +50,8 @@ size_t	ft_strlen(const char *s)
 		i++;
 	return (i);
 }
-
+*/
+/*
 char	*ft_strdup(const char *s)
 {
 	size_t		i;
@@ -68,7 +69,7 @@ char	*ft_strdup(const char *s)
 	new_str[i] = '\0';
 	return (new_str);
 }
-
+*/
 /*
 ** Only twist with my ft_substr from my libft project is to use :
 ** ft_strdup("") in case where start > ft_strlen(s) to save space and

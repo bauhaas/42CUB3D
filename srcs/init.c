@@ -6,18 +6,18 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 01:12:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/27 23:54:50 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/01 22:44:11 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
+/*
 void	init_map(t_map *map)
 {
 	map->cols = 0;
 	map->rows = 0;
 }
-
+*/
 void	init_player(t_player *player)
 {
 	player->pos.x = WIN_WID / 2 + 0.001;

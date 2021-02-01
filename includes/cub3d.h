@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/28 03:13:27 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/01 22:46:56 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,13 @@ typedef struct	s_player
 	float		rot_speed;
 }				t_player;
 
+/*
 typedef struct	s_map
 {
 	int			cols;
 	int			rows;
 }				t_map;
+*/
 
 typedef struct	s_img
 {
@@ -154,28 +156,32 @@ typedef struct	s_text
 	int				endian;
 }				t_text;
 
+
 typedef struct	s_data
 {
-	
+	int				ceil;
+	int				floor;
+	int				cols;
+	int				rows;
 }				t_data;
 
 typedef struct	s_cub3d
 {
-	t_map		map;
+//	t_map		map;
 	t_img		img;
 	t_win		win;
 	t_player	player;
 	t_ray		*rays;
 	t_text		*text;
-	char		**grid;
 	t_data		data;
+	char		**grid;
 }				t_cub3d;
 
 int				key_pressed(int keycode, t_cub3d *cub3d);
 int				key_released(int keycode, t_player *player);
 
 void			init_player(t_player *player);
-void			init_map(t_map *map);
+//void			init_map(t_map *map);
 void			init_img(t_img *img, t_win *win);
 int				init_win(t_win *win);
 void			init_ray(t_ray *ray, float ray_ang);
@@ -200,5 +206,8 @@ t_ray			*cast_all_rays(t_cub3d *cub3d);
 int				grid_is_wall(float x, float y, t_cub3d *cub3d);
 float			normalize(float ray_ang);
 float			p_dist(float x1, float y1, float x2, float y2);
+
+
+void init_game(t_cub3d *cub3d);
 
 #endif

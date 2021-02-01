@@ -1,15 +1,21 @@
 R 1920 1080
-NO ./path_to
-SO ./path_to
-WE ./path_to
-EA ./path_to
+NO ./textures/mossy.xpm 
+SO ./textures/redbrick.xpm
+WE ./textures/stone.xpm  
+EA ./textures/wood.xpm  
 
-S ./path_to
-F 220,100,0
-C 225,30,0
+S ./textures/wood.xpm
+F 200,200,200
+C 0,0,50
 
-1111
-1001
-1001
-1E01
-1111
+111111111111111
+100000000000101
+100001000000101
+111100000010101
+100000000010101
+100000001111101
+100000000000001
+100000000000001
+111111100111101
+100000000000001
+111111111111111
