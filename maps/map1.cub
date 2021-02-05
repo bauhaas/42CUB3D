@@ -1,8 +1,8 @@
 R 1920 1080
-NO ./textures/mossy.xpm 
+NO ./textures/mossy.xpm
 SO ./textures/redbrick.xpm
-WE ./textures/stone.xpm  
-EA ./textures/wood.xpm  
+WE ./textures/stone.xpm
+EA ./textures/wood.xpm
 
 S ./textures/wood.xpm
 F 200,200,200
@@ -13,7 +13,7 @@ C 0,0,50
 100001000000101
 111100000010101
 100000000010101
-100000001111101
+1000000S1111101
 100000000000001
 100000000000001
 111111100111101

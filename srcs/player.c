@@ -1,0 +1,77 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   player.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/04 18:13:53 by bahaas            #+#    #+#             */
+/*   Updated: 2021/02/04 20:35:37 by bahaas           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/cub3d.h"
+
+void	init_player(t_player *player)
+{
+	player->pos.x = 0;
+	player->pos.y = 0;
+	player->radius = 6;
+	player->turn_d = 0;
+	player->walk_d = 0;
+	player->rot_ang = 0;
+	player->mov_speed = 10.0;
+	player->rot_speed = 3 * (M_PI / 180);
+}
+
+void	pos_player(t_player *player, int x, int y, char orientation)
+{
+	player->pos.x = x * TILE_SIZE + TILE_SIZE / 2 + 0.001;
+	player->pos.y = y * TILE_SIZE + TILE_SIZE / 2 + 0.001;
+	if(orientation == 'N')
+		player->rot_ang = 1.5 * M_PI;
+	else if(orientation == 'S')
+	player->rot_ang = M_PI / 2;
+	else if(orientation == 'E')
+	player->rot_ang = 0;
+	else if(orientation == 'W')
+	player->rot_ang =  M_PI;
+}
+
+int check_player(t_cub3d *cub3d)
+{
+	int x;
+	int y;
+	int num_position;
+
+	y = 0;
+	num_position = 0;
+	while (y < cub3d->data.rows)
+	{
+		x = 0;
+		while (x < cub3d->data.cols)
+		{
+			if (ft_strchr(CARDINAL_POINTS, cub3d->grid[y][x]))
+			{
+				pos_player(&cub3d->player, x, y, cub3d->grid[y][x]);
+				num_position++;
+				cub3d->grid[y][x] = '0';
+				if (num_position > 1)
+				{
+					printf("Multiple player position in map\n");
+					return (0);
+				}
+			}
+			x++;
+		}
+		y++;
+	}
+	if (num_position == 0)
+	{
+		printf("No player position in map\n");
+		return (0);
+	}
+	printf("player OK\n");
+	return (1);
+}
+

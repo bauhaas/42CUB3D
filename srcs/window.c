@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   window.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/12 23:03:02 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/05 02:51:32 by bahaas           ###   ########.fr       */
+/*   Created: 2021/02/04 19:15:43 by bahaas            #+#    #+#             */
+/*   Updated: 2021/02/04 21:06:13 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "../includes/cub3d.h"
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 32
-#endif
-
-# include <unistd.h>
-# include <stdlib.h>
-
-int			get_next_line(const int fd, char **line);
-size_t		ft_strlen(const char *str);
-char		*ft_strnew(size_t size);
-char		*ft_strjoin(char const *s1, char const *s2);
-
-#endif
+void  init_win(t_win *win)
+{
+	win->mlx_p = NULL;
+	win->win_p = NULL;
+	win->wid = -1;
+	win->hei = -1;
+	win->tot_rays = 0;
+}

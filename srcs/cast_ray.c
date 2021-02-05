@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 17:50:16 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/27 23:55:35 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/04 20:43:13 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ t_ray	cast(t_ray ray, t_cub3d *cub3d)
 	vt_cast(&ray, cub3d);
 	hz_dist = FLT_MAX;
 	vt_dist = FLT_MAX;
-	if(ray.found_hz_wall)
+	if (ray.found_hz_wall)
 		hz_dist = p_dist(cub3d->player.pos.x, cub3d->player.pos.y,
 				ray.hz_hit.x, ray.hz_hit.y);
-	if(ray.found_vt_wall)
+	if (ray.found_vt_wall)
 		vt_dist = p_dist(cub3d->player.pos.x, cub3d->player.pos.y,
 				ray.vt_hit.x, ray.vt_hit.y);
 	//printf("vt_hitx = %f\n", ray.vt_hit.x);
@@ -43,7 +43,7 @@ t_ray	cast(t_ray ray, t_cub3d *cub3d)
 	//printf("wall hit y = %f\n", wall_hit.y);
 	line = init_line(cub3d->player.pos, wall_hit);
 //	render_view_line(&line, cub3d, GREEN);
-	return(ray);
+	return (ray);
 }
 
 t_ray *cast_all_rays(t_cub3d *cub3d)
@@ -53,28 +53,16 @@ t_ray *cast_all_rays(t_cub3d *cub3d)
 	int i;
 
 	i = 0;
-	rays = malloc(sizeof(t_ray) * NUM_RAYS);
-	if(!rays)
+	rays = malloc(sizeof(t_ray) * WIN_WID);
+	if (!rays)
 		return 0;
-	//ray_ang = cub3d->player.rot_ang - (FOV / 2);
-	
-	int num = NUM_RAYS;
-	
-//	printf("num: %d\n", num);
-//	printf("NUM_RAYS: %d\n", NUM_RAYS);
-/*
-	printf("ray incr: %f\n", (FOV / (int)NUM_RAYS));
-	printf("ray incr: %f\n", (FOV / 480));
-	printf("ray incr: %f\n", (FOV / num));
-	*/
-	while(i < NUM_RAYS)
+	while (i < WIN_WID)
 	{
-		ray_ang = cub3d->player.rot_ang + atan((i - NUM_RAYS / 2) / DIST_PROJ_PLANE);
+		ray_ang = cub3d->player.rot_ang + atan((i - WIN_WID / 2) / DIST_PROJ_PLANE);
 		rays[i].ray_ang = normalize(ray_ang);
 		init_ray(&rays[i], rays[i].ray_ang);
 		rays[i] = cast(rays[i], cub3d);
-		//ray_ang = ray_ang + (FOV / num);
 		i++;
 	}
-	return(rays);
+	return (rays);
 }
