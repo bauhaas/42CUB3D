@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/09 18:08:28 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/09 19:44:41 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,6 +246,7 @@ void load_img(t_win *win);
 void free_img(t_win *win);
 
 //win
+void load_win(t_win *win);
 void free_win(t_win *win);
 
 void run_cub3d(t_cub3d *cub3d);

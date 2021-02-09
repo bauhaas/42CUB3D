@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:19:50 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/09 18:00:45 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/09 19:36:00 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	init_img(t_img *img, t_win *win)
 	img->hei = 0;
 }
 
-//void	load_img(t_img *img, t_win *win, t_cub3d *cub3d)
 void	load_img(t_win *win)
 {
 	win->img.img = mlx_new_image(win->mlx_p, win->wid, win->hei);

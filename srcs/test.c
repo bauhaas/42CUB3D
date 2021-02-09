@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/09 19:26:49 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/09 20:04:47 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	render_3d_walls(t_ray *rays, t_cub3d *cub3d)
 		}
 		int y = 0;
 		while (y < top_pixel + 1)
-		//while (y < WIN_HEI / 2)
+			//while (y < WIN_HEI / 2)
 		{
 			my_mlx_pixel_put(&cub3d->win, i, y, BLUE);
 			y++;
@@ -95,20 +95,20 @@ void	render_3d_walls(t_ray *rays, t_cub3d *cub3d)
 		else
 			rect((i * WALL_STIP_WIDTH), ((WIN_HEI / 2) - (wall_strip_height / 2)), WALL_STIP_WIDTH, wall_strip_height, cub3d, GRAY);
 		/*
-		int texture_offset_x;
-		if (rays[i].was_vt_hit)
-			texture_offset_x = fmod(rays[i].wall_hit_y, 1.0) * 480;
-		else
-			texture_offset_x = fmod(rays[i].wall_hit_x, 1.0) * 480;
-		int texture_offset_y;
-		int j = 0;
-		int texture_color;
-		while (j < bot_pixel && j > top_pixel)
-		{
-			texture_offset_y = (y + (wall_strip_height / 2) - (WIN_HEI / 2) * (64 / wall_strip_height));
-			/// recuperer la couleur de ma texture
-			texture_color = get_texture_color(cub3d, texture_offset_x, texture_offset_y); 
-			my_mlx_pixel_put(&cub3d->img, i, j++, texture_color);
+		   int texture_offset_x;
+		   if (rays[i].was_vt_hit)
+		   texture_offset_x = fmod(rays[i].wall_hit_y, 1.0) * 480;
+		   else
+		   texture_offset_x = fmod(rays[i].wall_hit_x, 1.0) * 480;
+		   int texture_offset_y;
+		   int j = 0;
+		   int texture_color;
+		   while (j < bot_pixel && j > top_pixel)
+		   {
+		   texture_offset_y = (y + (wall_strip_height / 2) - (WIN_HEI / 2) * (64 / wall_strip_height));
+		/// recuperer la couleur de ma texture
+		texture_color = get_texture_color(cub3d, texture_offset_x, texture_offset_y); 
+		my_mlx_pixel_put(&cub3d->img, i, j++, texture_color);
 		}*/
 		i++;
 	}
@@ -118,33 +118,23 @@ void	render(t_cub3d *cub3d)
 {
 	t_ray *rays;
 
-	load_img(&cub3d->win);
+	//load_img(&cub3d->win);
 	update(cub3d);
 	rays = cast_all_rays(cub3d);
-//	printf("test\n");
-//	render_minimap(cub3d);	
+	//	render_minimap(cub3d);	
 	render_3d_walls(rays, cub3d);
-//	printf("test2\n");
 	free(rays);
-//	printf("test3\n");
-//	render_player(cub3d);
+	//	render_player(cub3d);
 	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->win.img.img, 0, 0);
 }
 
 void run_cub3d(t_cub3d *cub3d)
 {
-	cub3d->win.mlx_p = mlx_init();
-	cub3d->win.win_p = mlx_new_window(cub3d->win.mlx_p, cub3d->win.wid, cub3d->win.hei, "cub3D");
+	load_win(&cub3d->win);
 	load_img(&cub3d->win);
-//	printf("player pos x : %f\n", cub3d->player.pos.x);
-//	printf("player pos y : %f\n", cub3d->player.pos.y);
-//	printf("win wid: %d\n", cub3d->win.wid);
-//	printf("win hei : %d\n", cub3d->win.hei);
-	//RENDER
-		render(cub3d);
-		//KEY EVENTS
-		mlx_hook(cub3d->win.win_p, 2, 1L<<0, key_pressed, cub3d);
-		mlx_hook(cub3d->win.win_p, 3, 1L<<1, key_released, &cub3d->player);
-		mlx_hook(cub3d->win.win_p, 33, 1L<<17, &end_cub3d, cub3d);
-		mlx_loop(cub3d->win.mlx_p);
+	mlx_hook(cub3d->win.win_p, 2, 1L<<0, key_pressed, cub3d);
+	mlx_hook(cub3d->win.win_p, 3, 1L<<1, key_released, &cub3d->player);
+	mlx_hook(cub3d->win.win_p, 33, 1L<<17, &end_cub3d, cub3d);
+	render(cub3d);
+	mlx_loop(cub3d->win.mlx_p);
 }
