@@ -6,15 +6,15 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/12 13:07:08 by bahaas            #+#    #+#             */
-/*   Updated: 2020/11/26 12:38:35 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/05 02:50:17 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int		check_line(char *str)
+static int			check_line(char *str)
 {
-	int i;
+	int				i;
 
 	i = 0;
 	if (!str)
@@ -28,88 +28,98 @@ int		check_line(char *str)
 	return (0);
 }
 
-char	*store_leftover(char *tmp_buf)
+static char			*grep_line(char *str)
 {
-	int		i;
-	char	*leftover;
+	int				i;
+	char			*dest;
 
 	i = 0;
-	if (!tmp_buf)
-		return (NULL);
-	while (tmp_buf[i] && tmp_buf[i] != '\n')
+	if (!str)
+	{
+		dest = (char *)malloc(1);
+		dest[0] = '\0';
+		return (dest);
+	}
+	while (str[i] && str[i] != '\n')
 		i++;
-	leftover = ft_substr(tmp_buf, i + 1, ft_strlen(tmp_buf) - i);
-	return (leftover);
+	dest = (char *)malloc(sizeof(char) * (i + 1));
+	if (!dest)
+		return (NULL);
+	i = 0;
+	while (str[i] && str[i] != '\n')
+	{
+		dest[i] = str[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }
 
-char	*grep_found_line(char *tmp_buf)
+/*
+**	Remove the first line encountered and return a malloc
+**  from the rest of the chain
+**	free the old str
+*/
+
+static char			*store_leftover(char *str)
 {
-	char	*current_line;
-	int		i;
-	int		start;
+	int				i;
+	int				j;
+	char			*dest;
 
 	i = 0;
-	start = 0;
-	while (tmp_buf[i] && tmp_buf[i] != '\n')
-		i++;
-	current_line = malloc(sizeof(char) * i + 1);
-	if (!current_line)
+	if (!str)
 		return (NULL);
-	while (start < i)
+	while (str[i] && str[i] != '\n')
+		i++;
+	if (!str[i])
 	{
-		current_line[start] = tmp_buf[start];
-		start++;
+		free(str);
+		return (NULL);
 	}
-	current_line[i] = '\0';
-	return (current_line);
+	j = 0;
+	dest = (char *)malloc(sizeof(char) * (ft_strlen(str) - i));
+	if (!dest)
+		return (NULL);
+	i += 1;
+	while (str[i])
+		dest[j++] = str[i++];
+	dest[j] = '\0';
+	free(str);
+	return (dest);
 }
 
-int		ln_and_lftvr(char *tmp_buf, char **leftover, int read_size, char **line)
-{
-	if (read_size == 0 && (tmp_buf == NULL || tmp_buf[0] == '\0'))
-	{
-		free(tmp_buf);
-		if (leftover == NULL)
-			free(*leftover);
-		*line = ft_strdup("");
-		return (0);
-	}
-	*line = grep_found_line(tmp_buf);
-	if (!check_line(tmp_buf))
-	{
-		free(*leftover);
-		*leftover = NULL;
-		free(tmp_buf);
-		return (0);
-	}
-	free(*leftover);
-	*leftover = store_leftover(tmp_buf);
-	free(tmp_buf);
-	return (1);
-}
+/*
+**	1# We check fd, line and buffer_size: return -1 if problems.
+**	2# As long as leftover does not contain a '\ n'
+***		and the read has not returned 0(result)
+**		- we read a packet of BUFFER_SIZE oct.
+**		- we add this package to the static variable.
+**	3# we get the line to send back.
+**	4# we trunk the static variable of the returned row.
+**	5# If the reading returned 0 and static variable empty,
+**		we returned 0, otherwise 1 because there is still something to read.
+*/
 
-int		get_next_line(int fd, char **line)
+int					get_next_line(const int fd, char **line)
 {
 	static char		*leftover;
-	int				read_size;
 	char			buf[BUFFER_SIZE + 1];
-	char			*tmp_buf;
+	int				ret;
 
-	tmp_buf = NULL;
-	if (BUFFER_SIZE <= 0 || fd < 0 || !line || read(fd, buf, 0) < 0)
+	if(BUFFER_SIZE <= 0 || fd < 0 || !line || read(fd, buf, 0) < 0)
 		return (-1);
-	if (leftover)
-		tmp_buf = ft_strdup(leftover);
-	while (!check_line(tmp_buf) && (read_size = read(fd, buf, BUFFER_SIZE)) > 0)
+	ret = 1;
+	while (!check_line(leftover) && ret != 0)
 	{
-		buf[read_size] = '\0';
-		tmp_buf = free_then_join(tmp_buf, buf, ft_strlen(tmp_buf));
-		if (read_size < 0)
-		{
-			free(tmp_buf);
-			free(leftover);
+		ret = read(fd, buf, BUFFER_SIZE);
+		if (ret == -1)
 			return (-1);
-		}
+		buf[ret] = '\0';
+		leftover = ft_strjoin(leftover, buf);
 	}
-	return (ln_and_lftvr(tmp_buf, &leftover, read_size, line));
+	*line = grep_line(leftover);
+	leftover = store_leftover(leftover);
+	ret = (ret == 0 && ft_strlen(leftover) == 0) ? 0 : 1;
+	return (ret);
 }

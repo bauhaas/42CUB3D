@@ -6,19 +6,19 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/27 23:55:13 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/09 18:47:07 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
+void	my_mlx_pixel_put(t_win *win, int x, int y, int color)
 {
 	char	*dst;
 
-	if (x >= 0 && x <= WIN_WID  && y >= 0 && y <= WIN_HEI)
+	if (x >= 0 && x <= win->wid && y >= 0 && y <= win->hei)
 	{
-		dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
+		dst = win->img.addr + (y * win->img.line_length + x * (win->img.bits_per_pixel / 8));
 		*(unsigned int*)dst = color;
 	}
 }
@@ -29,18 +29,20 @@ void	render_minimap_square(int x, int y, int size, t_cub3d *cub3d)
 	int j;
 
 	i = 0;
+	//printf("size value : %d\n", size);
 	while (i < size)
 	{
 		j = 0;
 		while (j < size)
 		{
-			my_mlx_pixel_put(&cub3d->img, x + j, y + i, GRAY);
+			//printf("test in render minimap square\n");
+			my_mlx_pixel_put(&cub3d->win, x + j, y + i, GRAY);
 			j++;
 		}
 		i++;
 	}
 }
-
+/*
 void	render_minimap_square_back(int x, int y, int size, t_cub3d *cub3d)
 {
 	int i;
@@ -58,7 +60,7 @@ void	render_minimap_square_back(int x, int y, int size, t_cub3d *cub3d)
 		i++;
 	}
 }
-
+*/
 void	render_minimap(t_cub3d *cub3d)
 {
 	int i;
@@ -67,17 +69,19 @@ void	render_minimap(t_cub3d *cub3d)
 	i = 0;
 	while (i < MAP_ROWS )
 	{
+	//	printf("test in render minimap loop with i\n");
 		j = 0;
 		while (j < MAP_COLS)
 		{
+		//	printf("test in render minimap loop with j\n");
 			if (cub3d->grid[i][j] == '1')
 			{
 				render_minimap_square(MINIMAP_SCALE * (j * TILE_SIZE), MINIMAP_SCALE * (i * TILE_SIZE), MINIMAP_SCALE * TILE_SIZE, cub3d);
 			}
-			if (cub3d->grid[i][j] == '0')
+			/*if (cub3d->grid[i][j] == '0')
 			{
 				render_minimap_square_back(MINIMAP_SCALE * (j * TILE_SIZE) + j, MINIMAP_SCALE * (i * TILE_SIZE) + i, MINIMAP_SCALE * TILE_SIZE, cub3d);
-			}
+			}*/
 			j++;
 		}
 		i++;
@@ -122,7 +126,7 @@ void	render_minimap(t_cub3d *cub3d)
 	float y;
 
 	t = 0;
-	while(t < 1)
+	while (t < 1)
 	{
 	x = line->start.x + (line->end.x - line->start.x)*t - 6;
 	y = line->start.y + (line->end.y - line->start.y)*t - 6;
@@ -148,7 +152,7 @@ void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
 	float curr_y = line->start.y;
 	for(int i = 0; i < longest_side; i++)
 	{
-		my_mlx_pixel_put(&cub3d->img, round(curr_x), round(curr_y), color);
+		my_mlx_pixel_put(&cub3d->win, round(curr_x), round(curr_y), color);
 		curr_x += x_inc;
 		curr_y += y_inc;
 	}

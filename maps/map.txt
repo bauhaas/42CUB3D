@@ -1,0 +1,15 @@
+R 1920 1080
+NO ./path_to
+SO ./path_to
+WE ./path_to
+EA ./path_to
+
+S ./path_to
+F 220,100,0
+C 225,30,0
+
+1111
+1001
+1001
+1E01
+1111

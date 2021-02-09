@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/27 19:58:30 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/09 19:44:41 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@
 # define RED	0x00FF0000
 # define BLACK	0x00000000
 
+# define CARDINAL_POINTS "NSEW"
+
 # define TILE_SIZE	64
 # define MAP_ROWS	11
 # define MAP_COLS	15
@@ -80,12 +82,6 @@ typedef struct	s_player
 	float		rot_speed;
 }				t_player;
 
-typedef struct	s_map
-{
-	int			cols;
-	int			rows;
-}				t_map;
-
 typedef struct	s_img
 {
 	void		*img;
@@ -93,6 +89,8 @@ typedef struct	s_img
 	int			bits_per_pixel;
 	int			line_length;
 	int			endian;
+	int			wid;
+	int			hei;
 }				t_img;
 
 typedef struct	s_line
@@ -105,7 +103,11 @@ typedef struct	s_win
 {
 	void		*mlx_p;
 	void		*win_p;
+	t_img		img;
 	char		*name;
+	int			tot_rays;
+	int			hei;
+	int			wid;
 }				t_win;
 
 typedef struct	s_dcast
@@ -142,34 +144,43 @@ typedef struct	s_ray
 
 typedef struct	s_text
 {
-	void			*addr;
+	void			*ptr;
 	char			*data;
-	char			*file;
-	int				width;
-	int				height;
+	char			*name;
 	int				bits_per_pixel;
 	int				line_length;
 	int				endian;
+	int				wid;
+	int				hei;
 }				t_text;
+
+
+typedef struct	s_data
+{
+	int				ceil;
+	int				floor;
+	int				cols;
+	int				rows;
+}				t_data;
 
 typedef struct	s_cub3d
 {
-	t_map		map;
 	t_img		img;
 	t_win		win;
 	t_player	player;
 	t_ray		*rays;
-	t_text		*text;
+	t_text		text[5];
+	t_data		data;
 	char		**grid;
 }				t_cub3d;
 
 int				key_pressed(int keycode, t_cub3d *cub3d);
 int				key_released(int keycode, t_player *player);
 
+//void			init_player(t_player *player, int x, int y, char orientation);
 void			init_player(t_player *player);
-void			init_map(t_map *map);
 void			init_img(t_img *img, t_win *win);
-int				init_win(t_win *win);
+void			init_win(t_win *win);
 void			init_ray(t_ray *ray, float ray_ang);
 t_line			init_line(t_coord a, t_coord b);
 t_coord			init_coord(float a, float b);
@@ -182,7 +193,7 @@ void			render_view_line(t_line *line, t_cub3d *cub3d, int color);
 void			update(t_cub3d *cub3d);
 void			render(t_cub3d *cub3d);
 
-void			my_mlx_pixel_put(t_img *img, int x, int y, int color);
+void			my_mlx_pixel_put(t_win *win, int x, int y, int color);
 
 void			hz_cast(t_ray *ray, t_cub3d *cub3d);
 void			vt_cast(t_ray *ray, t_cub3d *cub3d);
@@ -193,4 +204,51 @@ int				grid_is_wall(float x, float y, t_cub3d *cub3d);
 float			normalize(float ray_ang);
 float			p_dist(float x1, float y1, float x2, float y2);
 
+
+void init_game(t_cub3d *cub3d, char *file);
+void init_texture(t_cub3d *cub3d);
+void init_grid(t_data *data);
+
+//grid
+int grid_parsing(t_cub3d *cub3d, t_list *list);
+int fill_grid(t_cub3d *cub3d, t_list *list, int cols, int rows);
+int grid_alloc(t_cub3d *cub3d, t_list *list);
+int check_grid(t_cub3d *cub3d);
+int fill_list_grid(t_cub3d *cub3d, char *line, t_list **list);
+int check_surrounding(char **grid, int x, int y);
+void free_grid(t_cub3d *cub3d);
+
+//player
+int check_player(t_cub3d *cub3d);
+
+//parsing utils
+int count_cols(t_list *list);
+int is_num(char *num);
+void free_split(char ***split);
+int is_error(char *str);
+
+//texture
+int is_texture(char **line_data);
+int fill_texture(t_cub3d *cub3d, char **line_data);
+void free_text(t_text *text);
+
+//colors
+int is_rgb(char *color);
+int rgb_to_hex(int r, int g, int b);
+int fill_color(t_cub3d *cub3d, char **line);
+
+//resolution
+int fill_res(t_cub3d *cub3d, char **data);
+
+//img 
+//void load_img(t_img *img, t_win *win, t_cub3d *cub3d);
+void load_img(t_win *win);
+void free_img(t_win *win);
+
+//win
+void load_win(t_win *win);
+void free_win(t_win *win);
+
+void run_cub3d(t_cub3d *cub3d);
+int end_cub3d(t_cub3d *cub3d);
 #endif

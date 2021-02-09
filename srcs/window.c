@@ -1,37 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init2.c                                            :+:      :+:    :+:   */
+/*   window.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/22 15:24:15 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/27 23:55:00 by bahaas           ###   ########.fr       */
+/*   Created: 2021/02/04 19:15:43 by bahaas            #+#    #+#             */
+/*   Updated: 2021/02/09 20:09:31 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-t_line	init_line(t_coord a, t_coord b)
+void  init_win(t_win *win)
 {
-	t_line line;
-
-	line.start.x = MINIMAP_SCALE * a.x;
-	line.start.y = MINIMAP_SCALE * a.y;
-	line.end.x = MINIMAP_SCALE * b.x;
-	line.end.y = MINIMAP_SCALE * b.y;
-	//line.start.x = a.x;
-	//line.start.y = a.y;
-	//line.end.x = b.x;
-	//line.end.y = b.y;
-	return(line);
+	win->mlx_p = NULL;
+	win->win_p = NULL;
+	win->wid = -1;
+	win->hei = -1;
+	win->tot_rays = 0;
 }
 
-t_coord	init_coord(float x, float y)
+void load_win(t_win *win)
 {
-	t_coord coord;
+	win->win_p = mlx_new_window(win->mlx_p, win->wid, win->hei, "cub3D");
+}
 
-	coord.x = x;
-	coord.y = y;
-	return(coord);
+void free_win(t_win *win)
+{
+	if(win->mlx_p)
+	{
+		if(win->win_p)
+			mlx_destroy_window(win->mlx_p, win->win_p);
+		mlx_destroy_display(win->mlx_p);
+		free(win->mlx_p);
+	}
+	win->mlx_p = NULL;
 }
