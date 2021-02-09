@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:43:26 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/05 01:02:39 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/09 17:15:32 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,15 @@ int is_num(char *num)
 		if (num[i] >= '0' && num[i] <= '9')
 			i++;
 		else
-		{
-			printf("doesn't have numeric values only\n");
-			return (0);
-		}
+			return (is_error("Argument sent to is_num isn't a valid number"));
 	}
 	return (1);
+}
+
+int is_error(char *str)
+{
+	printf("Error : %s\n", str);
+	return (0);
 }
 
 void	free_split(char ***split)
@@ -51,7 +54,7 @@ void	free_split(char ***split)
 	int i;
 
 	i = -1;
-	while((*split)[++i])
+	while ((*split)[++i])
 		{
 			free((*split)[i]);
 			(*split)[i] = NULL;

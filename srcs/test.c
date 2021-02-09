@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/04 20:59:52 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/09 18:11:45 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void		rect(float x, float y, float x2, float y2, t_cub3d *cub3d, int color)
 		i = 0;
 		while (i < y2)
 		{
-			my_mlx_pixel_put(cub3d, &cub3d->img, x + j, y + i, color);
+			my_mlx_pixel_put(&cub3d->win, x + j, y + i, color);
 			i++;
 		}
 		j++;
@@ -80,14 +80,14 @@ void	render_3d_walls(t_ray *rays, t_cub3d *cub3d)
 		int x = top_pixel;
 		while (x < WIN_HEI)
 		{
-			my_mlx_pixel_put(cub3d, &cub3d->img, i, x, RED);
+			my_mlx_pixel_put(&cub3d->win, i, x, RED);
 			x++;
 		}
 		int y = 0;
 		while (y < top_pixel + 1)
 		//while (y < WIN_HEI / 2)
 		{
-			my_mlx_pixel_put(cub3d, &cub3d->img, i, y, BLUE);
+			my_mlx_pixel_put(&cub3d->win, i, y, BLUE);
 			y++;
 		}
 		if (rays[i].was_vt_hit)
@@ -118,21 +118,24 @@ void	render(t_cub3d *cub3d)
 {
 	t_ray *rays;
 
-	load_img(&cub3d->img, &cub3d->win, cub3d);
+	load_img(&cub3d->win);
 	update(cub3d);
-	rays = cast_all_rays(cub3d);
-//	render_minimap(cub3d);	
-	render_3d_walls(rays, cub3d);
-	free(rays);
+//	rays = cast_all_rays(cub3d);
+	printf("test\n");
+	render_minimap(cub3d);	
+//	render_3d_walls(rays, cub3d);
+//	printf("test2\n");
+//	free(rays);
+//	printf("test3\n");
 //	render_player(cub3d);
 	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->img.img, 0, 0);
 }
 
-void run(t_cub3d *cub3d)
+void run_cub3d(t_cub3d *cub3d)
 {
 	cub3d->win.mlx_p = mlx_init();
-	cub3d->win.win_p = mlx_new_window(cub3d->win.mlx_p, WIN_WID, WIN_HEI, "cub3d");
-	load_img(&cub3d->img, &cub3d->win, cub3d);
+	cub3d->win.win_p = mlx_new_window(cub3d->win.mlx_p, cub3d->win.wid, cub3d->win.hei, "cub3D");
+	load_img(&cub3d->win);
 //	printf("player pos x : %f\n", cub3d->player.pos.x);
 //	printf("player pos y : %f\n", cub3d->player.pos.y);
 //	printf("win wid: %d\n", cub3d->win.wid);
@@ -142,5 +145,6 @@ void run(t_cub3d *cub3d)
 		//KEY EVENTS
 		mlx_hook(cub3d->win.win_p, 2, 1L<<0, key_pressed, cub3d);
 		mlx_hook(cub3d->win.win_p, 3, 1L<<1, key_released, &cub3d->player);
+		mlx_hook(cub3d->win.win_p, 33, 1L<<17, &end_cub3d, cub3d);
 		mlx_loop(cub3d->win.mlx_p);
 }

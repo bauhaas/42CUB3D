@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:13:53 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/04 20:35:37 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/09 17:11:08 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ void	pos_player(t_player *player, int x, int y, char orientation)
 {
 	player->pos.x = x * TILE_SIZE + TILE_SIZE / 2 + 0.001;
 	player->pos.y = y * TILE_SIZE + TILE_SIZE / 2 + 0.001;
-	if(orientation == 'N')
+	if (orientation == 'N')
 		player->rot_ang = 1.5 * M_PI;
-	else if(orientation == 'S')
+	else if (orientation == 'S')
 	player->rot_ang = M_PI / 2;
-	else if(orientation == 'E')
+	else if (orientation == 'E')
 	player->rot_ang = 0;
-	else if(orientation == 'W')
+	else if (orientation == 'W')
 	player->rot_ang =  M_PI;
 }
 
@@ -48,29 +48,22 @@ int check_player(t_cub3d *cub3d)
 	num_position = 0;
 	while (y < cub3d->data.rows)
 	{
-		x = 0;
-		while (x < cub3d->data.cols)
+		x = -1;
+		while (cub3d->grid[y][++x])
 		{
-			if (ft_strchr(CARDINAL_POINTS, cub3d->grid[y][x]))
+			if (ft_strchr("NSEW", cub3d->grid[y][x]))
 			{
 				pos_player(&cub3d->player, x, y, cub3d->grid[y][x]);
 				num_position++;
 				cub3d->grid[y][x] = '0';
 				if (num_position > 1)
-				{
-					printf("Multiple player position in map\n");
-					return (0);
-				}
+					return (is_error("Multiple player position in map"));
 			}
-			x++;
 		}
 		y++;
 	}
 	if (num_position == 0)
-	{
-		printf("No player position in map\n");
-		return (0);
-	}
+		return (is_error("No player position in map"));
 	printf("player OK\n");
 	return (1);
 }

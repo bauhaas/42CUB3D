@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:19:13 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/05 01:13:35 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/09 17:01:21 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void free_grid(t_cub3d *cub3d)
 	int i;
 
 	i = 0;
-	while(i < cub3d->data.rows)
+	while (i < cub3d->data.rows)
 	{
 		free(cub3d->grid[i]);
 		cub3d->grid[i] = NULL;
@@ -55,21 +55,15 @@ int grid_alloc(t_cub3d *cub3d, t_list *list)
 
 	cols = count_cols(list);
 	rows = ft_lstsize(list);
-	printf("rows tot : %d\n", rows);
-	printf("cols tot : %d\n", cols);
+	//printf("rows tot : %d\n", rows);
+	//printf("cols tot : %d\n", cols);
 	if (!cols || !rows)
-	{
-		printf("map has no cols or no rows\n");
-		return (0);
-	}
+		return (is_error("grid has no cols or no rows"));
 	cub3d->grid = malloc(sizeof(char *) * rows);
 	cub3d->data.cols = cols;
 	cub3d->data.rows = rows;
 	if (!cub3d->grid)
-	{
-		printf("not enough memory for malloc\n");
-		return (0);
-	}
+		return (is_error("not enough memory to malloc"));
 	fill_grid(cub3d, list, cols, rows);
 	return (1);
 
@@ -88,7 +82,7 @@ int grid_parsing(t_cub3d *cub3d, t_list *list)
 {
 	grid_alloc(cub3d, list);
 	ft_lstclear(&list, &ft_free);
-	if (!check_grid(cub3d) || !check_player(cub3d))
+	if (!check_player(cub3d) || !check_grid(cub3d))
 		return (0);
 	return (1);
 }

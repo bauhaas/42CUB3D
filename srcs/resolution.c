@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:05:33 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/04 21:05:23 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/09 17:12:45 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int fill_res(t_cub3d *cub3d, char **data)
 	int x;
 	int y;
 
-	if(cub3d->win.wid == -1 && cub3d->win.hei == -1)
+	if (cub3d->win.wid == -1 && cub3d->win.hei == -1)
 	{
 		if (data[1] && data[2] && is_num(data[1]) && is_num(data[2]))
 		{
@@ -32,14 +32,8 @@ int fill_res(t_cub3d *cub3d, char **data)
 			}
 		}
 		else
-		{
-			printf("resolution isn't a correct number\n");
-			return (0);
-		}
+			return (is_error("Resolution isn't a valid number"));
 	}
 	else
-	{
-		printf("resolution is declared twice\n");
-		return (0);
-	}
+		return (is_error("Resolution is declared twice"));
 }

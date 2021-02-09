@@ -6,19 +6,19 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/04 20:52:07 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/09 18:47:07 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	my_mlx_pixel_put(t_cub3d *cub3d, t_img *img, int x, int y, int color)
+void	my_mlx_pixel_put(t_win *win, int x, int y, int color)
 {
 	char	*dst;
 
-	if (x >= 0 && x <= WIN_WID && y >= 0 && y <= WIN_HEI)
+	if (x >= 0 && x <= win->wid && y >= 0 && y <= win->hei)
 	{
-		dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
+		dst = win->img.addr + (y * win->img.line_length + x * (win->img.bits_per_pixel / 8));
 		*(unsigned int*)dst = color;
 	}
 }
@@ -29,14 +29,14 @@ void	render_minimap_square(int x, int y, int size, t_cub3d *cub3d)
 	int j;
 
 	i = 0;
-	printf("size value : %d\n", size);
+	//printf("size value : %d\n", size);
 	while (i < size)
 	{
 		j = 0;
 		while (j < size)
 		{
-			printf("test in render minimap square\n");
-			my_mlx_pixel_put(cub3d, &cub3d->img, x + j, y + i, GRAY);
+			//printf("test in render minimap square\n");
+			my_mlx_pixel_put(&cub3d->win, x + j, y + i, GRAY);
 			j++;
 		}
 		i++;
@@ -152,7 +152,7 @@ void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
 	float curr_y = line->start.y;
 	for(int i = 0; i < longest_side; i++)
 	{
-		my_mlx_pixel_put(cub3d, &cub3d->img, round(curr_x), round(curr_y), color);
+		my_mlx_pixel_put(&cub3d->win, round(curr_x), round(curr_y), color);
 		curr_x += x_inc;
 		curr_y += y_inc;
 	}

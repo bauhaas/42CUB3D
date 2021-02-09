@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:31:08 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/05 02:52:19 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/09 17:47:16 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ int	cub_ext(char *map_file)
 	i -= 4;
 	if (!strcmp(&map_file[i], ".cub"))
 		return (1);
-	printf("Map argument is not ending by .cub\n");
-	return (0);
+	return (is_error("Map argument is not ending with .cub"));
 }
 
 int line_data(t_cub3d *cub3d, char *line, t_list **list)
@@ -46,15 +45,9 @@ int line_data(t_cub3d *cub3d, char *line, t_list **list)
 		res = fill_list_grid(cub3d, line, list);
 	}
 	else if (!*line_data && grid_flag)
-	{
-		printf("empty line in or after grid parameter\n");
-		res = 0;
-	}
+		res = is_error("empty line in or after grid parameter");
 	else if (grid_flag)
-	{
-		printf("args after grid\n");
-		res = 0;
-	}
+		res = is_error("args after grid");
 	free_split(&line_data);
 	return (res);
 }
@@ -71,10 +64,7 @@ int	parsing(t_cub3d *cub3d, char *map_file)
 	list = NULL;
 	fd = open(map_file, O_RDONLY);
 	if (fd < 0)
-	{
-		printf("map file couldn't open\n");
-		return (0);
-	}
+		return (is_error("map file couldn't open"));
 	while (i > 0)
 	{
 		i  = get_next_line(fd, &line);
@@ -101,11 +91,13 @@ void	init_cub3d(t_cub3d *cub3d, char *file)
 	init_texture(cub3d);
 }
 
-void	end_cub3d(t_cub3d *cub3d)
+int		end_cub3d(t_cub3d *cub3d)
 {
 	free_text(cub3d->text);
 	free_grid(cub3d);
-//	free_win(&cub3d->win);
+	if(cub3d->img.img)
+		free_img(&cub3d->win);
+	free_win(&cub3d->win);
 }
 
 int main(int ac, char **av)
@@ -114,6 +106,7 @@ int main(int ac, char **av)
 
 	if (ac == 3 && av[2] == "--save")
 		return (0);
+	//else if (ac == 3)
 	else
 	{
 		if (cub_ext(av[1]))
@@ -122,12 +115,12 @@ int main(int ac, char **av)
 			if (parsing(&cub3d, av[1]))
 			{
 				printf("Cub3d is launching..\n");
-			//	run(&cub3d);
+				run_cub3d(&cub3d);
 			}
 			end_cub3d(&cub3d);
 		}
 	}
-//	else
-//		printf("Wrong numbers of arguments\n");
+	//else
+	//	return(is_error("Wrong numbers of arguments"));
 	return (0);
 }

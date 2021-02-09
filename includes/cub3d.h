@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/05 00:41:44 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/09 18:08:28 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ typedef struct	s_win
 {
 	void		*mlx_p;
 	void		*win_p;
+	t_img		img;
 	char		*name;
 	int			tot_rays;
 	int			hei;
@@ -192,7 +193,7 @@ void			render_view_line(t_line *line, t_cub3d *cub3d, int color);
 void			update(t_cub3d *cub3d);
 void			render(t_cub3d *cub3d);
 
-void			my_mlx_pixel_put(t_cub3d *cub3d, t_img *img, int x, int y, int color);
+void			my_mlx_pixel_put(t_win *win, int x, int y, int color);
 
 void			hz_cast(t_ray *ray, t_cub3d *cub3d);
 void			vt_cast(t_ray *ray, t_cub3d *cub3d);
@@ -224,6 +225,7 @@ int check_player(t_cub3d *cub3d);
 int count_cols(t_list *list);
 int is_num(char *num);
 void free_split(char ***split);
+int is_error(char *str);
 
 //texture
 int is_texture(char **line_data);
@@ -239,7 +241,13 @@ int fill_color(t_cub3d *cub3d, char **line);
 int fill_res(t_cub3d *cub3d, char **data);
 
 //img 
-void load_img(t_img *img, t_win *win, t_cub3d *cub3d);
+//void load_img(t_img *img, t_win *win, t_cub3d *cub3d);
+void load_img(t_win *win);
+void free_img(t_win *win);
 
-void run(t_cub3d *cub3d);
+//win
+void free_win(t_win *win);
+
+void run_cub3d(t_cub3d *cub3d);
+int end_cub3d(t_cub3d *cub3d);
 #endif

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:03:12 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/05 00:59:39 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/09 17:07:06 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,32 @@ int is_rgb(char *color)
 	res = ft_atoi(color);
 	if (res >= 0 && res <= 255)
 		return (1);
-	printf("invalid rgb color\n");
-	return (0);
+	return (is_error("Invalid RGB color"));
 }
 
 int	rgb_to_hex(int r, int g, int b)
 {
 	return (0x0 | r << 16 | g << 8 | b);
+}
+
+int fill_ceil(t_cub3d *cub3d, int hex_color)
+{
+	if (cub3d->data.ceil == -1)
+			cub3d->data.ceil = hex_color;
+		else
+			return (is_error("Ceil color is declared twice"));
+	printf("ceiling color OK\n");
+	return (1);
+}
+
+int fill_floor(t_cub3d *cub3d, int hex_color)
+{
+	if (cub3d->data.floor == -1)
+			cub3d->data.floor = hex_color;
+		else
+			return (is_error("Floor color is declared twice"));
+	printf("floor color OK\n");
+	return (1);
 }
 
 int	fill_color(t_cub3d *cub3d, char **line)
@@ -47,28 +66,9 @@ int	fill_color(t_cub3d *cub3d, char **line)
 	}
 	hex_color = rgb_to_hex(int_color[0], int_color[1], int_color[2]);
 	if (strcmp(line[0], "C") == 0)
-	{
-		if(cub3d->data.ceil == -1)
-			cub3d->data.ceil = hex_color;
-		else
-		{
-			printf("Ceil color is declared twice\n");
-			return (0);
-		}
-		printf("ceiling color OK\n");
-	}
+		fill_ceil(cub3d, hex_color);
 	else
-	{
-		if(cub3d->data.floor == -1)
-			cub3d->data.floor = hex_color;
-		else
-		{
-			printf("Ceil color is declared twice\n");
-			return (0);
-		}
-		printf("floor color OK\n");
-	}
+		fill_floor(cub3d, hex_color);
 	free_split(&color);
 	return (1);
 }
-

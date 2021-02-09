@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:21:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/04 23:15:46 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/09 17:18:08 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	free_text(t_text *text)
 	int i;
 
 	i = 0;
-	while(i < 5)
+	while (i < 5)
 	{
 		free(text[i].name);
 		i++;
@@ -55,10 +55,7 @@ int is_texture(char **line_data)
 	{
 		fd = open(line_data[1], O_RDONLY);
 		if (fd < 0)
-		{
-			printf("texture load problem\n");
-			return (0);
-		}
+			return (is_error("Texture load problem"));
 		close(fd);
 		return (1);
 	}
@@ -80,11 +77,9 @@ int	fill_texture(t_cub3d *cub3d, char **line_data)
 	else if (!strcmp(line_data[0],"S"))
 		i = 4;
 	if (cub3d->text[i].name)
-	{
-		printf("texture %s is declared twice\n", line_data[0]);
-		return (0);
-	}
+		return (is_error("A texture is declared twice"));
 	cub3d->text[i].name = ft_strdup(line_data[1]);
+	printf("Texture %s OK\n", line_data[0]);
 	return (1);
 }
 
