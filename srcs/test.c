@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/09 18:11:45 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/09 19:26:49 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,15 +120,15 @@ void	render(t_cub3d *cub3d)
 
 	load_img(&cub3d->win);
 	update(cub3d);
-//	rays = cast_all_rays(cub3d);
-	printf("test\n");
-	render_minimap(cub3d);	
-//	render_3d_walls(rays, cub3d);
+	rays = cast_all_rays(cub3d);
+//	printf("test\n");
+//	render_minimap(cub3d);	
+	render_3d_walls(rays, cub3d);
 //	printf("test2\n");
-//	free(rays);
+	free(rays);
 //	printf("test3\n");
 //	render_player(cub3d);
-	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->img.img, 0, 0);
+	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->win.img.img, 0, 0);
 }
 
 void run_cub3d(t_cub3d *cub3d)
