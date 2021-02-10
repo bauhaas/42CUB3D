@@ -96,9 +96,10 @@ int		end_cub3d(t_cub3d *cub3d)
 	free_text(cub3d->text);
 	//sprites to free;
 	free_grid(cub3d);
-	if(cub3d->img.img)
+	if(cub3d->win.img.img)
 		free_img(&cub3d->win);
 	free_win(&cub3d->win);
+	exit(0);
 }
 
 int main(int ac, char **av)

@@ -64,37 +64,39 @@ void	render_3d_walls(t_ray *rays, t_cub3d *cub3d)
 	t_coord coord;
 	t_coord coord2;
 
-
+	int x;
 	i = 0;
-	while (i < NUM_RAYS)
+	top_pixel = 0;
+	bot_pixel = 0;
+	ray_distance = 0;
+	perp_distance = 0;
+	wall_strip_height = 0;
+	while (i < cub3d->win.wid)
 	{
-		top_pixel = (WIN_HEI / 2) - (wall_strip_height / 2);
+		top_pixel = (cub3d->win.hei / 2) - (wall_strip_height / 2);
 		top_pixel = top_pixel < 0 ? 0 : top_pixel;
-		bot_pixel = (WIN_HEI / 2) + (wall_strip_height / 2);
-		bot_pixel = bot_pixel > WIN_HEI ? WIN_HEI : bot_pixel;
+		bot_pixel = (cub3d->win.hei / 2) + (wall_strip_height / 2);
+		bot_pixel = bot_pixel > cub3d->win.hei ? cub3d->win.hei : bot_pixel;
 		ray_distance = rays[i].distance;
 		perp_distance = rays[i].distance * cos(rays[i].ray_ang - cub3d->player.rot_ang);
 		wall_strip_height = (TILE_SIZE / perp_distance) * DIST_PROJ_PLANE;
-		//int x = WIN_HEI / 2;
-		//while (x < WIN_HEI)
-		int x = top_pixel;
-		while (x < WIN_HEI)
+		x = top_pixel;
+		while (x < cub3d->win.hei) 
 		{
 			my_mlx_pixel_put(&cub3d->win, i, x, RED);
 			x++;
 		}
 		int y = 0;
 		while (y < top_pixel + 1)
-			//while (y < WIN_HEI / 2)
 		{
 			my_mlx_pixel_put(&cub3d->win, i, y, BLUE);
 			y++;
 		}
 		if (rays[i].was_vt_hit)
-			rect((i * WALL_STIP_WIDTH), ((WIN_HEI / 2) - (wall_strip_height / 2)), WALL_STIP_WIDTH, wall_strip_height, cub3d, WHITE);
+			rect((i * WALL_STIP_WIDTH), ((cub3d->win.hei / 2) - (wall_strip_height / 2)), WALL_STIP_WIDTH, wall_strip_height, cub3d, WHITE);
 		else
-			rect((i * WALL_STIP_WIDTH), ((WIN_HEI / 2) - (wall_strip_height / 2)), WALL_STIP_WIDTH, wall_strip_height, cub3d, GRAY);
-		/*
+			rect((i * WALL_STIP_WIDTH), ((cub3d->win.hei / 2) - (wall_strip_height / 2)), WALL_STIP_WIDTH, wall_strip_height, cub3d, GRAY);
+	/*
 		   int texture_offset_x;
 		   if (rays[i].was_vt_hit)
 		   texture_offset_x = fmod(rays[i].wall_hit_y, 1.0) * 480;
@@ -105,7 +107,7 @@ void	render_3d_walls(t_ray *rays, t_cub3d *cub3d)
 		   int texture_color;
 		   while (j < bot_pixel && j > top_pixel)
 		   {
-		   texture_offset_y = (y + (wall_strip_height / 2) - (WIN_HEI / 2) * (64 / wall_strip_height));
+		   texture_offset_y = (y + (wall_strip_height / 2) - (cub3d->win.hei / 2) * (64 / wall_strip_height));
 		/// recuperer la couleur de ma texture
 		texture_color = get_texture_color(cub3d, texture_offset_x, texture_offset_y); 
 		my_mlx_pixel_put(&cub3d->img, i, j++, texture_color);
@@ -121,10 +123,10 @@ void	render(t_cub3d *cub3d)
 	//load_img(&cub3d->win);
 	update(cub3d);
 	rays = cast_all_rays(cub3d);
-	//	render_minimap(cub3d);	
+	//render_minimap(cub3d);	
 	render_3d_walls(rays, cub3d);
 	free(rays);
-	//	render_player(cub3d);
+	//render_player(cub3d);
 	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->win.img.img, 0, 0);
 }
 

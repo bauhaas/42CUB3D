@@ -35,6 +35,8 @@ void	load_img(t_win *win)
 void	free_img(t_win *win)
 {
 	mlx_destroy_image(win->mlx_p, win->img.img);
+	//free(win->img.img);
+	//free(win->img.addr);
 	win->img.img = NULL;
 	win->img.addr = NULL;
 }

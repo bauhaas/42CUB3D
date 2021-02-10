@@ -18,7 +18,6 @@ void  init_win(t_win *win)
 	win->win_p = NULL;
 	win->wid = -1;
 	win->hei = -1;
-	win->tot_rays = 0;
 }
 
 void load_win(t_win *win)
@@ -31,7 +30,7 @@ void free_win(t_win *win)
 	if(win->mlx_p)
 	{
 		if(win->win_p)
-			mlx_destroy_window(win->mlx_p, win->win_p);
+				mlx_destroy_window(win->mlx_p, win->win_p);
 		mlx_destroy_display(win->mlx_p);
 		free(win->mlx_p);
 	}

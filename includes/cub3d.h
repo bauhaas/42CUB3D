@@ -56,8 +56,8 @@
 # define MAP_COLS	15
 # define TRUE 1
 # define FALSE 0
-# define WIN_WID TILE_SIZE * MAP_COLS
-# define WIN_HEI TILE_SIZE * MAP_ROWS
+# define WIN_WID 1600
+# define WIN_HEI 800
 # define FOV  90 * (M_PI / 180)
 # define DIST_PROJ_PLANE ((WIN_WID / 2) / tan(FOV / 2))
 # define WALL_STIP_WIDTH 1
