@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 19:32:40 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 19:49:32 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static void			render_line(t_cub3d *cub3d, int x, t_ray ray, float wall_height)
 	{
 		off_y = (i + (wall_height / 2.0) - (cub3d->win.hei / 2.0)) *
 		(cub3d->text[0].hei / wall_height);
-		color = grep_color(cub3d->text[0], off_x, off_y);
+		color = grep_color(cub3d->text[ray.id], off_x, off_y);
 		my_mlx_pixel_put(&cub3d->win, x, i++, color);
 	}
 	while (i < cub3d->win.hei)
