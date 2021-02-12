@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 19:37:30 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 20:57:02 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,9 @@ typedef struct	s_data
 	int				floor;
 	int				cols;
 	int				rows;
+	int				grid_flag;
+	int				res;
+	double			dist_proj_plane;
 }				t_data;
 
 typedef struct	s_cub3d
@@ -205,7 +208,7 @@ float			p_dist(float x1, float y1, float x2, float y2);
 
 void init_game(t_cub3d *cub3d, char *file);
 void init_texture(t_cub3d *cub3d);
-void init_grid(t_data *data);
+void init_grid(t_cub3d *cub3d);
 
 //grid
 int grid_parsing(t_cub3d *cub3d, t_list *list);
@@ -228,7 +231,7 @@ int is_error(char *str);
 //texture
 int is_texture(char **line_data);
 int fill_texture(t_cub3d *cub3d, char **line_data);
-void free_text(t_text *text);
+void free_texture(t_cub3d *cub3d);
 int load_texture(t_cub3d *cub3d);
 
 //colors
@@ -242,11 +245,11 @@ int fill_res(t_cub3d *cub3d, char **data);
 //img 
 //void load_img(t_img *img, t_win *win, t_cub3d *cub3d);
 void load_img(t_win *win);
-void free_img(t_win *win);
+void free_img(t_cub3d *cub3d);
 
 //win
 void load_win(t_win *win);
-void free_win(t_win *win);
+void free_win(t_cub3d *cub3d);
 
 int parsing(t_cub3d *cub3d, char *map_file);
 void run_cub3d(t_cub3d *cub3d);

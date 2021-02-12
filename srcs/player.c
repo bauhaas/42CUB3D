@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:13:53 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 19:33:02 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 20:30:00 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,22 @@ void	pos_player(t_player *player, int x, int y, char orientation)
 	if (orientation == 'N')
 		player->rot_ang = 1.5 * M_PI;
 	else if (orientation == 'S')
-	player->rot_ang = M_PI / 2;
+		player->rot_ang = M_PI / 2;
 	else if (orientation == 'E')
-	player->rot_ang = 0;
+		player->rot_ang = 0;
 	else if (orientation == 'W')
-	player->rot_ang =  M_PI;
+		player->rot_ang = M_PI;
 }
 
-int check_player(t_cub3d *cub3d)
+int		check_player(t_cub3d *cub3d)
 {
 	int x;
 	int y;
 	int num_position;
 
-	y = 0;
+	y = -1;
 	num_position = 0;
-	while (y < cub3d->data.rows)
+	while (++y < cub3d->data.rows)
 	{
 		x = -1;
 		while (cub3d->grid[y][++x])
@@ -62,11 +62,9 @@ int check_player(t_cub3d *cub3d)
 					return (is_error("Multiple player position in map"));
 			}
 		}
-		y++;
 	}
 	if (num_position == 0)
 		return (is_error("No player position in map"));
 	printf("player OK\n");
 	return (1);
 }
-

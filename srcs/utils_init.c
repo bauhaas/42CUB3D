@@ -6,14 +6,13 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:24:15 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/04 19:24:48 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 20:30:58 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-
-void init_ray(t_ray *ray, float ray_ang)
+void	init_ray(t_ray *ray, float ray_ang)
 {
 	ray->ray_ang = ray_ang;
 	ray->wall_hit_x = 0;

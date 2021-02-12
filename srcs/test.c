@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 19:49:32 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 20:08:26 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,6 @@ void update(t_cub3d *cub3d)
 		cub3d->player.pos.y = new_player_y;
 	}
 }
-
-void		rect(float x, float y, float x2, float y2, t_cub3d *cub3d, int color)
-{
-	int			i;
-	int			j;
-
-	j = 0;
-	while (j < x2)
-	{
-		i = 0;
-		while (i < y2)
-		{
-			my_mlx_pixel_put(&cub3d->win, x + j, y + i, color);
-			i++;
-		}
-		j++;
-	}
-}
-
 
 int					grep_color(t_text text, int x, int y)
 {
@@ -104,36 +85,14 @@ void				render_3d_walls(t_ray *rays, t_cub3d *cub3d)
 	float			wall_height;
 	int				top_pixel;
 	int				bot_pixel;
-	double			dist_proj_plane;
-
-	dist_proj_plane = (cub3d->win.wid / 2) / (tan(FOV / 2));
 
 	i = 0;
 	while (i < cub3d->win.wid)
-	{/*
-		perp_dist = rays[i].distance * cos(rays[i].ray_ang -
-			cub3d->player.rot_ang);
-		wall_height = DIST_PROJ_PLANE / perp_dist;
-		top_pixel = (cub3d->win.hei / 2.0) - ((int)wall_height / 2);
-		if (top_pixel < 0)
-			top_pixel = 0;
-		bot_pixel = (cub3d->win.hei / 2) + ((int)wall_height / 2);
-		if (bot_pixel > cub3d->win.hei)
-			bot_pixel = cub3d->win.hei;*/
-
-/*
-		perp_dist = rays[i].distance * cos(rays[i].ray_ang - cub3d->player.rot_ang);
-		wall_height = (TILE_SIZE / perp_dist) * DIST_PROJ_PLANE;
-		top_pixel = (cub3d->win.hei / 2) - (wall_height / 2);
-		top_pixel = top_pixel < 0 ? 0 : top_pixel;
-		bot_pixel = (cub3d->win.hei / 2) + (wall_height / 2);
-		bot_pixel = bot_pixel > cub3d->win.hei ? cub3d->win.hei : bot_pixel;
-		//ray_distance = rays[i].distance;
-*/
+	{
 		perp_dist = rays[i].distance * cos(rays[i].ray_ang -
 			cub3d->player.rot_ang);
 		//wall_height = (TILE_SIZE / perp_dist) * DIST_PROJ_PLANE;
-		wall_height = (TILE_SIZE / perp_dist) * dist_proj_plane;
+		wall_height = (TILE_SIZE / perp_dist) * cub3d->data.dist_proj_plane;
 		//wall_height = DIST_PROJ_PLANE / perp_dist;
 		//wall_height = dist_proj_plane / perp_dist;
 		top_pixel = (cub3d->win.hei / 2.0) - ((int)wall_height / 2);
@@ -149,102 +108,6 @@ void				render_3d_walls(t_ray *rays, t_cub3d *cub3d)
 		i++;
 	}
 }
-
-/*
-static void			show_line(t_cub3d *cub3d, int x, t_ray rays, float wall_height, int top_pixel, int bot_pixel)
-{
-	int				i;
-	int				off_x;
-	int				off_y;
-	int				color;
-
-	i = 0;
-	while (i < top_pixel)
-	{
-		my_mlx_pixel_put(&cub3d->win, x, i, BLUE);
-		i++;
-	}
-	if (rays.was_vt_hit)
-		off_x = (int)(fmod(rays.wall_hit_y, 1.0) * cub3d->text[2].wid);
-	else
-		off_x = (int)(fmod(rays.wall_hit_x, 1.0) * cub3d->text[2].wid);
-	while (i < bot_pixel)
-	{
-		off_y = (i + (wall_height / 2.0) - (cub3d->win.hei / 2.0)) *
-		(cub3d->text[0].hei / wall_height);
-		color = grep_color(cub3d->text[2], off_x, off_y);
-		my_mlx_pixel_put(&cub3d->win, x, i, color);
-		i++;
-	}
-	while (i < cub3d->win.hei)
-	{
-		my_mlx_pixel_put(&cub3d->win, x, i, RED);
-		i++;
-	}
-}
-void	render_3d_walls(t_ray *rays, t_cub3d *cub3d)
-{
-	int		i;
-	int		wall_strip_height;
-	float	perp_distance;
-	float	ray_distance;
-	int top_pixel;
-	int bot_pixel;
-	t_line line;
-	t_coord coord;
-	t_coord coord2;
-
-	int x;
-	i = 0;
-	top_pixel = 0;
-	bot_pixel = 0;
-	ray_distance = 0;
-	perp_distance = 0;
-	wall_strip_height = 0;
-	while (i < cub3d->win.wid)
-	{
-		top_pixel = (cub3d->win.hei / 2) - (wall_strip_height / 2);
-		top_pixel = top_pixel < 0 ? 0 : top_pixel;
-		bot_pixel = (cub3d->win.hei / 2) + (wall_strip_height / 2);
-		bot_pixel = bot_pixel > cub3d->win.hei ? cub3d->win.hei : bot_pixel;
-		ray_distance = rays[i].distance;
-		perp_distance = rays[i].distance * cos(rays[i].ray_ang - cub3d->player.rot_ang);
-		wall_strip_height = (TILE_SIZE / perp_distance) * DIST_PROJ_PLANE;
-		x = top_pixel;
-		while (x < cub3d->win.hei) 
-		{
-			my_mlx_pixel_put(&cub3d->win, i, x, RED);
-			x++;
-		}
-		int y = 0;
-		while (y < top_pixel + 1)
-		{
-			my_mlx_pixel_put(&cub3d->win, i, y, BLUE);
-			y++;
-		}
-		show_line(cub3d, i, rays[i], wall_strip_height, top_pixel, bot_pixel);
-		i++;
-		/*
-		int off_x;
-		int off_y;
-		int text_color;
-		   
-		if (rays[i].was_vt_hit)
-		   off_x = (int)fmod(rays[i].wall_hit_y, 1.0) * cub3d->text[0].wid;
-		else
-		   off_x = (int)fmod(rays[i].wall_hit_x, 1.0) * cub3d->text[0].wid;
-		int j = 0;
-		while(j < bot_pixel)
-		{
-		   off_y = (j + (wall_strip_height / 2) - (cub3d->win.hei / 2) * (cub3d->text[0].hei / wall_strip_height));
-		   text_color = grep_color(cub3d->text[0], i, j);
-		   my_mlx_pixel_put(&cub3d->win, x, j, text_color);
-		   j++;
-		}
-		*/
-//		i++;
-//	}
-//}
 
 void	render(t_cub3d *cub3d)
 {

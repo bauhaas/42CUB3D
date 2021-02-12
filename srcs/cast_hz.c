@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:42:58 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 19:34:23 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 21:00:28 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ t_dcast	fill_hz_data(t_cub3d *cub3d, t_ray *ray)
 	//hz_data.yinter = floor(cub3d->player.pos.y);
 	hz_data.yinter += ray->is_down ? TILE_SIZE : 0;
 	//hz_data.yinter += ray->is_down ? 1.0 : 0;
-	hz_data.xinter = cub3d->player.pos.x + (hz_data.yinter - cub3d->player.pos.y) / tan(ray->ray_ang);
+	hz_data.xinter = cub3d->player.pos.x + (hz_data.yinter -
+			cub3d->player.pos.y) / tan(ray->ray_ang);
 	hz_data.ystep = TILE_SIZE;
 	//hz_data.ystep = 1.0;
 	hz_data.ystep *= ray->is_up ? -1 : 1;
@@ -39,13 +40,14 @@ t_dcast	fill_hz_data(t_cub3d *cub3d, t_ray *ray)
 void	hz_cast(t_ray *ray, t_cub3d *cub3d)
 {
 	t_dcast	hz_data;
-	int i;
+	int		i;
 
 	i = 0;
 	hz_data = fill_hz_data(cub3d, ray);
 	if (ray->is_up)
 		i = 1;
-	while (hz_data.next_x >= 0 && hz_data.next_x <= cub3d->win.wid && hz_data.next_y >= 0 && hz_data.next_y <= cub3d->win.hei)
+	while (hz_data.next_x >= 0 && hz_data.next_x <= cub3d->win.wid &&
+			hz_data.next_y >= 0 && hz_data.next_y <= cub3d->win.hei)
 	{
 		if (grid_is_wall(hz_data.next_x, hz_data.next_y - i, cub3d))
 		{

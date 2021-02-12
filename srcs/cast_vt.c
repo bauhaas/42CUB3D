@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:45:15 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 19:33:52 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 21:02:00 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ t_dcast	fill_vt_data(t_cub3d *cub3d, t_ray *ray)
 	//vt_data.xinter = floor(cub3d->player.pos.x);
 	vt_data.xinter +=  ray->is_right ? TILE_SIZE : 0;
 	//vt_data.xinter +=  ray->is_right ? 1.0 : 0;
-	vt_data.yinter = cub3d->player.pos.y + (vt_data.xinter - cub3d->player.pos.x) * tan(ray->ray_ang);
+	vt_data.yinter = cub3d->player.pos.y + (vt_data.xinter -
+			cub3d->player.pos.x) * tan(ray->ray_ang);
 	vt_data.xstep = TILE_SIZE;
 	//vt_data.xstep = 1.0;
 	vt_data.xstep *= ray->is_left ? -1 : 1;
@@ -39,20 +40,17 @@ t_dcast	fill_vt_data(t_cub3d *cub3d, t_ray *ray)
 void 	vt_cast(t_ray *ray, t_cub3d *cub3d)
 {
 	t_dcast	vt_data;
-	int i;
+	int		i;
 
 	i = 0;
 	vt_data = fill_vt_data(cub3d, ray);
 	if (ray->is_left)
 		i = 1;
-	//printf("pos x %f\n", cub3d->player.pos.x);
-	//printf("pos y %f\n", cub3d->player.pos.y);
-	while (vt_data.next_x >= 0 && vt_data.next_x <= cub3d->win.wid && vt_data.next_y >= 0 && vt_data.next_y <= cub3d->win.hei)
+	while (vt_data.next_x >= 0 && vt_data.next_x <= cub3d->win.wid &&
+			vt_data.next_y >= 0 && vt_data.next_y <= cub3d->win.hei)
 	{
-		//my_mlx_pixel_put(&cub3d->img, vt_data.next_x, vt_data.next_y, RED);
 		if (grid_is_wall(vt_data.next_x - i, vt_data.next_y, cub3d))
 		{
-			//printf("test\n");
 			vt_data.hit_y = vt_data.next_y;
 			vt_data.hit_x = vt_data.next_x;
 			vt_data.found_wall = 1;

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:19:50 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/09 19:36:00 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 20:46:03 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,15 @@ void	init_img(t_img *img, t_win *win)
 	img->hei = 0;
 }
 
+void	free_img(t_cub3d *cub3d)
+{
+	mlx_destroy_image(cub3d->win.mlx_p, cub3d->win.img.img);
+	//free(cub3d->win->img.img);
+	//free(cub3d->win->img.addr);
+	cub3d->win.img.img = NULL;
+	cub3d->win.img.addr = NULL;
+}
+
 void	load_img(t_win *win)
 {
 	win->img.img = mlx_new_image(win->mlx_p, win->wid, win->hei);
@@ -30,13 +39,4 @@ void	load_img(t_win *win)
 			&win->img.line_length, &win->img.endian);
 	win->img.wid = win->wid;
 	win->img.hei = win->hei;
-}
-
-void	free_img(t_win *win)
-{
-	mlx_destroy_image(win->mlx_p, win->img.img);
-	//free(win->img.img);
-	//free(win->img.addr);
-	win->img.img = NULL;
-	win->img.addr = NULL;
 }
