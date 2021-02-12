@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:45:15 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/04 20:44:56 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 18:37:38 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void 	vt_cast(t_ray *ray, t_cub3d *cub3d)
 		i = 1;
 	//printf("pos x %f\n", cub3d->player.pos.x);
 	//printf("pos y %f\n", cub3d->player.pos.y);
-	while (vt_data.next_x >= 0 && vt_data.next_x <= WIN_WID && vt_data.next_y >= 0 && vt_data.next_y <= WIN_HEI)
+	while (vt_data.next_x >= 0 && vt_data.next_x <= cub3d->win.wid && vt_data.next_y >= 0 && vt_data.next_y <= cub3d->win.hei)
 	{
 		//my_mlx_pixel_put(&cub3d->img, vt_data.next_x, vt_data.next_y, RED);
 		if (grid_is_wall(vt_data.next_x - i, vt_data.next_y, cub3d))

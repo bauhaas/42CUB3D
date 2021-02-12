@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:21:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/09 17:18:08 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 16:45:59 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	free_text(t_text *text)
 	while (i < 5)
 	{
 		free(text[i].name);
+		text[i].name = NULL;
 		i++;
 	}
 }
@@ -83,3 +84,18 @@ int	fill_texture(t_cub3d *cub3d, char **line_data)
 	return (1);
 }
 
+int	load_texture(t_cub3d *cub3d)
+{
+	int i;
+
+	i = 0;
+	while(i < 5)
+	{
+		cub3d->text[i].ptr = mlx_xpm_file_to_image(cub3d->win.mlx_p, cub3d->text[i].name, &cub3d->text[i].wid, &cub3d->text[i].hei);
+		if(!cub3d->text[i].ptr)
+			return(is_error("bad texture content"));
+		cub3d->text[i].data = mlx_get_data_addr(cub3d->text[i].ptr, &cub3d->text[i].bits_per_pixel, &cub3d->text[i].line_length, &cub3d->text[i].endian);
+		i++;
+	}
+	return (1);
+}

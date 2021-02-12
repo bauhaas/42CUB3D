@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 17:50:16 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/04 20:43:13 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 18:51:58 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,17 @@ t_ray *cast_all_rays(t_cub3d *cub3d)
 	t_ray	*rays;
 	float	ray_ang;
 	int i;
+	double	dist_proj_plane;
 
+	dist_proj_plane = (cub3d->win.wid / 2) / (tan(FOV / 2));
 	i = 0;
-	rays = malloc(sizeof(t_ray) * WIN_WID);
+	rays = malloc(sizeof(t_ray) * cub3d->win.wid);
 	if (!rays)
 		return 0;
-	while (i < WIN_WID)
+	while (i < cub3d->win.wid)
 	{
-		ray_ang = cub3d->player.rot_ang + atan((i - WIN_WID / 2) / DIST_PROJ_PLANE);
+		ray_ang = cub3d->player.rot_ang + atan((i - cub3d->win.wid / 2) / dist_proj_plane);
+		//ray_ang = cub3d->player.rot_ang + atan((i - cub3d->win.wid / 2) / DIST_PROJ_PLANE);
 		rays[i].ray_ang = normalize(ray_ang);
 		init_ray(&rays[i], rays[i].ray_ang);
 		rays[i] = cast(rays[i], cub3d);

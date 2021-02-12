@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/09 20:04:47 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 18:53:23 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,134 @@ void		rect(float x, float y, float x2, float y2, t_cub3d *cub3d, int color)
 	}
 }
 
+
+int					grep_color(t_text text, int x, int y)
+{
+	char			*dst;
+
+	if (x < 0)
+		x = 0;
+	if (y < 0)
+		y = 0;
+	if (x > text.wid)
+		x = text.wid;
+	if (y > text.hei)
+		y = text.hei;
+	dst = text.data + (y * text.line_length + x * text.bits_per_pixel / 8);
+	return (*(unsigned int*)dst);
+}
+
+
+static void			render_line(t_cub3d *cub3d, int x, t_ray ray, float wall_height)
+{
+	int				i;
+	int				off_x;
+	int				off_y;
+	int				color;
+
+	i = 0;
+	while (i < ray.top_pixel)
+		my_mlx_pixel_put(&cub3d->win, x, i++, RED);
+	if (ray.was_vt_hit)
+		off_x = (int)(fmod(ray.wall_hit_y, 1.0) * cub3d->text[0].wid);
+	else
+		off_x = (int)(fmod(ray.wall_hit_x, 1.0) * cub3d->text[0].wid);
+	while (i < ray.bot_pixel)
+	{
+		off_y = (i + (wall_height / 2.0) - (cub3d->win.hei / 2.0)) *
+		(cub3d->text[0].hei / wall_height);
+		color = grep_color(cub3d->text[0], off_x, off_y);
+		my_mlx_pixel_put(&cub3d->win, x, i++, color);
+	}
+	while (i < cub3d->win.hei)
+		my_mlx_pixel_put(&cub3d->win, x, i++, BLUE);
+}
+
+void				render_3d_walls(t_ray *rays, t_cub3d *cub3d)
+{
+	int				i;
+	float			perp_dist;
+	float			wall_height;
+	int				top_pixel;
+	int				bot_pixel;
+	double			dist_proj_plane;
+
+	dist_proj_plane = (cub3d->win.wid / 2) / (tan(FOV / 2));
+
+	i = 0;
+	while (i < cub3d->win.wid)
+	{/*
+		perp_dist = rays[i].distance * cos(rays[i].ray_ang -
+			cub3d->player.rot_ang);
+		wall_height = DIST_PROJ_PLANE / perp_dist;
+		top_pixel = (cub3d->win.hei / 2.0) - ((int)wall_height / 2);
+		if (top_pixel < 0)
+			top_pixel = 0;
+		bot_pixel = (cub3d->win.hei / 2) + ((int)wall_height / 2);
+		if (bot_pixel > cub3d->win.hei)
+			bot_pixel = cub3d->win.hei;*/
+
+/*
+		perp_dist = rays[i].distance * cos(rays[i].ray_ang - cub3d->player.rot_ang);
+		wall_height = (TILE_SIZE / perp_dist) * DIST_PROJ_PLANE;
+		top_pixel = (cub3d->win.hei / 2) - (wall_height / 2);
+		top_pixel = top_pixel < 0 ? 0 : top_pixel;
+		bot_pixel = (cub3d->win.hei / 2) + (wall_height / 2);
+		bot_pixel = bot_pixel > cub3d->win.hei ? cub3d->win.hei : bot_pixel;
+		//ray_distance = rays[i].distance;
+*/
+		perp_dist = rays[i].distance * cos(rays[i].ray_ang -
+			cub3d->player.rot_ang);
+		//wall_height = (TILE_SIZE / perp_dist) * DIST_PROJ_PLANE;
+		wall_height = (TILE_SIZE / perp_dist) * dist_proj_plane;
+		//wall_height = DIST_PROJ_PLANE / perp_dist;
+		//wall_height = dist_proj_plane / perp_dist;
+		top_pixel = (cub3d->win.hei / 2.0) - ((int)wall_height / 2);
+		if (top_pixel < 0)
+			top_pixel = 0;
+		bot_pixel = (cub3d->win.hei / 2) + ((int)wall_height / 2);
+		if (bot_pixel > cub3d->win.hei)
+			bot_pixel = cub3d->win.hei;
+
+		rays[i].top_pixel = top_pixel;
+		rays[i].bot_pixel = bot_pixel;
+		render_line(cub3d, i, rays[i], wall_height);
+		i++;
+	}
+}
+
+/*
+static void			show_line(t_cub3d *cub3d, int x, t_ray rays, float wall_height, int top_pixel, int bot_pixel)
+{
+	int				i;
+	int				off_x;
+	int				off_y;
+	int				color;
+
+	i = 0;
+	while (i < top_pixel)
+	{
+		my_mlx_pixel_put(&cub3d->win, x, i, BLUE);
+		i++;
+	}
+	if (rays.was_vt_hit)
+		off_x = (int)(fmod(rays.wall_hit_y, 1.0) * cub3d->text[2].wid);
+	else
+		off_x = (int)(fmod(rays.wall_hit_x, 1.0) * cub3d->text[2].wid);
+	while (i < bot_pixel)
+	{
+		off_y = (i + (wall_height / 2.0) - (cub3d->win.hei / 2.0)) *
+		(cub3d->text[0].hei / wall_height);
+		color = grep_color(cub3d->text[2], off_x, off_y);
+		my_mlx_pixel_put(&cub3d->win, x, i, color);
+		i++;
+	}
+	while (i < cub3d->win.hei)
+	{
+		my_mlx_pixel_put(&cub3d->win, x, i, RED);
+		i++;
+	}
+}
 void	render_3d_walls(t_ray *rays, t_cub3d *cub3d)
 {
 	int		i;
@@ -92,35 +220,42 @@ void	render_3d_walls(t_ray *rays, t_cub3d *cub3d)
 			my_mlx_pixel_put(&cub3d->win, i, y, BLUE);
 			y++;
 		}
+		show_line(cub3d, i, rays[i], wall_strip_height, top_pixel, bot_pixel);
+		i++;
+	}
+}*/
+	/*	
 		if (rays[i].was_vt_hit)
 			rect((i * WALL_STIP_WIDTH), ((cub3d->win.hei / 2) - (wall_strip_height / 2)), WALL_STIP_WIDTH, wall_strip_height, cub3d, WHITE);
 		else
 			rect((i * WALL_STIP_WIDTH), ((cub3d->win.hei / 2) - (wall_strip_height / 2)), WALL_STIP_WIDTH, wall_strip_height, cub3d, GRAY);
-	/*
-		   int texture_offset_x;
-		   if (rays[i].was_vt_hit)
-		   texture_offset_x = fmod(rays[i].wall_hit_y, 1.0) * 480;
-		   else
-		   texture_offset_x = fmod(rays[i].wall_hit_x, 1.0) * 480;
-		   int texture_offset_y;
-		   int j = 0;
-		   int texture_color;
-		   while (j < bot_pixel && j > top_pixel)
-		   {
-		   texture_offset_y = (y + (wall_strip_height / 2) - (cub3d->win.hei / 2) * (64 / wall_strip_height));
-		/// recuperer la couleur de ma texture
-		texture_color = get_texture_color(cub3d, texture_offset_x, texture_offset_y); 
-		my_mlx_pixel_put(&cub3d->img, i, j++, texture_color);
-		}*/
-		i++;
-	}
-}
+	*/	
+		/*
+		int off_x;
+		int off_y;
+		int text_color;
+		   
+		if (rays[i].was_vt_hit)
+		   off_x = (int)fmod(rays[i].wall_hit_y, 1.0) * cub3d->text[0].wid;
+		else
+		   off_x = (int)fmod(rays[i].wall_hit_x, 1.0) * cub3d->text[0].wid;
+		int j = 0;
+		while(j < bot_pixel)
+		{
+		   off_y = (j + (wall_strip_height / 2) - (cub3d->win.hei / 2) * (cub3d->text[0].hei / wall_strip_height));
+		   text_color = grep_color(cub3d->text[0], i, j);
+		   my_mlx_pixel_put(&cub3d->win, x, j, text_color);
+		   j++;
+		}
+		*/
+//		i++;
+//	}
+//}
 
 void	render(t_cub3d *cub3d)
 {
 	t_ray *rays;
 
-	//load_img(&cub3d->win);
 	update(cub3d);
 	rays = cast_all_rays(cub3d);
 	//render_minimap(cub3d);	
