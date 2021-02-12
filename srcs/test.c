@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 18:53:23 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 19:27:18 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static void			render_line(t_cub3d *cub3d, int x, t_ray ray, float wall_height)
 
 	i = 0;
 	while (i < ray.top_pixel)
-		my_mlx_pixel_put(&cub3d->win, x, i++, RED);
+		my_mlx_pixel_put(&cub3d->win, x, i++, cub3d->data.ceil);
 	if (ray.was_vt_hit)
 		off_x = (int)(fmod(ray.wall_hit_y, 1.0) * cub3d->text[0].wid);
 	else
@@ -92,7 +92,7 @@ static void			render_line(t_cub3d *cub3d, int x, t_ray ray, float wall_height)
 		my_mlx_pixel_put(&cub3d->win, x, i++, color);
 	}
 	while (i < cub3d->win.hei)
-		my_mlx_pixel_put(&cub3d->win, x, i++, BLUE);
+		my_mlx_pixel_put(&cub3d->win, x, i++, cub3d->data.floor);
 }
 
 void				render_3d_walls(t_ray *rays, t_cub3d *cub3d)
@@ -131,9 +131,9 @@ void				render_3d_walls(t_ray *rays, t_cub3d *cub3d)
 		perp_dist = rays[i].distance * cos(rays[i].ray_ang -
 			cub3d->player.rot_ang);
 		//wall_height = (TILE_SIZE / perp_dist) * DIST_PROJ_PLANE;
-		wall_height = (TILE_SIZE / perp_dist) * dist_proj_plane;
+		//wall_height = (TILE_SIZE / perp_dist) * dist_proj_plane;
 		//wall_height = DIST_PROJ_PLANE / perp_dist;
-		//wall_height = dist_proj_plane / perp_dist;
+		wall_height = dist_proj_plane / perp_dist;
 		top_pixel = (cub3d->win.hei / 2.0) - ((int)wall_height / 2);
 		if (top_pixel < 0)
 			top_pixel = 0;
@@ -222,14 +222,6 @@ void	render_3d_walls(t_ray *rays, t_cub3d *cub3d)
 		}
 		show_line(cub3d, i, rays[i], wall_strip_height, top_pixel, bot_pixel);
 		i++;
-	}
-}*/
-	/*	
-		if (rays[i].was_vt_hit)
-			rect((i * WALL_STIP_WIDTH), ((cub3d->win.hei / 2) - (wall_strip_height / 2)), WALL_STIP_WIDTH, wall_strip_height, cub3d, WHITE);
-		else
-			rect((i * WALL_STIP_WIDTH), ((cub3d->win.hei / 2) - (wall_strip_height / 2)), WALL_STIP_WIDTH, wall_strip_height, cub3d, GRAY);
-	*/	
 		/*
 		int off_x;
 		int off_y;

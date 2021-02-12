@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/09 18:47:07 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 19:02:32 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ void	render_minimap(t_cub3d *cub3d)
 	int j;
 
 	i = 0;
-	while (i < MAP_ROWS )
+	while (i < cub3d->data.rows)
 	{
 	//	printf("test in render minimap loop with i\n");
 		j = 0;
-		while (j < MAP_COLS)
+		while (j < cub3d->data.cols)
 		{
 		//	printf("test in render minimap loop with j\n");
 			if (cub3d->grid[i][j] == '1')

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/09 19:44:41 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 19:25:40 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,11 @@
 # define CARDINAL_POINTS "NSEW"
 
 # define TILE_SIZE	64
-# define MAP_ROWS	11
-# define MAP_COLS	15
 # define TRUE 1
 # define FALSE 0
-# define WIN_WID 1600
-# define WIN_HEI 800
 # define FOV  90 * (M_PI / 180)
-# define DIST_PROJ_PLANE ((WIN_WID / 2) / tan(FOV / 2))
-# define WALL_STIP_WIDTH 1
-# define NUM_RAYS WIN_WID / WALL_STIP_WIDTH
-# define MINIMAP_SCALE 1
+# define MINIMAP_SCALE 10.0
+//# define MINIMAP_SCALE 1
 
 typedef struct	s_coord
 {
@@ -140,6 +134,10 @@ typedef struct	s_ray
 	int			is_down;
 	int			is_right;
 	int			is_left;
+
+	int id;
+	int top_pixel;
+	int bot_pixel;
 }				t_ray;
 
 typedef struct	s_text
@@ -231,6 +229,7 @@ int is_error(char *str);
 int is_texture(char **line_data);
 int fill_texture(t_cub3d *cub3d, char **line_data);
 void free_text(t_text *text);
+int load_texture(t_cub3d *cub3d);
 
 //colors
 int is_rgb(char *color);
@@ -249,6 +248,7 @@ void free_img(t_win *win);
 void load_win(t_win *win);
 void free_win(t_win *win);
 
+int parsing(t_cub3d *cub3d, char *map_file);
 void run_cub3d(t_cub3d *cub3d);
 int end_cub3d(t_cub3d *cub3d);
 #endif
