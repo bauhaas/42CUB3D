@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:45:15 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 19:20:57 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 19:33:52 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ t_dcast	fill_vt_data(t_cub3d *cub3d, t_ray *ray)
 	vt_data.found_wall = 0;
 	vt_data.hit_x = 0;
 	vt_data.hit_y = 0;
-	//vt_data.xinter = floor(cub3d->player.pos.x / TILE_SIZE) * TILE_SIZE;
-	vt_data.xinter = floor(cub3d->player.pos.x);
-	//vt_data.xinter +=  ray->is_right ? TILE_SIZE : 0;
-	vt_data.xinter +=  ray->is_right ? 1.0 : 0;
+	vt_data.xinter = floor(cub3d->player.pos.x / TILE_SIZE) * TILE_SIZE;
+	//vt_data.xinter = floor(cub3d->player.pos.x);
+	vt_data.xinter +=  ray->is_right ? TILE_SIZE : 0;
+	//vt_data.xinter +=  ray->is_right ? 1.0 : 0;
 	vt_data.yinter = cub3d->player.pos.y + (vt_data.xinter - cub3d->player.pos.x) * tan(ray->ray_ang);
-	//vt_data.xstep = TILE_SIZE;
-	vt_data.xstep = 1.0;
+	vt_data.xstep = TILE_SIZE;
+	//vt_data.xstep = 1.0;
 	vt_data.xstep *= ray->is_left ? -1 : 1;
-	//vt_data.ystep = TILE_SIZE * tan(ray->ray_ang);
-	vt_data.ystep = 1.0 * tan(ray->ray_ang);
+	vt_data.ystep = TILE_SIZE * tan(ray->ray_ang);
+	//vt_data.ystep = 1.0 * tan(ray->ray_ang);
 	vt_data.ystep *= (ray->is_up && vt_data.ystep > 0) ? -1 : 1;
 	vt_data.ystep *= (ray->is_down && vt_data.ystep < 0) ? -1 : 1;
 	vt_data.next_x = vt_data.xinter;

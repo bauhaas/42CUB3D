@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:13:53 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 19:13:53 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 19:33:02 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ void	init_player(t_player *player)
 
 void	pos_player(t_player *player, int x, int y, char orientation)
 {
-	//player->pos.x = x * TILE_SIZE + TILE_SIZE / 2 + 0.001;
-	//player->pos.y = y * TILE_SIZE + TILE_SIZE / 2 + 0.001;
-	player->pos.x = x + 0.001;
-	player->pos.y = y + 0.001;
+	player->pos.x = x * TILE_SIZE + TILE_SIZE / 2 + 0.001;
+	player->pos.y = y * TILE_SIZE + TILE_SIZE / 2 + 0.001;
+	//player->pos.x = x + 0.001;
+	//player->pos.y = y + 0.001;
 	if (orientation == 'N')
 		player->rot_ang = 1.5 * M_PI;
 	else if (orientation == 'S')

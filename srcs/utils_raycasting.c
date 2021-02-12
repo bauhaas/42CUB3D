@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 01:18:48 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 19:17:16 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 19:34:52 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ int		grid_is_wall(float x, float y, t_cub3d *cub3d)
 
 	if (x < 0 || x > cub3d->win.wid || y < 0 || y > cub3d->win.hei)
 		return (TRUE);
-	//grid_x = floor(x / TILE_SIZE);
-	//grid_y = floor(y / TILE_SIZE);
-	grid_x = floor(x);
-	grid_y = floor(y);
+	grid_x = floor(x / TILE_SIZE);
+	grid_y = floor(y / TILE_SIZE);
+	//grid_x = floor(x);
+	//grid_y = floor(y);
 	if (grid_x >= cub3d->data.cols || grid_y >= cub3d->data.rows)
 		return (TRUE);
 	return (cub3d->grid[grid_y][grid_x] != '0');
