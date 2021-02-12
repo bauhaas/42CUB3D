@@ -6,14 +6,14 @@
 #    By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/11 12:08:52 by bahaas            #+#    #+#              #
-#    Updated: 2021/02/09 19:57:09 by bahaas           ###   ########.fr        #
+#    Updated: 2021/02/12 16:13:39 by bahaas           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= cub3D
 SRCS	= srcs/test.c srcs/cast_hz.c srcs/cast_vt.c srcs/cast_ray.c srcs/minimap.c srcs/utils_raycasting.c srcs/key_events.c srcs/parsing.c \
 		  srcs/player.c srcs/texture.c srcs/grid.c srcs/utils_parsing.c srcs/grid_parsing.c srcs/colors.c srcs/resolution.c \
-		  srcs/images.c srcs/window.c srcs/utils_init.c
+		  srcs/images.c srcs/window.c srcs/utils_init.c srcs/main.c
 #SRCS	= srcs/parsing.c \
 		  srcs/player.c srcs/texture.c srcs/grid.c srcs/utils_parsing.c srcs/grid_parsing.c srcs/colors.c srcs/resolution.c \
 		  srcs/images.c srcs/window.c srcs/utils_init.c
