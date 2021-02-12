@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:31:08 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/09 19:37:57 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/12 15:50:48 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ int	parsing(t_cub3d *cub3d, char *map_file)
 	while (i > 0)
 	{
 		i  = get_next_line(fd, &line);
-		//printf("gnl value : %d  ", i);
-		//printf("line : %s\n", line);
 		if (i != 0)
 			valid = line_data(cub3d, line, &list);
 		free(line);
