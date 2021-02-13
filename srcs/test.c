@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 20:08:26 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 00:52:53 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void update(t_cub3d *cub3d)
 	}
 }
 
-int					grep_color(t_text text, int x, int y)
+int	grep_color(t_text text, int x, int y)
 {
-	char			*dst;
+	char *dst;
 
 	if (x < 0)
 		x = 0;
@@ -51,74 +51,90 @@ int					grep_color(t_text text, int x, int y)
 }
 
 
-static void			render_line(t_cub3d *cub3d, int x, t_ray ray, float wall_height)
+void	render_wall(t_cub3d *cub3d, t_ray rays, int i, float wall_hei)
 {
-	int				i;
-	int				off_x;
-	int				off_y;
+	int				text_x;
+	int				text_y;
 	int				color;
+	int				j;
 
-	i = 0;
-	while (i < ray.top_pixel)
-		my_mlx_pixel_put(&cub3d->win, x, i++, cub3d->data.ceil);
-	if (ray.was_vt_hit)
-		//off_x = (int)(fmod(ray.wall_hit_y, 1.0) * cub3d->text[0].wid);
-		off_x = (int)(fmod(ray.wall_hit_y, 64));
+	j = rays.top_pixel;
+	if (rays.was_vt_hit)
+		text_x = fmod(rays.wall_hit_y, 64);
 	else
-		//off_x = (int)(fmod(ray.wall_hit_x, 1.0) * cub3d->text[0].wid);
-		off_x = (int)(fmod(ray.wall_hit_x, 64));
-	while (i < ray.bot_pixel)
+		text_x = fmod(rays.wall_hit_x, 64);
+	while (j < rays.bot_pixel)
 	{
-		off_y = (i + (wall_height / 2.0) - (cub3d->win.hei / 2.0)) *
-		(cub3d->text[0].hei / wall_height);
-		color = grep_color(cub3d->text[ray.id], off_x, off_y);
-		my_mlx_pixel_put(&cub3d->win, x, i++, color);
+		text_y = (j + (wall_hei / 2) - (cub3d->win.hei / 2)) *
+		(cub3d->text[rays.id].hei / wall_hei);
+		color = grep_color(cub3d->text[rays.id], text_x, text_y);
+		my_mlx_pixel_put(&cub3d->win, i, j, color);
+		j++;
 	}
-	while (i < cub3d->win.hei)
-		my_mlx_pixel_put(&cub3d->win, x, i++, cub3d->data.floor);
 }
 
-void				render_3d_walls(t_ray *rays, t_cub3d *cub3d)
+void render_floor(t_cub3d *cub3d, t_ray rays, int i)
 {
-	int				i;
-	float			perp_dist;
-	float			wall_height;
+	int j;
+
+	j = rays.bot_pixel;
+	while(j < cub3d->win.hei)
+	{
+		my_mlx_pixel_put(&cub3d->win, i, j, cub3d->data.floor);
+		j++;
+	}
+}
+
+void render_ceil(t_cub3d *cub3d, t_ray rays, int i)
+{
+	int j;
+
+	j = 0;
+	while(j < rays.top_pixel)
+	{
+		my_mlx_pixel_put(&cub3d->win, i, j, cub3d->data.ceil);
+		j++;
+	}
+}
+
+void				render_3d(t_ray *rays, t_cub3d *cub3d)
+{
+	float			wall_dist;
+	float			wall_hei;
 	int				top_pixel;
 	int				bot_pixel;
+	int				i;
 
 	i = 0;
 	while (i < cub3d->win.wid)
 	{
-		perp_dist = rays[i].distance * cos(rays[i].ray_ang -
+		wall_dist = rays[i].distance * cos(rays[i].ray_ang -
 			cub3d->player.rot_ang);
-		//wall_height = (TILE_SIZE / perp_dist) * DIST_PROJ_PLANE;
-		wall_height = (TILE_SIZE / perp_dist) * cub3d->data.dist_proj_plane;
-		//wall_height = DIST_PROJ_PLANE / perp_dist;
-		//wall_height = dist_proj_plane / perp_dist;
-		top_pixel = (cub3d->win.hei / 2.0) - ((int)wall_height / 2);
+		wall_hei = (TILE_SIZE / wall_dist) * cub3d->data.dist_proj_plane;
+		//wall_hei = cub3d->data.dist_proj_plane / wall_dist;
+		top_pixel = (cub3d->win.hei / 2) - (wall_hei / 2);
+		bot_pixel = (cub3d->win.hei / 2) + (wall_hei / 2);
 		if (top_pixel < 0)
 			top_pixel = 0;
-		bot_pixel = (cub3d->win.hei / 2) + ((int)wall_height / 2);
 		if (bot_pixel > cub3d->win.hei)
 			bot_pixel = cub3d->win.hei;
-
 		rays[i].top_pixel = top_pixel;
 		rays[i].bot_pixel = bot_pixel;
-		render_line(cub3d, i, rays[i], wall_height);
+		render_ceil(cub3d, rays[i], i);
+		render_floor(cub3d, rays[i], i);
+		render_wall(cub3d, rays[i], i, wall_hei);
 		i++;
 	}
 }
 
 void	render(t_cub3d *cub3d)
 {
-	t_ray *rays;
-
-	update(cub3d);
-	rays = cast_all_rays(cub3d);
-	//render_minimap(cub3d);	
-	render_3d_walls(rays, cub3d);
-	free(rays);
-	//render_player(cub3d);
+	cub3d->rays = cast_all_rays(cub3d);
+	render_3d(cub3d->rays, cub3d);
+	render_minimap(cub3d);	
+	render_player(cub3d);
+	//render_sprites(cub3d);
+	free(cub3d->rays);
 	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->win.img.img, 0, 0);
 }
 

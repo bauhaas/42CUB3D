@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 19:02:32 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 00:53:31 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,153 +18,139 @@ void	my_mlx_pixel_put(t_win *win, int x, int y, int color)
 
 	if (x >= 0 && x <= win->wid && y >= 0 && y <= win->hei)
 	{
-		dst = win->img.addr + (y * win->img.line_length + x * (win->img.bits_per_pixel / 8));
+		dst = win->img.addr + (y * win->img.line_length + x *
+				(win->img.bits_per_pixel / 8));
 		*(unsigned int*)dst = color;
 	}
 }
 
-void	render_minimap_square(int x, int y, int size, t_cub3d *cub3d)
+void	square(t_coord coord, int size, t_cub3d *cub3d, int color)
 {
 	int i;
 	int j;
 
-	i = 0;
-	//printf("size value : %d\n", size);
-	while (i < size)
+	i = -1;
+	while (++i < size)
 	{
-		j = 0;
-		while (j < size)
-		{
-			//printf("test in render minimap square\n");
-			my_mlx_pixel_put(&cub3d->win, x + j, y + i, GRAY);
-			j++;
-		}
-		i++;
+		j = -1;
+		while (++j < size)
+			my_mlx_pixel_put(&cub3d->win, coord.x + j, coord.y + i, color);
 	}
 }
-/*
-void	render_minimap_square_back(int x, int y, int size, t_cub3d *cub3d)
-{
-	int i;
-	int j;
 
-	i = 0;
-	while (i < size)
-	{
-		j = 0;
-		while (j < size)
-		{
-			my_mlx_pixel_put(&cub3d->img, x + j, y + i, BLUE);
-			j++;
-		}
-		i++;
-	}
-}
-*/
 void	render_minimap(t_cub3d *cub3d)
 {
 	int i;
 	int j;
+	t_coord coord;
 
-	i = 0;
-	while (i < cub3d->data.rows)
+	i = -1;
+	while (++i < cub3d->data.rows)
 	{
-	//	printf("test in render minimap loop with i\n");
-		j = 0;
-		while (j < cub3d->data.cols)
+		j = -1;
+		while (++j < cub3d->data.cols)
 		{
-		//	printf("test in render minimap loop with j\n");
+			coord.x = MINIMAP_SCALE * (j * TILE_SIZE);
+			coord.y = MINIMAP_SCALE * (i * TILE_SIZE);
+			//coord.x = MINIMAP_SCALE * (j);
+			//coord.y = MINIMAP_SCALE * (i);
 			if (cub3d->grid[i][j] == '1')
-			{
-				render_minimap_square(MINIMAP_SCALE * (j * TILE_SIZE), MINIMAP_SCALE * (i * TILE_SIZE), MINIMAP_SCALE * TILE_SIZE, cub3d);
-			}
-			/*if (cub3d->grid[i][j] == '0')
-			{
-				render_minimap_square_back(MINIMAP_SCALE * (j * TILE_SIZE) + j, MINIMAP_SCALE * (i * TILE_SIZE) + i, MINIMAP_SCALE * TILE_SIZE, cub3d);
-			}*/
-			j++;
+				square(coord, MINIMAP_SCALE * TILE_SIZE, cub3d, GRAY);
+			else
+				square(coord, MINIMAP_SCALE * TILE_SIZE, cub3d, BLACK);
 		}
+	}
+}
+
+/*
+ * DDA Line Algorithm
+ */
+/*
+   void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
+   {
+   int delta_x = line->end.x - line->start.x;
+   int delta_y = line->end.y - line->start.y;
+
+   int longest_side = (abs(delta_x) >= abs(delta_y)) ? abs(delta_x) : abs(delta_y);
+   float x_inc = delta_x / (float)longest_side;
+   float y_inc = delta_y / (float)longest_side;
+
+   float curr_x = line->start.x;
+   float curr_y = line->start.y;
+   for(int i = 0; i < longest_side; i++)
+   {
+   my_mlx_pixel_put(&cub3d->win, round(curr_x), round(curr_y), color);
+   curr_x += x_inc;
+   curr_y += y_inc;
+   }
+   }*/
+
+void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
+{
+	t_coord		c;
+	float		length;
+	t_coord		add_point;
+	float		i;
+
+	c.x = line->end.x - line->start.x;
+	c.y = line->end.y - line->start.y;
+	length = sqrt(c.x * c.x + c.y * c.y);
+	add_point.x = c.x / length;
+	add_point.y = c.y / length;
+	c.x = line->start.x;
+	c.y = line->start.y;
+	i = 0.0;
+	while (i < length)
+	{
+		my_mlx_pixel_put(&cub3d->win, c.x, c.y, color);
+		c.x += add_point.x;
+		c.y += add_point.y;
 		i++;
 	}
 }
 
-/*
-**	Bresenham line algorithm
-*/ 
-
-/*
-	float e2;
-	float dx =  abs(line->end.x -line->start.x);
-	float sx = line->start.x < line->end.x ? 1 : -1;
-	float dy = -abs(line->end.y - line->start.y);
-	float sy = line->start.y < line->end.y ? 1 : -1;
-	float err = dx+dy;
-	while (1) 
-	{
-		my_mlx_pixel_put(&cub3d->img, line->start.x, line->start.y, WHITE);
-		if (line->start.x == line->end.x && line->start.y == line->end.y)
-		{
-			printf("test\n");
-			break ;
-		}
-		e2 = 2*err;
-		if (e2 >= dy)
-		{
-			err += dy;
-			line->start.x += sx;
-		}
-		if (e2 <= dx)
-		{
-			err += dx;
-			line->start.y += sy;
-		}
-	}	
-*/
-/*
-	float t;
-	float x; 
-	float y;
-
-	t = 0;
-	while (t < 1)
-	{
-	x = line->start.x + (line->end.x - line->start.x)*t - 6;
-	y = line->start.y + (line->end.y - line->start.y)*t - 6;
-	my_mlx_pixel_put(&cub3d->img, x + cub3d->player.radius, y + cub3d->player.radius, color);
-	t += 0.001;
-	}
-*/
-
-/*
- * DDA Line Algorithm
-*/
-
-void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
+void render_player(t_cub3d *cub3d)
 {
-	int delta_x = line->end.x - line->start.x;
-	int delta_y = line->end.y - line->start.y;
+	int i;
 
-	int longest_side = (abs(delta_x) >= abs(delta_y)) ? abs(delta_x) : abs(delta_y);
-	float x_inc = delta_x / (float)longest_side;
-	float y_inc = delta_y / (float)longest_side;
+	i = -1;
+	while(++i < cub3d->win.wid)
+		render_view_line(&cub3d->rays[i].line, cub3d, GREEN);
+	render_view_line(&cub3d->rays[cub3d->win.wid / 2].line, cub3d, WHITE);
+}
 
-	float curr_x = line->start.x;
-	float curr_y = line->start.y;
-	for(int i = 0; i < longest_side; i++)
+
+void		rect(t_win *win, t_coord a, t_coord coord, int color)
+{
+	int			i;
+	int			j;
+
+	j = 0;
+	while (j < coord.x)
 	{
-		my_mlx_pixel_put(&cub3d->win, round(curr_x), round(curr_y), color);
-		curr_x += x_inc;
-		curr_y += y_inc;
+		i = 0;
+		while (i < coord.y)
+		{
+			my_mlx_pixel_put(win, a.x + j, a.y + i, color);
+			i++;
+		}
+		j++;
 	}
 }
 
-void	render_player(t_cub3d *cub3d)
+void	minimap_sprites(t_cub3d *cub3d, int i)
 {
-	t_line line;
+	t_coord start;
+	t_coord end;
 
-	line.start.x = MINIMAP_SCALE * cub3d->player.pos.x;
-	line.start.y = MINIMAP_SCALE * cub3d->player.pos.y;
-	line.end.y = line.start.y + sin(cub3d->player.rot_ang) * (TILE_SIZE / 2);
-	line.end.x = line.start.x + cos(cub3d->player.rot_ang) * (TILE_SIZE / 2);
-	render_view_line(&line, cub3d, WHITE);
+	start.x = (cub3d->sprites[i].coord.x * TILE_SIZE) * MINIMAP_SCALE;
+	start.y = (cub3d->sprites[i].coord.y * TILE_SIZE) * MINIMAP_SCALE;
+//	start.x = (cub3d->sprites[i].coord.x) * MINIMAP_SCALE;
+//	start.y = (cub3d->sprites[i].coord.y) * MINIMAP_SCALE;
+	end.x = 5;
+	end.y = 5;
+	if(cub3d->sprites[i].visibility)
+		rect(&cub3d->win, start, end, RED);
+	else
+		rect(&cub3d->win, start, end, BLUE);
 }

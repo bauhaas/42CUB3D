@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 17:50:16 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 21:02:04 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/13 20:17:52 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,13 @@ t_ray	cast(t_ray ray, t_cub3d *cub3d)
 	ray.distance = (hz_dist < vt_dist) ? hz_dist : vt_dist;
 	ray.was_vt_hit = (vt_dist < hz_dist);
 	wall_hit = init_coord(ray.wall_hit_x, ray.wall_hit_y);
-	line = init_line(cub3d->player.pos, wall_hit);
-	//	render_view_line(&line, cub3d, GREEN);
+	//line = init_line(cub3d->player.pos, wall_hit);
+	ray.line = init_line(cub3d->player.pos, wall_hit);
+	//render_view_line(&line, cub3d, GREEN);
 	select_texture(&ray, hz_dist, vt_dist);
 	return (ray);
 }
+
 
 t_ray 	*cast_all_rays(t_cub3d *cub3d)
 {
@@ -79,3 +81,24 @@ t_ray 	*cast_all_rays(t_cub3d *cub3d)
 	}
 	return (rays);
 }
+
+/*
+void 	cast_all_rays(t_cub3d *cub3d)
+{
+	float	ray_ang;
+	int		i;
+
+	i = 0;
+	cub3d->rays = malloc(sizeof(t_ray) * cub3d->win.wid);
+//	if (!cub3d->rays)
+//		return 0;
+	while (i < cub3d->win.wid)
+	{
+		ray_ang = cub3d->player.rot_ang + atan((i - cub3d->win.wid / 2) /
+				cub3d->data.dist_proj_plane);
+		cub3d->rays[i].ray_ang = normalize(ray_ang);
+		init_ray(&cub3d->rays[i], cub3d->rays[i].ray_ang);
+		cub3d->rays[i] = cast(cub3d->rays[i], cub3d);
+		i++;
+	}
+}*/

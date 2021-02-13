@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 01:18:48 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 19:34:52 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 00:52:33 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@ float	normalize(float ray_ang)
 {
 	ray_ang = fmod(ray_ang, (2 * M_PI));
 	if (ray_ang < 0)
-	{
 		ray_ang += 2 * M_PI;
-	}
 	return (ray_ang);
 }
 
@@ -35,9 +33,25 @@ int		grid_is_wall(float x, float y, t_cub3d *cub3d)
 	//grid_y = floor(y);
 	if (grid_x >= cub3d->data.cols || grid_y >= cub3d->data.rows)
 		return (TRUE);
-	return (cub3d->grid[grid_y][grid_x] != '0');
+	return (cub3d->grid[grid_y][grid_x] == '1');
 }
+/*
+int		grid_is_sprite(float x, float y, t_cub3d *cub3d)
+{
+	int grid_x;
+	int grid_y;
 
+	if (x < 0 || x > cub3d->win.wid || y < 0 || y > cub3d->win.hei)
+		return (TRUE);
+	//grid_x = floor(x / TILE_SIZE);
+	//grid_y = floor(y / TILE_SIZE);
+	grid_x = floor(x);
+	grid_y = floor(y);
+	if (grid_x >= cub3d->data.cols || grid_y >= cub3d->data.rows)
+		return (TRUE);
+	return (cub3d->grid[grid_y][grid_x] == '2');
+}
+*/
 float	p_dist(float x1, float y1, float x2, float y2)
 {
 	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));

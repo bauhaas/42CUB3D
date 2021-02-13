@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 20:57:02 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/13 22:57:29 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@
 # define TRUE 1
 # define FALSE 0
 # define FOV  90 * (M_PI / 180)
-# define MINIMAP_SCALE 50
-//# define MINIMAP_SCALE 1
+# define MINIMAP_SCALE 0.3
 
 typedef struct	s_coord
 {
@@ -162,7 +161,24 @@ typedef struct	s_data
 	int				grid_flag;
 	int				res;
 	double			dist_proj_plane;
+	int				num_sprites;
 }				t_data;
+
+typedef struct	s_sprite
+{
+	t_coord		coord;
+	float		distance;
+	float		ang;
+	int			texture;
+	int			visibility;
+
+
+	int hei;
+	int id;
+	int top_pixel;
+	int bot_pixel;
+	int first_x;
+}				t_sprite;
 
 typedef struct	s_cub3d
 {
@@ -170,6 +186,7 @@ typedef struct	s_cub3d
 	t_win		win;
 	t_player	player;
 	t_ray		*rays;
+	t_sprite	*sprites;
 	t_text		text[5];
 	t_data		data;
 	char		**grid;
@@ -178,7 +195,6 @@ typedef struct	s_cub3d
 int				key_pressed(int keycode, t_cub3d *cub3d);
 int				key_released(int keycode, t_player *player);
 
-//void			init_player(t_player *player, int x, int y, char orientation);
 void			init_player(t_player *player);
 void			init_img(t_img *img, t_win *win);
 void			init_win(t_win *win);
@@ -188,8 +204,8 @@ t_coord			init_coord(float a, float b);
 
 void			render_player(t_cub3d *cub3d);
 void			render_minimap(t_cub3d *cub3d);
-void			render_minimap_square(int x, int y, int size, t_cub3d *cub3d);
 void			render_view_line(t_line *line, t_cub3d *cub3d, int color);
+void			minimap_sprites(t_cub3d *cub3d, int i);
 
 void			update(t_cub3d *cub3d);
 void			render(t_cub3d *cub3d);
@@ -200,6 +216,7 @@ void			hz_cast(t_ray *ray, t_cub3d *cub3d);
 void			vt_cast(t_ray *ray, t_cub3d *cub3d);
 t_ray			cast(t_ray ray, t_cub3d *cub3d);
 t_ray			*cast_all_rays(t_cub3d *cub3d);
+//void			cast_all_rays(t_cub3d *cub3d);
 
 int				grid_is_wall(float x, float y, t_cub3d *cub3d);
 float			normalize(float ray_ang);
@@ -251,6 +268,13 @@ void free_img(t_cub3d *cub3d);
 void load_win(t_win *win);
 void free_win(t_cub3d *cub3d);
 
+//sprites
+int check_sprites(t_cub3d *cub3d);
+void render_sprites(t_cub3d *cub3d);
+int load_sprites(t_cub3d *cub3d);
+void free_sprite(t_cub3d *cub3d);
+
+int grep_color(t_text text, int x, int y);
 int parsing(t_cub3d *cub3d, char *map_file);
 void run_cub3d(t_cub3d *cub3d);
 int end_cub3d(t_cub3d *cub3d);

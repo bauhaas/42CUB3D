@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:31:08 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 20:57:23 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/13 23:47:37 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int		parsing(t_cub3d *cub3d, char *map_file)
 			return (0);
 	}
 	close(fd);
-	if (!grid_parsing(cub3d, list) || !load_texture(cub3d))
+	if (!grid_parsing(cub3d, list) || !load_texture(cub3d) || !load_sprites(cub3d))
 		return (0);
 	return (1);
 }

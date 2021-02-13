@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:19:13 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 20:57:43 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/13 18:32:04 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	init_grid(t_cub3d *cub3d)
 	cub3d->data.floor = -1;
 	cub3d->data.grid_flag = 0;
 	cub3d->data.res = 0;
+	cub3d->data.dist_proj_plane = 0;
+	cub3d->data.num_sprites = 0;
 }
 
 void	free_grid(t_cub3d *cub3d)
@@ -72,7 +74,7 @@ int		grid_parsing(t_cub3d *cub3d, t_list *list)
 {
 	grid_alloc(cub3d, list);
 	ft_lstclear(&list, &ft_free);
-	if (!check_player(cub3d) || !check_grid(cub3d))
+	if (!check_player(cub3d) || !check_grid(cub3d) || !check_sprites(cub3d))
 		return (0);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 16:12:03 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 20:24:38 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/13 19:11:30 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	init_cub3d(t_cub3d *cub3d, char *file)
 int		end_cub3d(t_cub3d *cub3d)
 {
 	free_texture(cub3d);
-	//free_sprite(cub3d);
+	free_sprite(cub3d);
 	free_grid(cub3d);
 	if (cub3d->win.img.img)
 		free_img(cub3d);
