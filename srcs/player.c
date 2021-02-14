@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:13:53 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 02:32:15 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 21:00:39 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,41 @@ void	init_player(t_player *player)
 	player->rot_ang = 0;
 	player->mov_speed = 0.3;
 	player->rot_speed = 3 * (M_PI / 180);
+}
+
+void update(t_cub3d *cub3d)
+{
+	float mov_step;
+	float new_player_x;
+	float new_player_y;
+
+/*
+	printf("player x : %f\n", cub3d->player.pos.x);
+	printf("player y : %f\n", cub3d->player.pos.y);
+	*/
+	cub3d->player.rot_ang += cub3d->player.turn_d * cub3d->player.rot_speed;
+	//for sprite if too much rotation
+	cub3d->player.rot_ang = normalize(cub3d->player.rot_ang);
+
+	//move player dot
+	/*
+	printf("walk_d : %d\n", cub3d->player.walk_d);
+	printf("movspeeed : %f\n", cub3d->player.mov_speed);
+	*/
+	mov_step = cub3d->player.walk_d * cub3d->player.mov_speed;
+	new_player_x = cub3d->player.pos.x + cos(cub3d->player.rot_ang) * mov_step;
+	new_player_y = cub3d->player.pos.y + sin(cub3d->player.rot_ang) * mov_step;
+/*
+	printf("mov step: %f\n", mov_step);
+	printf("new x: %f\n", new_player_x);
+	printf("new y: %f\n", new_player_y);
+	*/
+	//if (!grid_is_wall(new_player_x, new_player_y, cub3d) && !grid_is_sprite(new_player_x, new_player_y, cub3d))
+	if (!grid_is_wall(new_player_x, new_player_y, cub3d))
+	{
+		cub3d->player.pos.x = new_player_x;
+		cub3d->player.pos.y = new_player_y;
+	}
 }
 
 void	pos_player(t_player *player, int x, int y, char orientation)

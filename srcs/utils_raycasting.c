@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 01:18:48 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 02:09:02 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 20:59:25 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,12 @@ int		grid_is_wall(float x, float y, t_cub3d *cub3d)
 	grid_y = floor(y);
 	if (grid_x >= cub3d->data.cols || grid_y >= cub3d->data.rows)
 		return (TRUE);
-	return (cub3d->grid[grid_y][grid_x] == '1');
+	if(cub3d->grid[grid_y][grid_x] == '1')
+		return(TRUE);
+	else
+		return(FALSE);
 }
-/*
-int		grid_is_sprite(float x, float y, t_cub3d *cub3d)
-{
-	int grid_x;
-	int grid_y;
 
-	if (x < 0 || x > cub3d->win.wid || y < 0 || y > cub3d->win.hei)
-		return (TRUE);
-	grid_x = floor(x);
-	grid_y = floor(y);
-	if (grid_x >= cub3d->data.cols || grid_y >= cub3d->data.rows)
-		return (TRUE);
-	return (cub3d->grid[grid_y][grid_x] == '2');
-}
-*/
 float	p_dist(float x1, float y1, float x2, float y2)
 {
 	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));

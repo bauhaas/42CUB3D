@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 02:08:30 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 20:47:11 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	square(t_coord coord, int size, t_cub3d *cub3d, int color)
 	}
 }
 
-void	render_minimap(t_cub3d *cub3d)
+void	render_mini_map(t_cub3d *cub3d)
 {
 	int i;
 	int j;
@@ -50,8 +50,8 @@ void	render_minimap(t_cub3d *cub3d)
 		j = -1;
 		while (++j < cub3d->data.cols)
 		{
-			coord.x = MINIMAP_SCALE * (j);
-			coord.y = MINIMAP_SCALE * (i);
+			coord.x = MINIMAP_SCALE * j;
+			coord.y = MINIMAP_SCALE * i;
 			if (cub3d->grid[i][j] == '1')
 				square(coord, MINIMAP_SCALE, cub3d, GRAY);
 			else
@@ -60,54 +60,30 @@ void	render_minimap(t_cub3d *cub3d)
 	}
 }
 
-/*
- * DDA Line Algorithm
- */
-/*
-   void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
-   {
-   int delta_x = line->end.x - line->start.x;
-   int delta_y = line->end.y - line->start.y;
-
-   int longest_side = (abs(delta_x) >= abs(delta_y)) ? abs(delta_x) : abs(delta_y);
-   float x_inc = delta_x / (float)longest_side;
-   float y_inc = delta_y / (float)longest_side;
-
-   float curr_x = line->start.x;
-   float curr_y = line->start.y;
-   for(int i = 0; i < longest_side; i++)
-   {
-   my_mlx_pixel_put(&cub3d->win, round(curr_x), round(curr_y), color);
-   curr_x += x_inc;
-   curr_y += y_inc;
-   }
-   }*/
-
 void	render_view_line(t_line *line, t_cub3d *cub3d, int color)
 {
-	t_coord		c;
-	float		length;
-	t_coord		add_point;
+	t_coord		delta;
+	t_coord		tmp;
+	float		len;
 	float		i;
 
-	c.x = line->end.x - line->start.x;
-	c.y = line->end.y - line->start.y;
-	length = sqrt(c.x * c.x + c.y * c.y);
-	add_point.x = c.x / length;
-	add_point.y = c.y / length;
-	c.x = line->start.x;
-	c.y = line->start.y;
-	i = 0.0;
-	while (i < length)
+	delta.x = line->end.x - line->start.x;
+	delta.y = line->end.y - line->start.y;
+	len = sqrt(delta.x * delta.x + delta.y * delta.y);
+	tmp.x = delta.x / len;
+	tmp.y = delta.y / len;
+	delta.x = line->start.x;
+	delta.y = line->start.y;
+	i = -1.0;
+	while (++i < len)
 	{
-		my_mlx_pixel_put(&cub3d->win, c.x, c.y, color);
-		c.x += add_point.x;
-		c.y += add_point.y;
-		i++;
+		my_mlx_pixel_put(&cub3d->win, delta.x, delta.y, color);
+		delta.x += tmp.x;
+		delta.y += tmp.y;
 	}
 }
 
-void render_player(t_cub3d *cub3d)
+void render_mini_player(t_cub3d *cub3d)
 {
 	int i;
 
@@ -117,36 +93,22 @@ void render_player(t_cub3d *cub3d)
 	render_view_line(&cub3d->rays[cub3d->win.wid / 2].line, cub3d, WHITE);
 }
 
-
-void		rect(t_win *win, t_coord a, t_coord coord, int color)
+void	render_mini_sprites(t_cub3d *cub3d)
 {
-	int			i;
-	int			j;
+	int i;
+	int j;
+	t_coord coord;
 
-	j = 0;
-	while (j < coord.x)
+	i = -1;
+	while (++i < cub3d->data.rows)
 	{
-		i = 0;
-		while (i < coord.y)
+		j = -1;
+		while (++j < cub3d->data.cols)
 		{
-			my_mlx_pixel_put(win, a.x + j, a.y + i, color);
-			i++;
+			coord.x = MINIMAP_SCALE * j;
+			coord.y = MINIMAP_SCALE * i;
+			if (cub3d->grid[i][j] == '2')
+				my_mlx_pixel_put(&cub3d->win, coord.x, coord.y, BLUE);
 		}
-		j++;
 	}
-}
-
-void	minimap_sprites(t_cub3d *cub3d, int i)
-{
-	t_coord start;
-	t_coord end;
-
-	start.x = (cub3d->sprites[i].coord.x) * MINIMAP_SCALE;
-	start.y = (cub3d->sprites[i].coord.y) * MINIMAP_SCALE;
-	end.x = 5;
-	end.y = 5;
-	if(cub3d->sprites[i].visibility)
-		rect(&cub3d->win, start, end, RED);
-	else
-		rect(&cub3d->win, start, end, BLUE);
 }

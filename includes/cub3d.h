@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 02:34:12 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 20:58:56 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,10 @@
 # define BLACK	0x00000000
 
 # define CARDINAL_POINTS "NSEW"
-
-# define TILE_SIZE	64
 # define TRUE 1
 # define FALSE 0
 # define FOV  90 * (M_PI / 180)
-# define MINIMAP_SCALE 10.0
+# define MINIMAP_SCALE 20
 
 typedef struct	s_coord
 {
@@ -171,13 +169,11 @@ typedef struct	s_sprite
 	float		ang;
 	int			texture;
 	int			visibility;
-
-
-	int hei;
-	int id;
-	int top_pixel;
-	int bot_pixel;
-	int first_x;
+	float 		hei;
+	int 		id;
+	int 		top_pixel;
+	int 		bot_pixel;
+	float 		first_x;
 }				t_sprite;
 
 typedef struct	s_cub3d
@@ -195,6 +191,9 @@ typedef struct	s_cub3d
 int				key_pressed(int keycode, t_cub3d *cub3d);
 int				key_released(int keycode, t_player *player);
 
+void			init_game(t_cub3d *cub3d, char *file);
+void			init_texture(t_cub3d *cub3d);
+void			init_grid(t_cub3d *cub3d);
 void			init_player(t_player *player);
 void			init_img(t_img *img, t_win *win);
 void			init_win(t_win *win);
@@ -202,10 +201,10 @@ void			init_ray(t_ray *ray, float ray_ang);
 t_line			init_line(t_coord a, t_coord b);
 t_coord			init_coord(float a, float b);
 
-void			render_player(t_cub3d *cub3d);
-void			render_minimap(t_cub3d *cub3d);
+void			render_mini_player(t_cub3d *cub3d);
+void			render_mini_map(t_cub3d *cub3d);
 void			render_view_line(t_line *line, t_cub3d *cub3d, int color);
-void			minimap_sprites(t_cub3d *cub3d, int i);
+void			render_mini_sprites(t_cub3d *cub3d);
 
 void			update(t_cub3d *cub3d);
 void			render(t_cub3d *cub3d);
@@ -216,16 +215,13 @@ void			hz_cast(t_ray *ray, t_cub3d *cub3d);
 void			vt_cast(t_ray *ray, t_cub3d *cub3d);
 t_ray			cast(t_ray ray, t_cub3d *cub3d);
 t_ray			*cast_all_rays(t_cub3d *cub3d);
-//void			cast_all_rays(t_cub3d *cub3d);
 
 int				grid_is_wall(float x, float y, t_cub3d *cub3d);
+int				grid_is_sprite(float x, float y, t_cub3d *cub3d);
 float			normalize(float ray_ang);
 float			p_dist(float x1, float y1, float x2, float y2);
 
 
-void init_game(t_cub3d *cub3d, char *file);
-void init_texture(t_cub3d *cub3d);
-void init_grid(t_cub3d *cub3d);
 
 //grid
 int grid_parsing(t_cub3d *cub3d, t_list *list);
@@ -260,7 +256,6 @@ int fill_color(t_cub3d *cub3d, char **line);
 int fill_res(t_cub3d *cub3d, char **data);
 
 //img 
-//void load_img(t_img *img, t_win *win, t_cub3d *cub3d);
 void load_img(t_win *win);
 void free_img(t_cub3d *cub3d);
 

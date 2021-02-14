@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 16:12:03 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/13 19:11:30 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 21:04:00 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,17 @@ int		end_cub3d(t_cub3d *cub3d)
 		free_img(cub3d);
 	free_win(cub3d);
 	exit(0);
+}
+
+void run_cub3d(t_cub3d *cub3d)
+{
+	load_win(&cub3d->win);
+	load_img(&cub3d->win);
+	mlx_hook(cub3d->win.win_p, 2, 1L<<0, key_pressed, cub3d);
+	mlx_hook(cub3d->win.win_p, 3, 1L<<1, key_released, &cub3d->player);
+	mlx_hook(cub3d->win.win_p, 33, 1L<<17, &end_cub3d, cub3d);
+	render(cub3d);
+	mlx_loop(cub3d->win.mlx_p);
 }
 
 int main(int ac, char **av)

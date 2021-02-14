@@ -4,13 +4,13 @@ SO ./textures/redbrick.xpm
 WE ./textures/stone.xpm
 EA ./textures/wood.xpm
 
-S ./textures/pillar.xpm
+S ./textures/barrel.xpm
 F 35,130,30
 C 30,100,130
 
 111111111111111
 100000000000101
-100001000000101
+100001000200101
 111100000010101
 100000000010101
 1000000N1111101

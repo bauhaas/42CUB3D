@@ -6,45 +6,11 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 02:35:42 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 21:08:56 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-void update(t_cub3d *cub3d)
-{
-	float mov_step;
-	float new_player_x;
-	float new_player_y;
-
-/*
-	printf("player x : %f\n", cub3d->player.pos.x);
-	printf("player y : %f\n", cub3d->player.pos.y);
-	*/
-	cub3d->player.rot_ang += cub3d->player.turn_d * cub3d->player.rot_speed;
-	//for sprite if too much rotation
-	cub3d->player.rot_ang = normalize(cub3d->player.rot_ang);
-
-	//move player dot
-	/*
-	printf("walk_d : %d\n", cub3d->player.walk_d);
-	printf("movspeeed : %f\n", cub3d->player.mov_speed);
-	*/
-	mov_step = cub3d->player.walk_d * cub3d->player.mov_speed;
-	new_player_x = cub3d->player.pos.x + cos(cub3d->player.rot_ang) * mov_step;
-	new_player_y = cub3d->player.pos.y + sin(cub3d->player.rot_ang) * mov_step;
-/*
-	printf("mov step: %f\n", mov_step);
-	printf("new x: %f\n", new_player_x);
-	printf("new y: %f\n", new_player_y);
-	*/
-	if (!grid_is_wall(new_player_x, new_player_y, cub3d))
-	{
-		cub3d->player.pos.x = new_player_x;
-		cub3d->player.pos.y = new_player_y;
-	}
-}
 
 int	grep_color(t_text text, int x, int y)
 {
@@ -95,14 +61,14 @@ void	render_wall(t_cub3d *cub3d, t_ray rays, int i, float wall_hei)
 	int				j;
 
 	if (rays.was_vt_hit)
-		text_x = fmod(rays.wall_hit_y, 1.0) * cub3d->text[rays.id].wid;
+		text_x = fmod(rays.wall_hit_y, 1) * cub3d->text[rays.id].wid;
 	else
-		text_x = fmod(rays.wall_hit_x, 1.0) * cub3d->text[rays.id].wid;
+		text_x = fmod(rays.wall_hit_x, 1) * cub3d->text[rays.id].wid;
 	j = rays.top_pixel;
 	while (j < rays.bot_pixel)
 	{
 		text_y = (j + (wall_hei / 2) - (cub3d->win.hei / 2)) *
-		(cub3d->text[rays.id].hei / wall_hei);
+			(cub3d->text[rays.id].hei / wall_hei);
 		color = grep_color(cub3d->text[rays.id], text_x, text_y);
 		my_mlx_pixel_put(&cub3d->win, i, j, color);
 		j++;
@@ -123,10 +89,10 @@ void				render_3d(t_ray *rays, t_cub3d *cub3d)
 		wall_dist = rays[i].distance * cos(rays[i].ray_ang -
 			cub3d->player.rot_ang);
 		wall_hei = cub3d->data.dist_proj_plane / wall_dist;
-		top_pixel = (cub3d->win.hei / 2.0) - ((int)wall_hei / 2);
+		top_pixel = (cub3d->win.hei / 2) - (wall_hei / 2);
 		if (top_pixel < 0)
 			top_pixel = 0;
-		bot_pixel = (cub3d->win.hei / 2.0) + ((int)wall_hei / 2);
+		bot_pixel = (cub3d->win.hei / 2) + (wall_hei / 2);
 		if (bot_pixel > cub3d->win.hei)
 			bot_pixel = cub3d->win.hei;
 		rays[i].top_pixel = top_pixel;
@@ -136,32 +102,16 @@ void				render_3d(t_ray *rays, t_cub3d *cub3d)
 		render_wall(cub3d, rays[i], i, wall_hei);
 		i++;
 	}
-	/*
-		printf("player rays[480]dist : %f\n", rays[480].distance);
-		printf("player rays[480]ang : %f\n", rays[480].ray_ang);
-		printf("player rot ang : %f\n", cub3d->player.rot_ang);
-		printf("wall_hei : %f\n", wall_hei);*/
 }
 
 void	render(t_cub3d *cub3d)
 {
 	cub3d->rays = cast_all_rays(cub3d);
 	render_3d(cub3d->rays, cub3d);
-	render_minimap(cub3d);	
-	render_player(cub3d);
-	//render_sprites(cub3d);
+	render_sprites(cub3d);
+	render_mini_map(cub3d);	
+	render_mini_player(cub3d);
+	render_mini_sprites(cub3d);	
 	free(cub3d->rays);
 	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->win.img.img, 0, 0);
-}
-
-void run_cub3d(t_cub3d *cub3d)
-{
-//	printf("player rot ang : %f\n", cub3d->player.rot_ang);
-	load_win(&cub3d->win);
-	load_img(&cub3d->win);
-	mlx_hook(cub3d->win.win_p, 2, 1L<<0, key_pressed, cub3d);
-	mlx_hook(cub3d->win.win_p, 3, 1L<<1, key_released, &cub3d->player);
-	mlx_hook(cub3d->win.win_p, 33, 1L<<17, &end_cub3d, cub3d);
-	render(cub3d);
-	mlx_loop(cub3d->win.mlx_p);
 }
