@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 01:03:05 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 02:08:30 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,11 @@ void	render_minimap(t_cub3d *cub3d)
 		j = -1;
 		while (++j < cub3d->data.cols)
 		{
-			//coord.x = MINIMAP_SCALE * (j * TILE_SIZE);
-			//coord.y = MINIMAP_SCALE * (i * TILE_SIZE);
 			coord.x = MINIMAP_SCALE * (j);
 			coord.y = MINIMAP_SCALE * (i);
 			if (cub3d->grid[i][j] == '1')
-				//square(coord, MINIMAP_SCALE, cub3d, GRAY);
 				square(coord, MINIMAP_SCALE, cub3d, GRAY);
 			else
-				//square(coord, MINIMAP_SCALE * TILE_SIZE, cub3d, BLACK);
 				square(coord, MINIMAP_SCALE, cub3d, BLACK);
 		}
 	}
@@ -145,8 +141,6 @@ void	minimap_sprites(t_cub3d *cub3d, int i)
 	t_coord start;
 	t_coord end;
 
-//	start.x = (cub3d->sprites[i].coord.x * TILE_SIZE) * MINIMAP_SCALE;
-//	start.y = (cub3d->sprites[i].coord.y * TILE_SIZE) * MINIMAP_SCALE;
 	start.x = (cub3d->sprites[i].coord.x) * MINIMAP_SCALE;
 	start.y = (cub3d->sprites[i].coord.y) * MINIMAP_SCALE;
 	end.x = 5;

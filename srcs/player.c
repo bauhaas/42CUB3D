@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:13:53 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 01:13:11 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 02:08:37 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ void	pos_player(t_player *player, int x, int y, char orientation)
 {
 	if(player->pos.x == -1 && player->pos.y == -1)
 	{
-	//	player->pos.x = x * TILE_SIZE + TILE_SIZE / 2 + 0.001;
-	//	player->pos.y = y * TILE_SIZE + TILE_SIZE / 2 + 0.001;
 		player->pos.x = x + 0.001;
 		player->pos.y = y + 0.001;
 		if (orientation == 'N')
