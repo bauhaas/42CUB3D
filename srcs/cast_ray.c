@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 17:50:16 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 23:17:01 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 23:45:55 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ t_ray	cast(t_ray ray, t_cub3d *cub3d)
 {
 	float		hz_dist;
 	float		vt_dist;
-	t_line		line;
 	t_coord		wall_hit;
 
 	hz_cast(&ray, cub3d, 0);

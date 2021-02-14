@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:19:13 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/13 18:32:04 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 23:48:34 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	free_grid(t_cub3d *cub3d)
 	free(cub3d->grid);
 }
 
-int		fill_grid(t_cub3d *cub3d, t_list *list, int cols, int rows)
+int		fill_grid(t_cub3d *cub3d, t_list *list)
 {
 	int i;
 
@@ -66,7 +66,7 @@ int		grid_alloc(t_cub3d *cub3d, t_list *list)
 	cub3d->data.rows = rows;
 	if (!cub3d->grid)
 		return (is_error("not enough memory to malloc"));
-	fill_grid(cub3d, list, cols, rows);
+	fill_grid(cub3d, list);
 	return (1);
 }
 

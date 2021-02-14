@@ -6,13 +6,13 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:31:08 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 21:57:41 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 23:48:05 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-int		fill_list_grid(t_cub3d *cub3d, char *line, t_list **list)
+int		fill_list_grid(char *line, t_list **list)
 {
 	t_list	*new_elem;
 
@@ -24,9 +24,7 @@ int		fill_list_grid(t_cub3d *cub3d, char *line, t_list **list)
 int		line_data(t_cub3d *cub3d, char *line, t_list **list)
 {
 	char		**line_data;
-	int			i;
 
-	i = 0;
 	line_data = ft_split(line, ' ');
 	if (!*line_data && !cub3d->data.grid_flag)
 		cub3d->data.res = 1;
@@ -39,7 +37,7 @@ int		line_data(t_cub3d *cub3d, char *line, t_list **list)
 	else if (*line_data && *line_data[0] == '1')
 	{
 		cub3d->data.grid_flag = 1;
-		cub3d->data.res = fill_list_grid(cub3d, line, list);
+		cub3d->data.res = fill_list_grid(line, list);
 	}
 	else if (!*line_data && cub3d->data.grid_flag)
 		cub3d->data.res = is_error("empty line in or after grid parameter");

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 22:40:43 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 23:49:29 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ void			init_game(t_cub3d *cub3d, char *file);
 void			init_texture(t_cub3d *cub3d);
 void			init_grid(t_cub3d *cub3d);
 void			init_player(t_player *player);
-void			init_img(t_img *img, t_win *win);
+void			init_img(t_img *img);
 void			init_win(t_win *win);
 void			init_ray(t_ray *ray, float ray_ang);
 t_line			init_line(t_coord a, t_coord b);
@@ -235,10 +235,10 @@ float			p_dist(float x1, float y1, float x2, float y2);
 
 //grid
 int grid_parsing(t_cub3d *cub3d, t_list *list);
-int fill_grid(t_cub3d *cub3d, t_list *list, int cols, int rows);
+int fill_grid(t_cub3d *cub3d, t_list *list);
 int grid_alloc(t_cub3d *cub3d, t_list *list);
 int check_grid(t_cub3d *cub3d);
-int fill_list_grid(t_cub3d *cub3d, char *line, t_list **list);
+int fill_list_grid(char *line, t_list **list);
 int check_surrounding(char **grid, int x, int y);
 void free_grid(t_cub3d *cub3d);
 

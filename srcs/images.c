@@ -6,13 +6,13 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:19:50 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 21:53:59 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 23:49:19 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	init_img(t_img *img, t_win *win)
+void	init_img(t_img *img)
 {
 	img->img = NULL;
 	img->addr = NULL;
