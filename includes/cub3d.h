@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 01:07:47 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 02:34:12 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ typedef struct	s_player
 	int			turn_d;
 	int			rot_d;
 	int			walk_d;
-	int			mov_speed;
+	float		mov_speed;
 	float		rot_ang;
 	float		rot_speed;
 }				t_player;

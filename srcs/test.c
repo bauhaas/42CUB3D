@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 02:09:27 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 02:35:42 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,27 @@ void update(t_cub3d *cub3d)
 	float new_player_x;
 	float new_player_y;
 
+/*
+	printf("player x : %f\n", cub3d->player.pos.x);
+	printf("player y : %f\n", cub3d->player.pos.y);
+	*/
 	cub3d->player.rot_ang += cub3d->player.turn_d * cub3d->player.rot_speed;
 	//for sprite if too much rotation
 	cub3d->player.rot_ang = normalize(cub3d->player.rot_ang);
 
 	//move player dot
+	/*
+	printf("walk_d : %d\n", cub3d->player.walk_d);
+	printf("movspeeed : %f\n", cub3d->player.mov_speed);
+	*/
 	mov_step = cub3d->player.walk_d * cub3d->player.mov_speed;
 	new_player_x = cub3d->player.pos.x + cos(cub3d->player.rot_ang) * mov_step;
 	new_player_y = cub3d->player.pos.y + sin(cub3d->player.rot_ang) * mov_step;
-
+/*
+	printf("mov step: %f\n", mov_step);
+	printf("new x: %f\n", new_player_x);
+	printf("new y: %f\n", new_player_y);
+	*/
 	if (!grid_is_wall(new_player_x, new_player_y, cub3d))
 	{
 		cub3d->player.pos.x = new_player_x;
@@ -82,11 +94,11 @@ void	render_wall(t_cub3d *cub3d, t_ray rays, int i, float wall_hei)
 	int				color;
 	int				j;
 
-	j = rays.top_pixel;
 	if (rays.was_vt_hit)
 		text_x = fmod(rays.wall_hit_y, 1.0) * cub3d->text[rays.id].wid;
 	else
 		text_x = fmod(rays.wall_hit_x, 1.0) * cub3d->text[rays.id].wid;
+	j = rays.top_pixel;
 	while (j < rays.bot_pixel)
 	{
 		text_y = (j + (wall_hei / 2) - (cub3d->win.hei / 2)) *
@@ -94,27 +106,6 @@ void	render_wall(t_cub3d *cub3d, t_ray rays, int i, float wall_hei)
 		color = grep_color(cub3d->text[rays.id], text_x, text_y);
 		my_mlx_pixel_put(&cub3d->win, i, j, color);
 		j++;
-	}
-}
-
-static void			render_line(t_cub3d *cub3d, int x, t_ray ray, float wall_height)
-{
-	int				i;
-	int				off_x;
-	int				off_y;
-	int				color;
-
-	if (ray.was_vt_hit)
-		off_x = (int)(fmod(ray.wall_hit_y, 1.0) * cub3d->text[0].wid);
-	else
-		off_x = (int)(fmod(ray.wall_hit_x, 1.0) * cub3d->text[0].wid);
-	i = ray.top_pixel;
-	while (i < ray.bot_pixel)
-	{
-		off_y = (i + (wall_height / 2.0) - (cub3d->win.hei / 2.0)) *
-		(cub3d->text[ray.id].hei / wall_height);
-		color = grep_color(cub3d->text[ray.id], off_x, off_y);
-		my_mlx_pixel_put(&cub3d->win, x, i++, color);
 	}
 }
 
@@ -154,7 +145,6 @@ void				render_3d(t_ray *rays, t_cub3d *cub3d)
 
 void	render(t_cub3d *cub3d)
 {
-//	printf("dist proj plane : %f\n", cub3d->data.dist_proj_plane);
 	cub3d->rays = cast_all_rays(cub3d);
 	render_3d(cub3d->rays, cub3d);
 	render_minimap(cub3d);	
@@ -166,6 +156,7 @@ void	render(t_cub3d *cub3d)
 
 void run_cub3d(t_cub3d *cub3d)
 {
+//	printf("player rot ang : %f\n", cub3d->player.rot_ang);
 	load_win(&cub3d->win);
 	load_img(&cub3d->win);
 	mlx_hook(cub3d->win.win_p, 2, 1L<<0, key_pressed, cub3d);

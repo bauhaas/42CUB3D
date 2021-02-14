@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 17:50:16 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 02:03:26 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 02:37:31 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ t_ray 	*cast_all_rays(t_cub3d *cub3d)
 	int		i;
 
 	i = 0;
-	printf("player x : %f\n", cub3d->player.pos.x);
-	printf("player y : %f\n", cub3d->player.pos.y);
+//	printf("player x : %f\n", cub3d->player.pos.x);
+//	printf("player y : %f\n", cub3d->player.pos.y);
 	rays = malloc(sizeof(t_ray) * cub3d->win.wid);
 	if (!rays)
 		return 0;
