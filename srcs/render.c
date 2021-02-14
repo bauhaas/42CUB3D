@@ -1,57 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 21:08:56 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 22:11:34 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-int	grep_color(t_text text, int x, int y)
-{
-	char *dst;
-
-	if (x < 0)
-		x = 0;
-	if (y < 0)
-		y = 0;
-	if (x > text.wid)
-		x = text.wid;
-	if (y > text.hei)
-		y = text.hei;
-	dst = text.data + (y * text.line_length + x * text.bits_per_pixel / 8);
-	return (*(unsigned int*)dst);
-}
-
-void render_floor(t_cub3d *cub3d, t_ray rays, int i)
+void	render_floor(t_cub3d *cub3d, t_ray rays, int i)
 {
 	int j;
 
 	j = rays.bot_pixel;
-	while(j < cub3d->win.hei)
+	while (j < cub3d->win.hei)
 	{
 		my_mlx_pixel_put(&cub3d->win, i, j, cub3d->data.floor);
 		j++;
 	}
 }
 
-void render_ceil(t_cub3d *cub3d, t_ray rays, int i)
+void	render_ceil(t_cub3d *cub3d, t_ray rays, int i)
 {
 	int j;
 
 	j = 0;
-	while(j < rays.top_pixel)
+	while (j < rays.top_pixel)
 	{
 		my_mlx_pixel_put(&cub3d->win, i, j, cub3d->data.ceil);
 		j++;
 	}
 }
-
 
 void	render_wall(t_cub3d *cub3d, t_ray rays, int i, float wall_hei)
 {
@@ -75,7 +58,7 @@ void	render_wall(t_cub3d *cub3d, t_ray rays, int i, float wall_hei)
 	}
 }
 
-void				render_3d(t_ray *rays, t_cub3d *cub3d)
+void	render_3d(t_ray *rays, t_cub3d *cub3d)
 {
 	float			wall_dist;
 	float			wall_hei;
@@ -109,9 +92,10 @@ void	render(t_cub3d *cub3d)
 	cub3d->rays = cast_all_rays(cub3d);
 	render_3d(cub3d->rays, cub3d);
 	render_sprites(cub3d);
-	render_mini_map(cub3d);	
+	render_mini_map(cub3d);
 	render_mini_player(cub3d);
-	render_mini_sprites(cub3d);	
+	render_mini_sprites(cub3d);
 	free(cub3d->rays);
-	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p, cub3d->win.img.img, 0, 0);
+	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p,
+			cub3d->win.img.img, 0, 0);
 }

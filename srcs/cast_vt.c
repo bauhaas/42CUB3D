@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:45:15 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 02:08:11 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 22:40:05 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_dcast	fill_vt_data(t_cub3d *cub3d, t_ray *ray)
 	vt_data.hit_x = 0;
 	vt_data.hit_y = 0;
 	vt_data.xinter = floor(cub3d->player.pos.x);
-	vt_data.xinter +=  ray->is_right ? 1.0 : 0;
+	vt_data.xinter += ray->is_right ? 1.0 : 0;
 	vt_data.yinter = cub3d->player.pos.y + (vt_data.xinter -
 			cub3d->player.pos.x) * tan(ray->ray_ang);
 	vt_data.xstep = 1.0;
@@ -33,12 +33,10 @@ t_dcast	fill_vt_data(t_cub3d *cub3d, t_ray *ray)
 	return (vt_data);
 }
 
-void 	vt_cast(t_ray *ray, t_cub3d *cub3d)
+void	vt_cast(t_ray *ray, t_cub3d *cub3d, int i)
 {
 	t_dcast	vt_data;
-	int		i;
 
-	i = 0;
 	vt_data = fill_vt_data(cub3d, ray);
 	if (ray->is_left)
 		i = 1;
@@ -50,7 +48,7 @@ void 	vt_cast(t_ray *ray, t_cub3d *cub3d)
 			vt_data.hit_y = vt_data.next_y;
 			vt_data.hit_x = vt_data.next_x;
 			vt_data.found_wall = 1;
-			break;
+			break ;
 		}
 		else
 		{

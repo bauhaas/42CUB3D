@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:42:58 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 02:07:57 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 22:39:50 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,10 @@ t_dcast	fill_hz_data(t_cub3d *cub3d, t_ray *ray)
 	return (hz_data);
 }
 
-void	hz_cast(t_ray *ray, t_cub3d *cub3d)
+void	hz_cast(t_ray *ray, t_cub3d *cub3d, int i)
 {
 	t_dcast	hz_data;
-	int		i;
 
-	i = 0;
 	hz_data = fill_hz_data(cub3d, ray);
 	if (ray->is_up)
 		i = 1;

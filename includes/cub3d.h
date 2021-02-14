@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 20:58:56 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 22:40:43 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,15 @@ typedef struct	s_cub3d
 	char		**grid;
 }				t_cub3d;
 
+void	fill_sprites(t_cub3d *cub3d, int i);
+void	draw_sprite(t_cub3d *cub3d, t_sprite sprite, t_coord pos, t_coord offset);
+void	render_sprite(t_cub3d *cub3d, t_sprite sprite);
+void	sprite_data(t_cub3d *cub3d, t_sprite *sprite);
+void	render_sprites(t_cub3d *cub3d);
+
+void is_visible(t_cub3d *cub3d, int i);
+float find_angle(t_cub3d *cub3d, int i);
+
 int				key_pressed(int keycode, t_cub3d *cub3d);
 int				key_released(int keycode, t_player *player);
 
@@ -203,16 +212,17 @@ t_coord			init_coord(float a, float b);
 
 void			render_mini_player(t_cub3d *cub3d);
 void			render_mini_map(t_cub3d *cub3d);
-void			render_view_line(t_line *line, t_cub3d *cub3d, int color);
 void			render_mini_sprites(t_cub3d *cub3d);
 
 void			update(t_cub3d *cub3d);
 void			render(t_cub3d *cub3d);
 
 void			my_mlx_pixel_put(t_win *win, int x, int y, int color);
+void			square(t_coord coord, int size, t_cub3d *cub3d, int color);
+void			render_line(t_line *line, t_cub3d *cub3d, int color);
 
-void			hz_cast(t_ray *ray, t_cub3d *cub3d);
-void			vt_cast(t_ray *ray, t_cub3d *cub3d);
+void			hz_cast(t_ray *ray, t_cub3d *cub3d, int i);
+void			vt_cast(t_ray *ray, t_cub3d *cub3d, int i);
 t_ray			cast(t_ray ray, t_cub3d *cub3d);
 t_ray			*cast_all_rays(t_cub3d *cub3d);
 

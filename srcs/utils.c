@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_raycasting.c                                 :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 01:18:48 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 20:59:25 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 22:22:17 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,29 @@ int		grid_is_wall(float x, float y, t_cub3d *cub3d)
 	grid_y = floor(y);
 	if (grid_x >= cub3d->data.cols || grid_y >= cub3d->data.rows)
 		return (TRUE);
-	if(cub3d->grid[grid_y][grid_x] == '1')
-		return(TRUE);
+	if (cub3d->grid[grid_y][grid_x] == '1')
+		return (TRUE);
 	else
-		return(FALSE);
+		return (FALSE);
 }
 
 float	p_dist(float x1, float y1, float x2, float y2)
 {
 	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
+}
+
+int		grep_color(t_text text, int x, int y)
+{
+	char *dst;
+
+	if (x < 0)
+		x = 0;
+	if (y < 0)
+		y = 0;
+	if (x > text.wid)
+		x = text.wid;
+	if (y > text.hei)
+		y = text.hei;
+	dst = text.data + (y * text.line_length + x * text.bits_per_pixel / 8);
+	return (*(unsigned int*)dst);
 }

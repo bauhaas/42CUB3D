@@ -37,5 +37,5 @@ int		key_released(int keycode, t_player *player)
 		player->turn_d = 0;
 	if (keycode == 'd')
 		player->turn_d = 0;
-	return(0);
+	return (0);
 }
