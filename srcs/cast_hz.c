@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:42:58 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 00:53:56 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 01:03:53 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ t_dcast	fill_hz_data(t_cub3d *cub3d, t_ray *ray)
 	hz_data.found_wall = 0;
 	hz_data.hit_x = 0;
 	hz_data.hit_y = 0;
-	hz_data.yinter = floor(cub3d->player.pos.y / TILE_SIZE) * TILE_SIZE;
-	//hz_data.yinter = floor(cub3d->player.pos.y);
-	hz_data.yinter += ray->is_down ? TILE_SIZE : 0;
-	//hz_data.yinter += ray->is_down ? 1.0 : 0;
+	//hz_data.yinter = floor(cub3d->player.pos.y / TILE_SIZE) * TILE_SIZE;
+	hz_data.yinter = floor(cub3d->player.pos.y);
+	//hz_data.yinter += ray->is_down ? TILE_SIZE : 0;
+	hz_data.yinter += ray->is_down ? 1.0 : 0;
 	hz_data.xinter = cub3d->player.pos.x + (hz_data.yinter -
 			cub3d->player.pos.y) / tan(ray->ray_ang);
-	hz_data.ystep = TILE_SIZE;
-	//hz_data.ystep = 1.0;
+	//hz_data.ystep = TILE_SIZE;
+	hz_data.ystep = 1.0;
 	hz_data.ystep *= ray->is_up ? -1 : 1;
-	hz_data.xstep = TILE_SIZE / tan(ray->ray_ang);
-	//hz_data.xstep = 1.0 / tan(ray->ray_ang);
+	//hz_data.xstep = TILE_SIZE / tan(ray->ray_ang);
+	hz_data.xstep = 1.0 / tan(ray->ray_ang);
 	hz_data.xstep *= (ray->is_left && hz_data.xstep > 0) ? -1 : 1;
 	hz_data.xstep *= (ray->is_right && hz_data.xstep < 0) ? -1 : 1;
 	hz_data.next_x = hz_data.xinter;

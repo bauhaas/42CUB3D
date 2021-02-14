@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 17:50:16 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/13 20:17:52 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 01:29:52 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,19 @@ t_ray	cast(t_ray ray, t_cub3d *cub3d)
 	if (ray.found_hz_wall)
 		hz_dist = p_dist(cub3d->player.pos.x, cub3d->player.pos.y,
 				ray.hz_hit.x, ray.hz_hit.y);
+	printf("hzdist : %f\n", hz_dist);
+	printf("hzhit x : %f\n", ray.hz_hit.x);
+	printf("hzhit y : %f\n", ray.hz_hit.y);
 	if (ray.found_vt_wall)
 		vt_dist = p_dist(cub3d->player.pos.x, cub3d->player.pos.y,
 				ray.vt_hit.x, ray.vt_hit.y);
+	printf("vtdist : %f\n", vt_dist);
 	ray.wall_hit_x = (hz_dist < vt_dist) ? ray.hz_hit.x : ray.vt_hit.x;
 	ray.wall_hit_y = (hz_dist < vt_dist) ? ray.hz_hit.y : ray.vt_hit.y;
 	ray.distance = (hz_dist < vt_dist) ? hz_dist : vt_dist;
 	ray.was_vt_hit = (vt_dist < hz_dist);
 	wall_hit = init_coord(ray.wall_hit_x, ray.wall_hit_y);
-	//line = init_line(cub3d->player.pos, wall_hit);
 	ray.line = init_line(cub3d->player.pos, wall_hit);
-	//render_view_line(&line, cub3d, GREEN);
 	select_texture(&ray, hz_dist, vt_dist);
 	return (ray);
 }
@@ -67,6 +69,8 @@ t_ray 	*cast_all_rays(t_cub3d *cub3d)
 	int		i;
 
 	i = 0;
+	printf("player x : %f\n", cub3d->player.pos.x);
+	printf("player y : %f\n", cub3d->player.pos.y);
 	rays = malloc(sizeof(t_ray) * cub3d->win.wid);
 	if (!rays)
 		return 0;

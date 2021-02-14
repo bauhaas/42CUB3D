@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/13 22:57:29 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 01:07:47 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@
 # define TRUE 1
 # define FALSE 0
 # define FOV  90 * (M_PI / 180)
-# define MINIMAP_SCALE 0.3
+# define MINIMAP_SCALE 10.0
 
 typedef struct	s_coord
 {

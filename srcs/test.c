@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 00:52:53 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 01:16:22 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ void				render_3d(t_ray *rays, t_cub3d *cub3d)
 	{
 		wall_dist = rays[i].distance * cos(rays[i].ray_ang -
 			cub3d->player.rot_ang);
-		wall_hei = (TILE_SIZE / wall_dist) * cub3d->data.dist_proj_plane;
-		//wall_hei = cub3d->data.dist_proj_plane / wall_dist;
+		//wall_hei = (TILE_SIZE / wall_dist) * cub3d->data.dist_proj_plane;
+		wall_hei = cub3d->data.dist_proj_plane / wall_dist;
 		top_pixel = (cub3d->win.hei / 2) - (wall_hei / 2);
 		bot_pixel = (cub3d->win.hei / 2) + (wall_hei / 2);
 		if (top_pixel < 0)
@@ -125,10 +125,15 @@ void				render_3d(t_ray *rays, t_cub3d *cub3d)
 		render_wall(cub3d, rays[i], i, wall_hei);
 		i++;
 	}
+		printf("player rays[480]dist : %f\n", rays[480].distance);
+		printf("player rays[480]ang : %f\n", rays[480].ray_ang);
+		printf("player rot ang : %f\n", cub3d->player.rot_ang);
+		printf("wall_hei : %f\n", wall_hei);
 }
 
 void	render(t_cub3d *cub3d)
 {
+	printf("dist proj plane : %f\n", cub3d->data.dist_proj_plane);
 	cub3d->rays = cast_all_rays(cub3d);
 	render_3d(cub3d->rays, cub3d);
 	render_minimap(cub3d);	
