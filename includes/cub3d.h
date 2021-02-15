@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/15 00:59:10 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/15 19:40:05 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,22 @@
 # include "../libft/libft.h"
 # include "../minilibx/mlx.h"
 
+
 /*
 ** KEY EVENTS
 ** to find keycode of each key, execute 'xev' in terminal and press key wanted
 */
 
-# define KEY_W		119
-# define KEY_A		97
+# define KEY_Z		122
+# define KEY_Q		113
 # define KEY_S		115
 # define KEY_D		100
-# define KEY_UP		111
-# define KEY_LEFT	113
-# define KEY_DOWN	116
-# define KEY_RIGHT	114
+
+# define KEY_UP		65362
+# define KEY_LEFT	65361
+# define KEY_DOWN	65364
+# define KEY_RIGHT	65363
+# define KEY_ESC	65307
 
 /*
 ** COLORS
@@ -68,6 +71,7 @@ typedef struct	s_player
 	int			turn_d;
 	int			rot_d;
 	int			walk_d;
+	int			lateral_d;
 	float		mov_speed;
 	float		rot_ang;
 	float		rot_speed;
@@ -190,15 +194,17 @@ typedef struct	s_cub3d
 
 void	fill_sprites(t_cub3d *cub3d, int i);
 void	draw_sprite(t_cub3d *cub3d, t_sprite sprite, t_coord pos, t_coord offset);
+//void	draw_sprite(t_cub3d *cub3d, t_sprite *sprite, t_coord pos, t_coord offset);
 void	render_sprite(t_cub3d *cub3d, t_sprite sprite);
-void	sprite_data(t_cub3d *cub3d, t_sprite *sprite);
+//void	sprite_data(t_cub3d *cub3d, t_sprite *sprite);
+void	sprite_data(t_cub3d *cub3d);
 void	render_sprites(t_cub3d *cub3d);
 
 void is_visible(t_cub3d *cub3d, int i);
 float find_angle(t_cub3d *cub3d, int i);
 
-int				key_pressed(int keycode, t_cub3d *cub3d);
-int				key_released(int keycode, t_player *player);
+int				key_pressed(int key, t_cub3d *cub3d);
+int				key_released(int key, t_player *player);
 
 void			init_game(t_cub3d *cub3d, char *file);
 void			init_texture(t_cub3d *cub3d);
@@ -214,7 +220,7 @@ void			render_mini_player(t_cub3d *cub3d);
 void			render_mini_map(t_cub3d *cub3d);
 void			render_mini_sprites(t_cub3d *cub3d);
 
-void			update(t_cub3d *cub3d);
+void			update(t_cub3d *cub3d, t_player *player);
 int				render(t_cub3d *cub3d);
 
 void			my_mlx_pixel_put(t_win *win, int x, int y, int color);
@@ -224,7 +230,7 @@ void			render_line(t_line *line, t_cub3d *cub3d, int color);
 void			hz_cast(t_ray *ray, t_cub3d *cub3d, int i);
 void			vt_cast(t_ray *ray, t_cub3d *cub3d, int i);
 t_ray			cast(t_ray ray, t_cub3d *cub3d);
-t_ray			*cast_all_rays(t_cub3d *cub3d);
+void			cast_all_rays(t_cub3d *cub3d);
 
 int				grid_is_wall(float x, float y, t_cub3d *cub3d);
 int				grid_is_sprite(float x, float y, t_cub3d *cub3d);

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:13:53 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 21:58:47 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/15 03:08:53 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,59 @@ void	init_player(t_player *player)
 	player->radius = 6;
 	player->turn_d = 0;
 	player->walk_d = 0;
+	player->lateral_d = 0;
 	player->rot_ang = 0;
 	player->mov_speed = 0.3;
 	player->rot_speed = 3 * (M_PI / 180);
 }
-
+/*
 void	update(t_cub3d *cub3d)
 {
 	float mov_step;
-	float new_player_x;
-	float new_player_y;
+	float lateral_angle;
+	float new_x;
+	float new_y;
 
 	cub3d->player.rot_ang += cub3d->player.turn_d * cub3d->player.rot_speed;
 	cub3d->player.rot_ang = normalize(cub3d->player.rot_ang);
 	mov_step = cub3d->player.walk_d * cub3d->player.mov_speed;
 	new_player_x = cub3d->player.pos.x + cos(cub3d->player.rot_ang) * mov_step;
-	new_player_y = cub3d->player.pos.y + sin(cub3d->player.rot_ang) * mov_step;
-	if (!grid_is_wall(new_player_x, new_player_y, cub3d))
+	new_y = cub3d->player.pos.y + sin(cub3d->player.rot_ang) * mov_step;
+	if(cub3d->player.lateral_d != 0)
+	{
+		lateral_angle = cub3d->player.rot_ang + ((M_PI / 2) * cub3d->player.lateral_d);
+		new_player_x = cub3d->player.pos.x + cos(lateral_angle) * cub3d->player.mov_speed;
+		new_y = cub3d->player.pos.y + sin(lateral_angle) * cub3d->player.mov_speed;
+	}
+	if (!grid_is_wall(new_player_x, new_y, cub3d))
 	{
 		cub3d->player.pos.x = new_player_x;
-		cub3d->player.pos.y = new_player_y;
+		cub3d->player.pos.y = new_y;
+	}
+}*/
+
+void	update(t_cub3d *cub3d, t_player *player)
+{
+	float mov_step;
+	float lateral_ang;
+	float new_x;
+	float new_y;
+
+	player->rot_ang += player->turn_d * player->rot_speed;
+	player->rot_ang = normalize(player->rot_ang);
+	mov_step = player->walk_d * player->mov_speed;
+	new_x = player->pos.x + cos(player->rot_ang) * mov_step;
+	new_y = player->pos.y + sin(player->rot_ang) * mov_step;
+	if(player->lateral_d != 0)
+	{
+		lateral_ang = player->rot_ang + ((M_PI / 2) * player->lateral_d);
+		new_x = player->pos.x + cos(lateral_ang) * player->mov_speed;
+		new_y = player->pos.y + sin(lateral_ang) * player->mov_speed;
+	}
+	if (!grid_is_wall(new_x, new_y, cub3d))
+	{
+		cub3d->player.pos.x = new_x;
+		cub3d->player.pos.y = new_y;
 	}
 }
 

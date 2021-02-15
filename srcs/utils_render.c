@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 22:22:51 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/15 00:30:16 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/15 18:11:05 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ void	square(t_coord coord, int size, t_cub3d *cub3d, int color)
 	int		j;
 
 	i = -1;
-	while (++i < size)
+	while (++i <= size)
 	{
 		j = -1;
-		while (++j < size)
+		while (++j <= size)
 			my_mlx_pixel_put(&cub3d->win, coord.x + j, coord.y + i, color);
 	}
 }

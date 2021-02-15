@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 17:50:16 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 23:45:55 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/15 02:28:43 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,23 +63,18 @@ t_ray	cast(t_ray ray, t_cub3d *cub3d)
 	return (ray);
 }
 
-t_ray	*cast_all_rays(t_cub3d *cub3d)
+void	cast_all_rays(t_cub3d *cub3d)
 {
-	t_ray	*rays;
 	float	ray_ang;
 	int		i;
 
 	i = -1;
-	rays = malloc(sizeof(t_ray) * cub3d->win.wid);
-	if (!rays)
-		return (0);
 	while (++i < cub3d->win.wid)
 	{
 		ray_ang = cub3d->player.rot_ang + atan((i - cub3d->win.wid / 2) /
 				cub3d->data.dist_proj_plane);
-		rays[i].ray_ang = normalize(ray_ang);
-		init_ray(&rays[i], rays[i].ray_ang);
-		rays[i] = cast(rays[i], cub3d);
+		cub3d->rays[i].ray_ang = normalize(ray_ang);
+		init_ray(&cub3d->rays[i], cub3d->rays[i].ray_ang);
+		cub3d->rays[i] = cast(cub3d->rays[i], cub3d);
 	}
-	return (rays);
 }

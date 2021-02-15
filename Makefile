@@ -6,7 +6,7 @@
 #    By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/11 12:08:52 by bahaas            #+#    #+#              #
-#    Updated: 2021/02/15 00:17:17 by bahaas           ###   ########.fr        #
+#    Updated: 2021/02/15 04:09:44 by bahaas           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,11 +40,11 @@ OBJS	= ${SRCS:.c=.o}
 OBJS_BONUS	= ${SRCS_BONUS:.c=.o}
 
 .c.o:
-			${CC} ${CFLAGS} ${HEADER} -c $< -o ${<:.c=.o}
+			${CC} ${CFLAGS} -pg ${HEADER} -c $< -o ${<:.c=.o}
 
 $(NAME):	${OBJS}
 			make -C ${LIB_D}
-			${CC} ${HEADER} ${OBJS} -o ${NAME} -L ${LIB_D} -lft -L ${MLX_D} -lmlx -lXext -lX11 -lm
+			${CC} ${HEADER} -pg ${OBJS} -o ${NAME} -L ${LIB_D} -lft -L ${MLX_D} -lmlx -lXext -lX11 -lm
 
 all:		${NAME}
 

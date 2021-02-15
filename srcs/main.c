@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 16:12:03 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/15 00:58:37 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/15 03:29:17 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	init_cub3d(t_cub3d *cub3d)
 
 int		end_cub3d(t_cub3d *cub3d)
 {
+	free(cub3d->rays);
 	free_texture(cub3d);
 	free_sprite(cub3d);
 	free_grid(cub3d);
@@ -49,9 +50,9 @@ void	run_cub3d(t_cub3d *cub3d)
 {
 	load_win(&cub3d->win);
 	load_img(&cub3d->win);
-	mlx_hook(cub3d->win.win_p, 9, 1L << 21, &render, cub3d);
 	mlx_hook(cub3d->win.win_p, 2, 1L << 0, key_pressed, cub3d);
 	mlx_hook(cub3d->win.win_p, 3, 1L << 1, key_released, &cub3d->player);
+	mlx_hook(cub3d->win.win_p, 9, 1L << 21, &render, cub3d);
 	mlx_hook(cub3d->win.win_p, 33, 1L << 17, &end_cub3d, cub3d);
 	render(cub3d);
 	mlx_loop(cub3d->win.mlx_p);
@@ -72,6 +73,9 @@ int		main(int ac, char **av)
 			{
 				cub3d.data.dist_proj_plane = (cub3d.win.wid / 2) /
 					(tan(FOV / 2));
+					cub3d.rays = malloc(sizeof(t_ray) * cub3d.win.wid);
+					if(!cub3d.rays)
+						return (is_error("MAlloc space rays"));
 				printf("Cub3d is launching..\n");
 				run_cub3d(&cub3d);
 				end_cub3d(&cub3d);
