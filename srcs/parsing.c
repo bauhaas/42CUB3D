@@ -71,7 +71,7 @@ int		parsing(t_cub *cub, char *map_file)
 	}
 	close(fd);
 	if (!grid_parsing(cub, list) || !load_texture(cub) ||
-			!load_sprites(cub))
+			!load_sprt(cub))
 		return (0);
 	return (1);
 }

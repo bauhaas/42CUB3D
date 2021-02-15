@@ -37,7 +37,7 @@ void	update(t_cub *cub)
 	mov_step = cub->player.walk_d * cub->player.mov_speed;
 	new_player_x = cub->player.pos.x + cos(cub->player.rot_ang) * mov_step;
 	new_y = cub->player.pos.y + sin(cub->player.rot_ang) * mov_step;
-	if(cub->player.lateral_d != 0)
+	if (cub->player.lateral_d != 0)
 	{
 		lateral_angle = cub->player.rot_ang + ((M_PI / 2) * cub->player.lateral_d);
 		new_player_x = cub->player.pos.x + cos(lateral_angle) * cub->player.mov_speed;
@@ -62,7 +62,7 @@ void	update(t_cub *cub, t_player *player)
 	mov_step = player->walk_d * player->mov_speed;
 	new_x = player->pos.x + cos(player->rot_ang) * mov_step;
 	new_y = player->pos.y + sin(player->rot_ang) * mov_step;
-	if(player->lateral_d != 0)
+	if (player->lateral_d != 0)
 	{
 		lateral_ang = player->rot_ang + ((M_PI / 2) * player->lateral_d);
 		new_x = player->pos.x + cos(lateral_ang) * player->mov_speed;

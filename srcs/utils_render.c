@@ -24,7 +24,7 @@ void	my_mlx_pixel_put(t_win *win, int x, int y, int color)
 	}
 }
 
-void	square(t_coord coord, int size, t_cub *cub, int color)
+void	square(t_pos pos, int size, t_cub *cub, int color)
 {
 	int		i;
 	int		j;
@@ -34,14 +34,14 @@ void	square(t_coord coord, int size, t_cub *cub, int color)
 	{
 		j = -1;
 		while (++j <= size)
-			my_mlx_pixel_put(&cub->win, coord.x + j, coord.y + i, color);
+			my_mlx_pixel_put(&cub->win, pos.x + j, pos.y + i, color);
 	}
 }
 
 void	render_line(t_line *line, t_cub *cub, int color)
 {
-	t_coord		delta;
-	t_coord		tmp;
+	t_pos		delta;
+	t_pos		tmp;
 	float		len;
 	float		i;
 

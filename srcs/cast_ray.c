@@ -23,7 +23,7 @@ void	select_texture(t_ray *rays, float hz_dist, float vt_dist)
 		rays->id = 0;
 }
 
-float	find_ray_distance(float hz_dist, float vt_dist)
+float	find_ray_dist(float hz_dist, float vt_dist)
 {
 	if (hz_dist < vt_dist)
 		return (hz_dist);
@@ -41,7 +41,7 @@ t_ray	cast(t_ray ray, t_cub *cub)
 {
 	float		hz_dist;
 	float		vt_dist;
-	t_coord		wall_hit;
+	t_pos		wall_hit;
 
 	hz_cast(&ray, cub, 0);
 	vt_cast(&ray, cub, 0);
@@ -55,9 +55,9 @@ t_ray	cast(t_ray ray, t_cub *cub)
 				ray.vt_hit.x, ray.vt_hit.y);
 	ray.wall_hit_x = find_ray_hit(hz_dist, vt_dist, ray.hz_hit.x, ray.vt_hit.x);
 	ray.wall_hit_y = find_ray_hit(hz_dist, vt_dist, ray.hz_hit.y, ray.vt_hit.y);
-	ray.distance = find_ray_distance(hz_dist, vt_dist);
+	ray.dist = find_ray_dist(hz_dist, vt_dist);
 	ray.was_vt_hit = (vt_dist < hz_dist);
-	wall_hit = init_coord(ray.wall_hit_x, ray.wall_hit_y);
+	wall_hit = init_pos(ray.wall_hit_x, ray.wall_hit_y);
 	ray.line = init_line(cub->player.pos, wall_hit);
 	select_texture(&ray, hz_dist, vt_dist);
 	return (ray);

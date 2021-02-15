@@ -20,13 +20,13 @@ int		key_pressed(int key, t_cub *cub)
 		cub->player.walk_d = -1;
 	else if (key == KEY_LEFT)
 		cub->player.turn_d = -1;
-	else if(key == KEY_RIGHT)
+	else if (key == KEY_RIGHT)
 		cub->player.turn_d = 1;
-	else if(key == KEY_Q)
+	else if (key == KEY_Q)
 		cub->player.lateral_d = -1;
-	else if(key == KEY_D)
+	else if (key == KEY_D)
 		cub->player.lateral_d = 1;
-	else if(key == KEY_ESC)
+	else if (key == KEY_ESC)
 		end_cub(cub);
 	update(cub, &cub->player);
 	render(cub);
@@ -39,7 +39,7 @@ int		key_released(int key, t_player *player)
 		player->walk_d = 0;
 	else if (key == KEY_LEFT || key == KEY_RIGHT)
 		player->turn_d = 0;
-	else if(key == KEY_Q || key == KEY_D)
+	else if (key == KEY_Q || key == KEY_D)
 		player->lateral_d = 0;
 	return (0);
 }

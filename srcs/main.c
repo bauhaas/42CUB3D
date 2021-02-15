@@ -38,7 +38,7 @@ int		end_cub(t_cub *cub)
 {
 	free(cub->rays);
 	free_texture(cub);
-	free_sprite(cub);
+	free_sprt(cub);
 	free_grid(cub);
 	if (cub->win.img.img)
 		free_img(cub);
@@ -74,7 +74,7 @@ int		main(int ac, char **av)
 				cub.data.dist_proj_plane = (cub.win.wid / 2) /
 					(tan(FOV / 2));
 					cub.rays = malloc(sizeof(t_ray) * cub.win.wid);
-					if(!cub.rays)
+					if (!cub.rays)
 						return (is_error("MAlloc space rays"));
 				printf("Cub3d is launching..\n");
 				run_cub(&cub);

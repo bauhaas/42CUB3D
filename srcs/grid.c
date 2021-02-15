@@ -21,7 +21,7 @@ void	init_grid(t_cub *cub)
 	cub->data.grid_flag = 0;
 	cub->data.res = 0;
 	cub->data.dist_proj_plane = 0;
-	cub->data.num_sprites = 0;
+	cub->data.num_sprt = 0;
 }
 
 void	free_grid(t_cub *cub)
@@ -73,7 +73,7 @@ int		grid_parsing(t_cub *cub, t_list *list)
 {
 	grid_alloc(cub, list);
 	ft_lstclear(&list, &ft_free);
-	if (!check_player(cub) || !check_grid(cub) || !check_sprites(cub))
+	if (!check_player(cub) || !check_grid(cub) || !check_sprt(cub))
 		return (0);
 	return (1);
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_sprites.c                                    :+:      :+:    :+:   */
+/*   utils_sprt.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,16 +16,16 @@ void	is_visible(t_cub *cub, int i)
 {
 	float angle;
 
-	angle = cub->sprites[i].ang;
+	angle = cub->sprt[i].ang;
 	if (angle > M_PI)
 		angle -= M_PI * 2;
 	if (angle < -M_PI)
 		angle += M_PI * 2;
 	angle = abs(angle);
 	if (angle < (FOV / 2))
-		cub->sprites[i].visibility = 1;
+		cub->sprt[i].visibility = 1;
 	else
-		cub->sprites[i].visibility = 0;
+		cub->sprt[i].visibility = 0;
 }
 
 float	find_angle(t_cub *cub, int i)
@@ -34,8 +34,8 @@ float	find_angle(t_cub *cub, int i)
 	float			dy;
 	float			angle;
 
-	dx = cub->sprites[i].coord.x - cub->player.pos.x;
-	dy = cub->sprites[i].coord.y - cub->player.pos.y;
+	dx = cub->sprt[i].pos.x - cub->player.pos.x;
+	dy = cub->sprt[i].pos.y - cub->player.pos.y;
 	angle = atan2(dy, dx) - cub->player.rot_ang;
 	return (angle);
 }

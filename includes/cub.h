@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub.h                                            :+:      :+:    :+:   */
+/*   cub.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/15 19:40:05 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/15 20:16:38 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,97 +58,96 @@
 # define FOV  90 * (M_PI / 180)
 # define MINIMAP_SCALE 20
 
-typedef struct	s_coord
+typedef struct	s_pos
 {
 	float		x;
 	float		y;
-}				t_coord;
+}				t_pos;
 
 typedef struct	s_player
 {
-	t_coord		pos;
+	int			lateral_d;
+	float		mov_speed;
+	float		rot_speed;
+	float		rot_ang;
+	int			walk_d;
 	int			radius;
 	int			turn_d;
 	int			rot_d;
-	int			walk_d;
-	int			lateral_d;
-	float		mov_speed;
-	float		rot_ang;
-	float		rot_speed;
+	t_pos		pos;
 }				t_player;
 
 typedef struct	s_img
 {
-	void		*img;
-	char		*addr;
 	int			bits_per_pixel;
 	int			line_length;
 	int			endian;
+	char		*addr;
+	void		*img;
 	int			wid;
 	int			hei;
 }				t_img;
 
 typedef struct	s_line
 {
-	t_coord		start;
-	t_coord		end;
+	t_pos		start;
+	t_pos		end;
 }				t_line;
 
 typedef struct	s_win
 {
+	int			tot_rays;
 	void		*mlx_p;
 	void		*win_p;
-	t_img		img;
 	char		*name;
-	int			tot_rays;
+	t_img		img;
 	int			hei;
 	int			wid;
 }				t_win;
 
 typedef struct	s_dcast
 {
-	float		xstep;
-	float		ystep;
+	int			found_wall;
 	float		xinter;
 	float		yinter;
-	float		hit_x;
-	float		hit_y;
 	float		next_x;
 	float		next_y;
-	int			found_wall;
+	float		xstep;
+	float		ystep;
+	float		hit_x;
+	float		hit_y;
 
 }				t_dcast;
 
 typedef struct	s_ray
 {
-	float		ray_ang;
-	float		wall_hit_x;
-	float		wall_hit_y;
-	t_coord		vt_hit;
-	t_coord		hz_hit;
-	t_line		line;
 	int			found_hz_wall;
 	int			found_vt_wall;
-	float		distance;
+	float		wall_hit_x;
+	float		wall_hit_y;
 	int			was_vt_hit;
-	int			is_up;
-	int			is_down;
 	int			is_right;
 	int			is_left;
-
-	int id;
-	int top_pixel;
-	int bot_pixel;
+	int			is_down;
+	int			is_up;
+	float		ray_ang;
+	int			top_px;
+	int			bot_px;
+	t_pos		vt_hit;
+	t_pos		hz_hit;
+	t_line		line;
+	float		dist;
+	int			id;
 }				t_ray;
 
 typedef struct	s_text
 {
-	void			*ptr;
-	char			*data;
-	char			*name;
 	int				bits_per_pixel;
 	int				line_length;
 	int				endian;
+	char			*name;
+	char			*data;
+	void			*ptr;
 	int				wid;
 	int				hei;
 }				t_text;
@@ -156,52 +155,49 @@ typedef struct	s_text
 
 typedef struct	s_data
 {
-	int				ceil;
+	double			dist_proj_plane;
+	int				grid_flag;
+	int				num_sprt;
 	int				floor;
+	int				ceil;
 	int				cols;
 	int				rows;
-	int				grid_flag;
 	int				res;
-	double			dist_proj_plane;
-	int				num_sprites;
 }				t_data;
 
-typedef struct	s_sprite
+typedef struct	s_sprt
 {
-	t_coord		coord;
-	float		distance;
-	float		ang;
-	int			texture;
 	int			visibility;
+	float 		first_x;
+	int			texture;
+	int 		top_px;
+	int 		bot_px;
+	float		dist;
+	t_pos		pos;
+	float		ang;
 	float 		hei;
 	int 		id;
-	int 		top_pixel;
-	int 		bot_pixel;
-	float 		first_x;
-}				t_sprite;
+}				t_sprt;
 
 typedef struct	s_cub
 {
+	t_text		text[5];
+	t_player	player;
+	char		**grid;
+	t_ray		*rays;
+	t_sprt	*sprt;
+	t_data		data;
 	t_img		img;
 	t_win		win;
-	t_player	player;
-	t_ray		*rays;
-	t_sprite	*sprites;
-	t_text		text[5];
-	t_data		data;
-	char		**grid;
 }				t_cub;
 
-void	fill_sprites(t_cub *cub, int i);
-void	draw_sprite(t_cub *cub, t_sprite sprite, t_coord pos, t_coord offset);
-//void	draw_sprite(t_cub *cub, t_sprite *sprite, t_coord pos, t_coord offset);
-void	render_sprite(t_cub *cub, t_sprite sprite);
-//void	sprite_data(t_cub *cub, t_sprite *sprite);
-void	sprite_data(t_cub *cub);
-void	render_sprites(t_cub *cub);
+void	fill_sprt(t_cub *cub, int i);
+void	draw_sprt(t_cub *cub, t_sprt sprt, t_pos pos, t_pos offset);
+void	sprt_data(t_cub *cub);
+void	render_sprt(t_cub *cub);
 
-void is_visible(t_cub *cub, int i);
-float find_angle(t_cub *cub, int i);
+void			is_visible(t_cub *cub, int i);
+float			find_angle(t_cub *cub, int i);
 
 int				key_pressed(int key, t_cub *cub);
 int				key_released(int key, t_player *player);
@@ -213,18 +209,18 @@ void			init_player(t_player *player);
 void			init_img(t_img *img);
 void			init_win(t_win *win);
 void			init_ray(t_ray *ray, float ray_ang);
-t_line			init_line(t_coord a, t_coord b);
-t_coord			init_coord(float a, float b);
+t_line			init_line(t_pos a, t_pos b);
+t_pos			init_pos(float a, float b);
 
 void			render_mini_player(t_cub *cub);
 void			render_mini_map(t_cub *cub);
-void			render_mini_sprites(t_cub *cub);
+void			render_mini_sprt(t_cub *cub);
 
 void			update(t_cub *cub, t_player *player);
 int				render(t_cub *cub);
 
 void			my_mlx_pixel_put(t_win *win, int x, int y, int color);
-void			square(t_coord coord, int size, t_cub *cub, int color);
+void			square(t_pos pos, int size, t_cub *cub, int color);
 void			render_line(t_line *line, t_cub *cub, int color);
 
 void			hz_cast(t_ray *ray, t_cub *cub, int i);
@@ -233,7 +229,7 @@ t_ray			cast(t_ray ray, t_cub *cub);
 void			cast_all_rays(t_cub *cub);
 
 int				grid_is_wall(float x, float y, t_cub *cub);
-int				grid_is_sprite(float x, float y, t_cub *cub);
+int				grid_is_sprt(float x, float y, t_cub *cub);
 float			normalize(float ray_ang);
 float			p_dist(float x1, float y1, float x2, float y2);
 
@@ -279,11 +275,10 @@ void free_img(t_cub *cub);
 void load_win(t_win *win);
 void free_win(t_cub *cub);
 
-//sprites
-int check_sprites(t_cub *cub);
-void render_sprites(t_cub *cub);
-int load_sprites(t_cub *cub);
-void free_sprite(t_cub *cub);
+//sprt
+int check_sprt(t_cub *cub);
+int load_sprt(t_cub *cub);
+void free_sprt(t_cub *cub);
 
 int grep_color(t_text text, int x, int y);
 int parsing(t_cub *cub, char *map_file);

@@ -16,7 +16,7 @@ void	render_mini_map(t_cub *cub)
 {
 	int		i;
 	int		j;
-	t_coord	coord;
+	t_pos	pos;
 
 	i = -1;
 	while (++i < cub->data.rows)
@@ -24,12 +24,12 @@ void	render_mini_map(t_cub *cub)
 		j = -1;
 		while (++j < cub->data.cols)
 		{
-			coord.x = MINIMAP_SCALE * j;
-			coord.y = MINIMAP_SCALE * i;
+			pos.x = MINIMAP_SCALE * j;
+			pos.y = MINIMAP_SCALE * i;
 			if (cub->grid[i][j] == '1')
-				square(coord, MINIMAP_SCALE, cub, GRAY);
+				square(pos, MINIMAP_SCALE, cub, GRAY);
 			else
-				square(coord, MINIMAP_SCALE, cub, BLACK);
+				square(pos, MINIMAP_SCALE, cub, BLACK);
 		}
 	}
 }
@@ -44,11 +44,11 @@ void	render_mini_player(t_cub *cub)
 	render_line(&cub->rays[cub->win.wid / 2].line, cub, WHITE);
 }
 
-void	render_mini_sprites(t_cub *cub)
+void	render_mini_sprt(t_cub *cub)
 {
 	int		i;
 	int		j;
-	t_coord	coord;
+	t_pos	pos;
 
 	i = -1;
 	while (++i < cub->data.rows)
@@ -56,10 +56,10 @@ void	render_mini_sprites(t_cub *cub)
 		j = -1;
 		while (++j < cub->data.cols)
 		{
-			coord.x = MINIMAP_SCALE * j;
-			coord.y = MINIMAP_SCALE * i;
+			pos.x = MINIMAP_SCALE * j;
+			pos.y = MINIMAP_SCALE * i;
 			if (cub->grid[i][j] == '2')
-				my_mlx_pixel_put(&cub->win, coord.x, coord.y, BLUE);
+				my_mlx_pixel_put(&cub->win, pos.x, pos.y, BLUE);
 		}
 	}
 }
