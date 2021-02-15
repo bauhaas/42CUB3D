@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:21:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 20:28:21 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/15 00:28:06 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	free_texture(t_cub3d *cub3d)
 {
 	int i;
 
-	i = 0;
-	while (i < 5)
+	i = -1;
+	while (++i < 5)
 	{
 		if (cub3d->text[i].name)
 		{
@@ -49,7 +49,6 @@ void	free_texture(t_cub3d *cub3d)
 			cub3d->text[i].ptr = NULL;
 			cub3d->text[i].data = NULL;
 		}
-		i++;
 	}
 }
 
@@ -57,8 +56,8 @@ int		load_texture(t_cub3d *cub3d)
 {
 	int i;
 
-	i = 0;
-	while (i < 5)
+	i = -1;
+	while (++i < 5)
 	{
 		cub3d->text[i].ptr = mlx_xpm_file_to_image(cub3d->win.mlx_p,
 				cub3d->text[i].name, &cub3d->text[i].wid, &cub3d->text[i].hei);
@@ -67,7 +66,6 @@ int		load_texture(t_cub3d *cub3d)
 		cub3d->text[i].data = mlx_get_data_addr(cub3d->text[i].ptr,
 			&cub3d->text[i].bits_per_pixel, &cub3d->text[i].line_length,
 			&cub3d->text[i].endian);
-		i++;
 	}
 	return (1);
 }

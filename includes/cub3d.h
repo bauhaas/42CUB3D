@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 23:49:29 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/15 00:59:10 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ void			render_mini_map(t_cub3d *cub3d);
 void			render_mini_sprites(t_cub3d *cub3d);
 
 void			update(t_cub3d *cub3d);
-void			render(t_cub3d *cub3d);
+int				render(t_cub3d *cub3d);
 
 void			my_mlx_pixel_put(t_win *win, int x, int y, int color);
 void			square(t_coord coord, int size, t_cub3d *cub3d, int color);

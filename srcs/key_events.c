@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 18:04:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/13 23:45:17 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/15 00:25:33 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 int		key_pressed(int keycode, t_cub3d *cub3d)
 {
 	if (keycode == 'z' || keycode == KEY_W)
-		cub3d->player.walk_d = +1;
+		cub3d->player.walk_d = 1;
 	else if (keycode == 's')
 		cub3d->player.walk_d = -1;
 	if (keycode == 'q' || keycode == KEY_A)
 		cub3d->player.turn_d = -1;
 	if (keycode == 'd')
-		cub3d->player.turn_d = +1;
+		cub3d->player.turn_d = 1;
 	update(cub3d);
 	render(cub3d);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:19:13 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 23:48:34 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/15 00:24:47 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,11 @@ void	free_grid(t_cub3d *cub3d)
 {
 	int i;
 
-	i = 0;
-	while (i < cub3d->data.rows)
+	i = -1;
+	while (++i < cub3d->data.rows)
 	{
 		free(cub3d->grid[i]);
 		cub3d->grid[i] = NULL;
-		i++;
 	}
 	free(cub3d->grid);
 }

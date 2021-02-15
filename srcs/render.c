@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 22:11:34 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/15 00:58:54 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,9 @@ void	render_ceil(t_cub3d *cub3d, t_ray rays, int i)
 {
 	int j;
 
-	j = 0;
-	while (j < rays.top_pixel)
-	{
+	j = -1;
+	while (++j < rays.top_pixel)
 		my_mlx_pixel_put(&cub3d->win, i, j, cub3d->data.ceil);
-		j++;
-	}
 }
 
 void	render_wall(t_cub3d *cub3d, t_ray rays, int i, float wall_hei)
@@ -66,8 +63,8 @@ void	render_3d(t_ray *rays, t_cub3d *cub3d)
 	int				bot_pixel;
 	int				i;
 
-	i = 0;
-	while (i < cub3d->win.wid)
+	i = -1;
+	while (++i < cub3d->win.wid)
 	{
 		wall_dist = rays[i].distance * cos(rays[i].ray_ang -
 			cub3d->player.rot_ang);
@@ -83,19 +80,19 @@ void	render_3d(t_ray *rays, t_cub3d *cub3d)
 		render_ceil(cub3d, rays[i], i);
 		render_floor(cub3d, rays[i], i);
 		render_wall(cub3d, rays[i], i, wall_hei);
-		i++;
 	}
 }
 
-void	render(t_cub3d *cub3d)
+int	render(t_cub3d *cub3d)
 {
 	cub3d->rays = cast_all_rays(cub3d);
 	render_3d(cub3d->rays, cub3d);
-	render_sprites(cub3d);
-	render_mini_map(cub3d);
-	render_mini_player(cub3d);
-	render_mini_sprites(cub3d);
+	//render_sprites(cub3d);
+	//render_mini_map(cub3d);
+	//render_mini_player(cub3d);
+	//render_mini_sprites(cub3d);
 	free(cub3d->rays);
 	mlx_put_image_to_window(cub3d->win.mlx_p, cub3d->win.win_p,
 			cub3d->win.img.img, 0, 0);
+	return (1);
 }

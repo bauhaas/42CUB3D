@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 22:22:51 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 22:23:39 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/15 00:30:16 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	render_line(t_line *line, t_cub3d *cub3d, int color)
 	tmp.y = delta.y / len;
 	delta.x = line->start.x;
 	delta.y = line->start.y;
-	i = -1.0;
+	i = -1;
 	while (++i < len)
 	{
 		my_mlx_pixel_put(&cub3d->win, delta.x, delta.y, color);

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:59:14 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 20:45:15 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/15 00:25:10 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,12 @@ int		check_grid(t_cub3d *cub3d)
 	int		y;
 	int		len;
 
-	y = 0;
-	while (y < cub3d->data.rows)
+	y = -1;
+	while (++y < cub3d->data.rows)
 	{
 		len = ft_strlen(cub3d->grid[y]);
 		if (!is_grid(cub3d, cub3d->data.cols - 1, y, len))
 			return (0);
-		y++;
 	}
 	printf("Grid OK\n");
 	return (1);
