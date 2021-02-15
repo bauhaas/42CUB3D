@@ -10,25 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub.h"
 
-void	init_sprites(t_cub3d *cub3d, int i, int x, int y)
+void	init_sprites(t_cub *cub, int i, int x, int y)
 {
-	cub3d->sprites[i].coord.x = x + 0.001;
-	cub3d->sprites[i].coord.y = y + 0.001;
-	cub3d->sprites[i].distance = -1;
-	cub3d->sprites[i].ang = 0;
-	cub3d->sprites[i].texture = 0;
-	cub3d->sprites[i].visibility = 0;
+	cub->sprites[i].coord.x = x + 0.001;
+	cub->sprites[i].coord.y = y + 0.001;
+	cub->sprites[i].distance = -1;
+	cub->sprites[i].ang = 0;
+	cub->sprites[i].texture = 0;
+	cub->sprites[i].visibility = 0;
 }
 
-void	free_sprite(t_cub3d *cub3d)
+void	free_sprite(t_cub *cub)
 {
-	free(cub3d->sprites);
-	cub3d->sprites = NULL;
+	free(cub->sprites);
+	cub->sprites = NULL;
 }
 
-int		load_sprites(t_cub3d *cub3d)
+int		load_sprites(t_cub *cub)
 {
 	int i;
 	int j;
@@ -36,14 +36,14 @@ int		load_sprites(t_cub3d *cub3d)
 
 	i = -1;
 	id = 0;
-	while (++i < cub3d->data.rows)
+	while (++i < cub->data.rows)
 	{
 		j = -1;
-		while (++j < cub3d->data.cols)
+		while (++j < cub->data.cols)
 		{
-			if (cub3d->grid[i][j] == '2' && id < cub3d->data.num_sprites)
+			if (cub->grid[i][j] == '2' && id < cub->data.num_sprites)
 			{
-				init_sprites(cub3d, id, j, i);
+				init_sprites(cub, id, j, i);
 				id++;
 			}
 		}
@@ -51,28 +51,28 @@ int		load_sprites(t_cub3d *cub3d)
 	return (1);
 }
 
-void	num_sprites(t_cub3d *cub3d)
+void	num_sprites(t_cub *cub)
 {
 	int	i;
 	int	j;
 
 	i = -1;
-	while (++i < cub3d->data.rows)
+	while (++i < cub->data.rows)
 	{
 		j = -1;
-		while (++j < cub3d->data.cols)
+		while (++j < cub->data.cols)
 		{
-			if (cub3d->grid[i][j] == '2')
-				cub3d->data.num_sprites++;
+			if (cub->grid[i][j] == '2')
+				cub->data.num_sprites++;
 		}
 	}
 }
 
-int		check_sprites(t_cub3d *cub3d)
+int		check_sprites(t_cub *cub)
 {
-	num_sprites(cub3d);
-	cub3d->sprites = malloc(sizeof(t_sprite) * cub3d->data.num_sprites);
-	if (!cub3d)
+	num_sprites(cub);
+	cub->sprites = malloc(sizeof(t_sprite) * cub->data.num_sprites);
+	if (!cub)
 		return (is_error("Fail malloc for sprites"));
 	return (1);
 }

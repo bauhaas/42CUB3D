@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub.h"
 
 void	init_img(t_img *img)
 {
@@ -23,11 +23,11 @@ void	init_img(t_img *img)
 	img->hei = 0;
 }
 
-void	free_img(t_cub3d *cub3d)
+void	free_img(t_cub *cub)
 {
-	mlx_destroy_image(cub3d->win.mlx_p, cub3d->win.img.img);
-	cub3d->win.img.img = NULL;
-	cub3d->win.img.addr = NULL;
+	mlx_destroy_image(cub->win.mlx_p, cub->win.img.img);
+	cub->win.img.img = NULL;
+	cub->win.img.addr = NULL;
 }
 
 void	load_img(t_win *win)

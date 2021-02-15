@@ -10,26 +10,26 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub.h"
 
-int		key_pressed(int key, t_cub3d *cub3d)
+int		key_pressed(int key, t_cub *cub)
 {
 	if (key == KEY_Z)
-		cub3d->player.walk_d = 1;
+		cub->player.walk_d = 1;
 	else if (key == KEY_S)
-		cub3d->player.walk_d = -1;
+		cub->player.walk_d = -1;
 	else if (key == KEY_LEFT)
-		cub3d->player.turn_d = -1;
+		cub->player.turn_d = -1;
 	else if(key == KEY_RIGHT)
-		cub3d->player.turn_d = 1;
+		cub->player.turn_d = 1;
 	else if(key == KEY_Q)
-		cub3d->player.lateral_d = -1;
+		cub->player.lateral_d = -1;
 	else if(key == KEY_D)
-		cub3d->player.lateral_d = 1;
+		cub->player.lateral_d = 1;
 	else if(key == KEY_ESC)
-		end_cub3d(cub3d);
-	update(cub3d, &cub3d->player);
-	render(cub3d);
+		end_cub(cub);
+	update(cub, &cub->player);
+	render(cub);
 	return (0);
 }
 

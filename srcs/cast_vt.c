@@ -10,19 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub.h"
 
-t_dcast	fill_vt_data(t_cub3d *cub3d, t_ray *ray)
+t_dcast	fill_vt_data(t_cub *cub, t_ray *ray)
 {
 	t_dcast	vt_data;
 
 	vt_data.found_wall = 0;
 	vt_data.hit_x = 0;
 	vt_data.hit_y = 0;
-	vt_data.xinter = floor(cub3d->player.pos.x);
+	vt_data.xinter = floor(cub->player.pos.x);
 	vt_data.xinter += ray->is_right ? 1.0 : 0;
-	vt_data.yinter = cub3d->player.pos.y + (vt_data.xinter -
-			cub3d->player.pos.x) * tan(ray->ray_ang);
+	vt_data.yinter = cub->player.pos.y + (vt_data.xinter -
+			cub->player.pos.x) * tan(ray->ray_ang);
 	vt_data.xstep = 1.0;
 	vt_data.xstep *= ray->is_left ? -1 : 1;
 	vt_data.ystep = 1.0 * tan(ray->ray_ang);
@@ -33,17 +33,17 @@ t_dcast	fill_vt_data(t_cub3d *cub3d, t_ray *ray)
 	return (vt_data);
 }
 
-void	vt_cast(t_ray *ray, t_cub3d *cub3d, int i)
+void	vt_cast(t_ray *ray, t_cub *cub, int i)
 {
 	t_dcast	vt_data;
 
-	vt_data = fill_vt_data(cub3d, ray);
+	vt_data = fill_vt_data(cub, ray);
 	if (ray->is_left)
 		i = 1;
-	while (vt_data.next_x >= 0 && vt_data.next_x <= cub3d->win.wid &&
-			vt_data.next_y >= 0 && vt_data.next_y <= cub3d->win.hei)
+	while (vt_data.next_x >= 0 && vt_data.next_x <= cub->win.wid &&
+			vt_data.next_y >= 0 && vt_data.next_y <= cub->win.hei)
 	{
-		if (grid_is_wall(vt_data.next_x - i, vt_data.next_y, cub3d))
+		if (grid_is_wall(vt_data.next_x - i, vt_data.next_y, cub))
 		{
 			vt_data.hit_y = vt_data.next_y;
 			vt_data.hit_x = vt_data.next_x;

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub.h"
 
 int		cub_ext(char *map_file)
 {
@@ -25,42 +25,42 @@ int		cub_ext(char *map_file)
 	return (is_error("Map argument is not ending with .cub"));
 }
 
-void	init_cub3d(t_cub3d *cub3d)
+void	init_cub(t_cub *cub)
 {
-	init_win(&cub3d->win);
-	init_img(&cub3d->img);
-	init_grid(cub3d);
-	init_player(&cub3d->player);
-	init_texture(cub3d);
+	init_win(&cub->win);
+	init_img(&cub->img);
+	init_grid(cub);
+	init_player(&cub->player);
+	init_texture(cub);
 }
 
-int		end_cub3d(t_cub3d *cub3d)
+int		end_cub(t_cub *cub)
 {
-	free(cub3d->rays);
-	free_texture(cub3d);
-	free_sprite(cub3d);
-	free_grid(cub3d);
-	if (cub3d->win.img.img)
-		free_img(cub3d);
-	free_win(cub3d);
+	free(cub->rays);
+	free_texture(cub);
+	free_sprite(cub);
+	free_grid(cub);
+	if (cub->win.img.img)
+		free_img(cub);
+	free_win(cub);
 	exit(0);
 }
 
-void	run_cub3d(t_cub3d *cub3d)
+void	run_cub(t_cub *cub)
 {
-	load_win(&cub3d->win);
-	load_img(&cub3d->win);
-	mlx_hook(cub3d->win.win_p, 2, 1L << 0, key_pressed, cub3d);
-	mlx_hook(cub3d->win.win_p, 3, 1L << 1, key_released, &cub3d->player);
-	mlx_hook(cub3d->win.win_p, 9, 1L << 21, &render, cub3d);
-	mlx_hook(cub3d->win.win_p, 33, 1L << 17, &end_cub3d, cub3d);
-	render(cub3d);
-	mlx_loop(cub3d->win.mlx_p);
+	load_win(&cub->win);
+	load_img(&cub->win);
+	mlx_hook(cub->win.win_p, 2, 1L << 0, key_pressed, cub);
+	mlx_hook(cub->win.win_p, 3, 1L << 1, key_released, &cub->player);
+	mlx_hook(cub->win.win_p, 9, 1L << 21, &render, cub);
+	mlx_hook(cub->win.win_p, 33, 1L << 17, &end_cub, cub);
+	render(cub);
+	mlx_loop(cub->win.mlx_p);
 }
 
 int		main(int ac, char **av)
 {
-	t_cub3d cub3d;
+	t_cub cub;
 
 	if (ac == 3 && !strcmp(av[2], "--save"))
 		return (0);
@@ -68,17 +68,17 @@ int		main(int ac, char **av)
 	{
 		if (cub_ext(av[1]))
 		{
-			init_cub3d(&cub3d);
-			if (parsing(&cub3d, av[1]))
+			init_cub(&cub);
+			if (parsing(&cub, av[1]))
 			{
-				cub3d.data.dist_proj_plane = (cub3d.win.wid / 2) /
+				cub.data.dist_proj_plane = (cub.win.wid / 2) /
 					(tan(FOV / 2));
-					cub3d.rays = malloc(sizeof(t_ray) * cub3d.win.wid);
-					if(!cub3d.rays)
+					cub.rays = malloc(sizeof(t_ray) * cub.win.wid);
+					if(!cub.rays)
 						return (is_error("MAlloc space rays"));
 				printf("Cub3d is launching..\n");
-				run_cub3d(&cub3d);
-				end_cub3d(&cub3d);
+				run_cub(&cub);
+				end_cub(&cub);
 			}
 		}
 	}

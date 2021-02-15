@@ -10,29 +10,29 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub.h"
 
-void	check_res(t_cub3d *cub3d)
+void	check_res(t_cub *cub)
 {
 	int x;
 	int y;
 
-	mlx_get_screen_size(cub3d->win.mlx_p, &x, &y);
-	if (cub3d->win.wid > x)
-		cub3d->win.wid = x;
-	if (cub3d->win.hei > y)
-		cub3d->win.hei = y;
+	mlx_get_screen_size(cub->win.mlx_p, &x, &y);
+	if (cub->win.wid > x)
+		cub->win.wid = x;
+	if (cub->win.hei > y)
+		cub->win.hei = y;
 }
 
-int		fill_res(t_cub3d *cub3d, char **data)
+int		fill_res(t_cub *cub, char **data)
 {
 	int x;
 	int y;
 
-	cub3d->win.mlx_p = mlx_init();
-	if (!cub3d->win.mlx_p)
+	cub->win.mlx_p = mlx_init();
+	if (!cub->win.mlx_p)
 		return (is_error("Couldn't init MLX"));
-	if (cub3d->win.wid == -1 && cub3d->win.hei == -1)
+	if (cub->win.wid == -1 && cub->win.hei == -1)
 	{
 		if (data[1] && data[2] && is_num(data[1]) && is_num(data[2]))
 		{
@@ -40,9 +40,9 @@ int		fill_res(t_cub3d *cub3d, char **data)
 			y = ft_atoi(data[2]);
 			if (x > 0 && y > 0)
 			{
-				cub3d->win.wid = x;
-				cub3d->win.hei = y;
-				check_res(cub3d);
+				cub->win.wid = x;
+				cub->win.hei = y;
+				check_res(cub);
 				printf("resolution OK\n");
 				return (1);
 			}

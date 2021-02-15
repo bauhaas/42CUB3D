@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub.h"
 
 int		is_rgb(char *color)
 {
@@ -27,27 +27,27 @@ int		rgb_to_hex(int r, int g, int b)
 	return (0x0 | r << 16 | g << 8 | b);
 }
 
-int		fill_ceil(t_cub3d *cub3d, int hex_color)
+int		fill_ceil(t_cub *cub, int hex_color)
 {
-	if (cub3d->data.ceil == -1)
-		cub3d->data.ceil = hex_color;
+	if (cub->data.ceil == -1)
+		cub->data.ceil = hex_color;
 	else
 		return (is_error("Ceil color is declared twice"));
 	printf("ceiling color OK\n");
 	return (1);
 }
 
-int		fill_floor(t_cub3d *cub3d, int hex_color)
+int		fill_floor(t_cub *cub, int hex_color)
 {
-	if (cub3d->data.floor == -1)
-		cub3d->data.floor = hex_color;
+	if (cub->data.floor == -1)
+		cub->data.floor = hex_color;
 	else
 		return (is_error("Floor color is declared twice"));
 	printf("floor color OK\n");
 	return (1);
 }
 
-int		fill_color(t_cub3d *cub3d, char **line)
+int		fill_color(t_cub *cub, char **line)
 {
 	char	**color;
 	int		int_color[3];
@@ -67,9 +67,9 @@ int		fill_color(t_cub3d *cub3d, char **line)
 	}
 	hex_color = rgb_to_hex(int_color[0], int_color[1], int_color[2]);
 	if (strcmp(line[0], "C") == 0)
-		fill_ceil(cub3d, hex_color);
+		fill_ceil(cub, hex_color);
 	else
-		fill_floor(cub3d, hex_color);
+		fill_floor(cub, hex_color);
 	free_split(&color);
 	return (1);
 }

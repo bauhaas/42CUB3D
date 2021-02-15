@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub.h"
 
 float	normalize(float ray_ang)
 {
@@ -20,18 +20,18 @@ float	normalize(float ray_ang)
 	return (ray_ang);
 }
 
-int		grid_is_wall(float x, float y, t_cub3d *cub3d)
+int		grid_is_wall(float x, float y, t_cub *cub)
 {
 	int grid_x;
 	int grid_y;
 
-	if (x < 0 || x > cub3d->win.wid || y < 0 || y > cub3d->win.hei)
+	if (x < 0 || x > cub->win.wid || y < 0 || y > cub->win.hei)
 		return (TRUE);
 	grid_x = floor(x);
 	grid_y = floor(y);
-	if (grid_x >= cub3d->data.cols || grid_y >= cub3d->data.rows)
+	if (grid_x >= cub->data.cols || grid_y >= cub->data.rows)
 		return (TRUE);
-	if (cub3d->grid[grid_y][grid_x] == '1')
+	if (cub->grid[grid_y][grid_x] == '1')
 		return (TRUE);
 	else
 		return (FALSE);

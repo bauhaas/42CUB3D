@@ -10,48 +10,48 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub.h"
 
-void	init_grid(t_cub3d *cub3d)
+void	init_grid(t_cub *cub)
 {
-	cub3d->data.rows = 0;
-	cub3d->data.cols = 0;
-	cub3d->data.ceil = -1;
-	cub3d->data.floor = -1;
-	cub3d->data.grid_flag = 0;
-	cub3d->data.res = 0;
-	cub3d->data.dist_proj_plane = 0;
-	cub3d->data.num_sprites = 0;
+	cub->data.rows = 0;
+	cub->data.cols = 0;
+	cub->data.ceil = -1;
+	cub->data.floor = -1;
+	cub->data.grid_flag = 0;
+	cub->data.res = 0;
+	cub->data.dist_proj_plane = 0;
+	cub->data.num_sprites = 0;
 }
 
-void	free_grid(t_cub3d *cub3d)
+void	free_grid(t_cub *cub)
 {
 	int i;
 
 	i = -1;
-	while (++i < cub3d->data.rows)
+	while (++i < cub->data.rows)
 	{
-		free(cub3d->grid[i]);
-		cub3d->grid[i] = NULL;
+		free(cub->grid[i]);
+		cub->grid[i] = NULL;
 	}
-	free(cub3d->grid);
+	free(cub->grid);
 }
 
-int		fill_grid(t_cub3d *cub3d, t_list *list)
+int		fill_grid(t_cub *cub, t_list *list)
 {
 	int i;
 
 	i = 0;
 	while (list)
 	{
-		cub3d->grid[i] = ft_strdup(list->content);
+		cub->grid[i] = ft_strdup(list->content);
 		i++;
 		list = list->next;
 	}
 	return (1);
 }
 
-int		grid_alloc(t_cub3d *cub3d, t_list *list)
+int		grid_alloc(t_cub *cub, t_list *list)
 {
 	int cols;
 	int rows;
@@ -60,20 +60,20 @@ int		grid_alloc(t_cub3d *cub3d, t_list *list)
 	rows = ft_lstsize(list);
 	if (!cols || !rows)
 		return (is_error("grid has no cols or no rows"));
-	cub3d->grid = malloc(sizeof(char *) * rows);
-	cub3d->data.cols = cols;
-	cub3d->data.rows = rows;
-	if (!cub3d->grid)
+	cub->grid = malloc(sizeof(char *) * rows);
+	cub->data.cols = cols;
+	cub->data.rows = rows;
+	if (!cub->grid)
 		return (is_error("not enough memory to malloc"));
-	fill_grid(cub3d, list);
+	fill_grid(cub, list);
 	return (1);
 }
 
-int		grid_parsing(t_cub3d *cub3d, t_list *list)
+int		grid_parsing(t_cub *cub, t_list *list)
 {
-	grid_alloc(cub3d, list);
+	grid_alloc(cub, list);
 	ft_lstclear(&list, &ft_free);
-	if (!check_player(cub3d) || !check_grid(cub3d) || !check_sprites(cub3d))
+	if (!check_player(cub) || !check_grid(cub) || !check_sprites(cub))
 		return (0);
 	return (1);
 }
