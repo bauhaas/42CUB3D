@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:24:15 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 21:03:04 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/15 20:59:19 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	init_ray(t_ray *ray, float ray_ang)
 {
-	ray->ray_ang = ray_ang;
 	ray->wall_hit_x = 0;
 	ray->wall_hit_y = 0;
 	ray->dist = 0;

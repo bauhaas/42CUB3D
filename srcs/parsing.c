@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:31:08 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/14 23:48:05 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/16 02:16:39 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,39 @@ int		line_data(t_cub *cub, char *line, t_list **list)
 	return (cub->data.res);
 }
 
+int		last_load(t_cub *cub)
+{
+	init_healthbar(cub);
+	cub->data.dist_proj_plane = (cub->win.wid / 2) / (tan(FOV / 2));
+	cub->rays = malloc(sizeof(t_ray) * cub->win.wid);
+	if (!cub->rays)
+		return (is_error("Malloc space rays"));
+	return (1);
+}
+
+int		check_missing(t_cub *cub)
+{
+	if (!cub->data.grid_flag)
+		return (is_error("There is no map in file"));
+	if (!cub->data.ceil)
+		return (is_error("There is no ceil color"));
+	if (!cub->data.floor)
+		return (is_error("There is no floor color"));
+	if (!cub->win.wid)
+		return (is_error("There is no resolution"));
+	if (!cub->text[0].name)
+		return (is_error("There is no north texture"));
+	if (!cub->text[1].name)
+		return (is_error("There is no south texture"));
+	if (!cub->text[2].name)
+		return (is_error("There is no west texture"));
+	if (!cub->text[3].name)
+		return (is_error("There is no east texture"));
+	if (!cub->text[4].name)
+		return (is_error("There is no sprite texture"));
+	return (last_load(cub));
+}
+
 int		parsing(t_cub *cub, char *map_file)
 {
 	int		fd;
@@ -71,7 +104,7 @@ int		parsing(t_cub *cub, char *map_file)
 	}
 	close(fd);
 	if (!grid_parsing(cub, list) || !load_texture(cub) ||
-			!load_sprt(cub))
+			!load_sprt(cub) || !check_missing(cub))
 		return (0);
 	return (1);
 }

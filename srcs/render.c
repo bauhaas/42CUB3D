@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/15 18:16:50 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/16 02:18:01 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,16 +84,17 @@ void	render_3d(t_cub *cub)
 	}
 }
 
-int	render(t_cub *cub)
+int		render(t_cub *cub)
 {
 	cast_all_rays(cub);
-	//render_3d(cub->rays, cub);
 	render_3d(cub);
 	render_sprt(cub);
-//	render_mini_map(cub);
-//	render_mini_player(cub);
-//	render_mini_sprt(cub);
+	render_mini_map(cub);
+	render_mini_player(cub);
+	render_mini_sprt(cub);
+	render_healthbar(cub);
 	mlx_put_image_to_window(cub->win.mlx_p, cub->win.win_p,
 			cub->win.img.img, 0, 0);
+	render_health_text(cub);
 	return (1);
 }

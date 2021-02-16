@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:43:26 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 20:47:22 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/15 20:34:43 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,17 @@ void	free_split(char ***split)
 	}
 	free(*split);
 	*split = NULL;
+}
+
+int		cub_ext(char *map_file)
+{
+	int i;
+
+	i = 0;
+	while (map_file[i])
+		i++;
+	i -= 4;
+	if (!strcmp(&map_file[i], ".cub"))
+		return (1);
+	return (is_error("Map argument is not ending with .cub"));
 }

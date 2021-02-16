@@ -6,7 +6,7 @@
 #    By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/11 12:08:52 by bahaas            #+#    #+#              #
-#    Updated: 2021/02/15 04:09:44 by bahaas           ###   ########.fr        #
+#    Updated: 2021/02/15 21:44:34 by bahaas           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ SRCS	= srcs/render.c srcs/cast_hz.c srcs/cast_vt.c srcs/cast_ray.c \
 		  srcs/player.c srcs/texture.c srcs/grid.c srcs/utils_parsing.c \
 		  srcs/grid_parsing.c srcs/colors.c srcs/resolution.c srcs/images.c \
 		  srcs/window.c srcs/utils_init.c srcs/main.c srcs/sprites.c \
-		  srcs/utils_sprites.c srcs/utils_render.c srcs/render_sprites.c
+		  srcs/utils_sprites.c srcs/utils_render.c srcs/render_sprites.c \
+		  srcs/save.c srcs/healthbar.c
 
 SRCS_BONUS	= bonus/render_bonus.c bonus/cast_hz_bonus.c bonus/cast_vt_bonus.c \
 			  bonus/cast_ray_bonus.c bonus/minimap_bonus.c \
@@ -40,11 +41,11 @@ OBJS	= ${SRCS:.c=.o}
 OBJS_BONUS	= ${SRCS_BONUS:.c=.o}
 
 .c.o:
-			${CC} ${CFLAGS} -pg ${HEADER} -c $< -o ${<:.c=.o}
+			${CC} ${CFLAGS} ${HEADER} -c $< -o ${<:.c=.o}
 
 $(NAME):	${OBJS}
 			make -C ${LIB_D}
-			${CC} ${HEADER} -pg ${OBJS} -o ${NAME} -L ${LIB_D} -lft -L ${MLX_D} -lmlx -lXext -lX11 -lm
+			${CC} ${HEADER} ${OBJS} -o ${NAME} -L ${LIB_D} -lft -L ${MLX_D} -lmlx -lXext -lX11 -lm
 
 all:		${NAME}
 

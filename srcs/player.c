@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:13:53 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/15 03:08:53 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/16 01:16:02 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,31 +24,6 @@ void	init_player(t_player *player)
 	player->mov_speed = 0.3;
 	player->rot_speed = 3 * (M_PI / 180);
 }
-/*
-void	update(t_cub *cub)
-{
-	float mov_step;
-	float lateral_angle;
-	float new_x;
-	float new_y;
-
-	cub->player.rot_ang += cub->player.turn_d * cub->player.rot_speed;
-	cub->player.rot_ang = normalize(cub->player.rot_ang);
-	mov_step = cub->player.walk_d * cub->player.mov_speed;
-	new_player_x = cub->player.pos.x + cos(cub->player.rot_ang) * mov_step;
-	new_y = cub->player.pos.y + sin(cub->player.rot_ang) * mov_step;
-	if (cub->player.lateral_d != 0)
-	{
-		lateral_angle = cub->player.rot_ang + ((M_PI / 2) * cub->player.lateral_d);
-		new_player_x = cub->player.pos.x + cos(lateral_angle) * cub->player.mov_speed;
-		new_y = cub->player.pos.y + sin(lateral_angle) * cub->player.mov_speed;
-	}
-	if (!grid_is_wall(new_player_x, new_y, cub))
-	{
-		cub->player.pos.x = new_player_x;
-		cub->player.pos.y = new_y;
-	}
-}*/
 
 void	update(t_cub *cub, t_player *player)
 {
@@ -79,8 +54,8 @@ void	pos_player(t_player *player, int x, int y, char orientation)
 {
 	if (player->pos.x == -1 && player->pos.y == -1)
 	{
-		player->pos.x = x + 0.001;
-		player->pos.y = y + 0.001;
+		player->pos.x = x + 0.1;
+		player->pos.y = y + 0.1;
 		if (orientation == 'N')
 			player->rot_ang = 1.5 * M_PI;
 		else if (orientation == 'S')

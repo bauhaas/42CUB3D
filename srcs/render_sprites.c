@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render_sprts.c                                   :+:      :+:    :+:   */
+/*   render_sprites.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 22:29:18 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/15 20:04:47 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/16 02:25:48 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,22 @@ void	fill_sprt(t_cub *cub, int i)
 
 void	sprt_display(t_cub *cub, int i)
 {
-	t_pos text;
-	t_pos pos;
+	t_pos	text;
+	t_pos	pos;
 	float	dist;
 	int		color;
 	int		background;
 
 	pos.x = -1;
-	while(cub->sprt[i].first_x + pos.x < 0)
+	while (cub->sprt[i].first_x + pos.x < 0)
 		pos.x++;
-	while (++pos.x < cub->sprt[i].hei && cub->sprt[i].first_x + pos.x < cub->win.wid)
+	while (++pos.x < cub->sprt[i].hei &&
+			cub->sprt[i].first_x + pos.x < cub->win.wid)
 	{
 		dist = cub->rays[(int)(cub->sprt[i].first_x + pos.x)].dist;
 		if (dist > cub->sprt[i].dist)
 		{
-			text.x =  pos.x * cub->text[4].wid / cub->sprt[i].hei;
+			text.x = pos.x * cub->text[4].wid / cub->sprt[i].hei;
 			pos.y = cub->sprt[i].top_px - 1;
 			while (++pos.y < cub->sprt[i].bot_px)
 			{
@@ -48,7 +49,8 @@ void	sprt_display(t_cub *cub, int i)
 					text.y = 0;
 				color = grep_color(cub->text[4], text.x, text.y);
 				if (color != background)
-					my_mlx_pixel_put(&cub->win, cub->sprt[i].first_x + pos.x, pos.y, color);
+					my_mlx_pixel_put(&cub->win, cub->sprt[i].first_x + pos.x,
+							pos.y, color);
 			}
 		}
 	}
@@ -56,9 +58,9 @@ void	sprt_display(t_cub *cub, int i)
 
 void	fill_sprt_data(t_cub *cub)
 {
-	int				i;
-	int				top_y;
-	int				bot_y;
+	int		i;
+	int		top_y;
+	int		bot_y;
 
 	i = -1;
 	while (++i < cub->data.num_sprt)
@@ -79,25 +81,6 @@ void	fill_sprt_data(t_cub *cub)
 			tan(cub->sprt[i].ang) + (cub->win.wid / 2) -
 			(cub->sprt[i].hei / 2);
 			sprt_display(cub, i);
-		}
-	}
-}
-
-void	sort_sprt(t_cub *cub)
-{
-	t_sprt	tmp;
-	int			i;
-	int			j;
-
-	i = -1;
-	while(++i < cub->data.num_sprt)
-	{
-		j = i + 1;
-		if (cub->sprt[i].dist < cub->sprt[j].dist)
-		{
-			tmp = cub->sprt[i];
-			cub->sprt[i] = cub->sprt[j];
-			cub->sprt[j] = tmp;
 		}
 	}
 }

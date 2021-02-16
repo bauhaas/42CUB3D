@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 22:22:51 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/15 18:11:05 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/16 02:34:37 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,22 @@ void	my_mlx_pixel_put(t_win *win, int x, int y, int color)
 		dst = win->img.addr + (y * win->img.line_length + x *
 				(win->img.bits_per_pixel / 8));
 		*(unsigned int*)dst = color;
+	}
+}
+
+void	rect(t_cub *cub, t_pos a, t_pos b, int color)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < b.x)
+	{
+		j = -1;
+		while (++j < b.y)
+		{
+			my_mlx_pixel_put(&cub->win, a.x + i, a.y + j, color);
+		}
 	}
 }
 

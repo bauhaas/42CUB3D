@@ -6,12 +6,12 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/15 20:16:38 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/16 02:54:06 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
+#ifndef CUB_H
+# define CUB_H
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -24,6 +24,7 @@
 # include "../minilibx/mlx.h"
 
 
+//#include "sprites.h"
 /*
 ** KEY EVENTS
 ** to find keycode of each key, execute 'xev' in terminal and press key wanted
@@ -33,7 +34,6 @@
 # define KEY_Q		113
 # define KEY_S		115
 # define KEY_D		100
-
 # define KEY_UP		65362
 # define KEY_LEFT	65361
 # define KEY_DOWN	65364
@@ -45,10 +45,12 @@
 ** https://www.rapidtables.com/web/color/RGB_Color.html#color-table
 */
 
-# define GRAY	0x00808080
+# define GRAY	0x00C7C9D1
+# define V_GRAY	0x00E1E3E8
+# define D_GRAY	0x00818591
 # define BLUE	0x000000FF
 # define WHITE	0x00FFFFFF
-# define GREEN	0x0000CC00
+# define GREEN	0x0074B44A
 # define RED	0x00FF0000
 # define BLACK	0x00000000
 
@@ -56,7 +58,7 @@
 # define TRUE 1
 # define FALSE 0
 # define FOV  90 * (M_PI / 180)
-# define MINIMAP_SCALE 20
+# define MINIMAP_SCALE 15
 
 typedef struct	s_pos
 {
@@ -165,6 +167,7 @@ typedef struct	s_data
 	int				res;
 }				t_data;
 
+
 typedef struct	s_sprt
 {
 	int			visibility;
@@ -179,25 +182,34 @@ typedef struct	s_sprt
 	int 		id;
 }				t_sprt;
 
+typedef struct	s_health
+{
+	t_pos		start;
+	t_pos		end;
+}				t_health;
+
 typedef struct	s_cub
 {
+	t_health	healthbar;
 	t_text		text[5];
 	t_player	player;
 	char		**grid;
 	t_ray		*rays;
-	t_sprt	*sprt;
+	t_sprt		*sprt;
 	t_data		data;
 	t_img		img;
 	t_win		win;
+	int			save;
 }				t_cub;
 
-void	fill_sprt(t_cub *cub, int i);
-void	draw_sprt(t_cub *cub, t_sprt sprt, t_pos pos, t_pos offset);
-void	sprt_data(t_cub *cub);
-void	render_sprt(t_cub *cub);
+void	init_healthbar(t_cub *cub);
+void	render_health_text(t_cub *cub);
+void	render_healthbar(t_cub *cub);
+void		rect(t_cub *cub, t_pos a, t_pos b, int color);
+int save_bmp(t_cub *cub);
+void	load_cub(t_cub *cub, char *map);
+int		cub_ext(char *map_file);
 
-void			is_visible(t_cub *cub, int i);
-float			find_angle(t_cub *cub, int i);
 
 int				key_pressed(int key, t_cub *cub);
 int				key_released(int key, t_player *player);
@@ -279,6 +291,13 @@ void free_win(t_cub *cub);
 int check_sprt(t_cub *cub);
 int load_sprt(t_cub *cub);
 void free_sprt(t_cub *cub);
+void	sort_sprt(t_cub *cub);
+void	fill_sprt(t_cub *cub, int i);
+void	draw_sprt(t_cub *cub, t_sprt sprt, t_pos pos, t_pos offset);
+void	sprt_data(t_cub *cub);
+void	render_sprt(t_cub *cub);
+void			is_visible(t_cub *cub, int i);
+float			find_angle(t_cub *cub, int i);
 
 int grep_color(t_text text, int x, int y);
 int parsing(t_cub *cub, char *map_file);
