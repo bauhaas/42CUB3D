@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 22:29:18 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 18:23:18 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 20:31:21 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	sprt_color(t_cub *cub, t_pos text, t_pos pos, int i)
 	color = grep_color(cub->text[4], text.x, text.y);
 	background = grep_color(cub->text[4], 0, 0);
 	if (color != background)
-		my_mlx_pixel_put(&cub->win, cub->sprt[i].x + pos.x, pos.y, color);
+		my_mlx_pixel_put(&cub->win, cub->sprt[i].pos_x + pos.x, pos.y, color);
 }
 
 /*
@@ -56,12 +56,12 @@ void	sprt_display(t_cub *cub, int i)
 	float	dist;
 
 	pos.x = -1;
-	while (cub->sprt[i].x + pos.x < 0)
+	while (cub->sprt[i].pos_x + pos.x < 0)
 		pos.x++;
 	while (++pos.x < cub->sprt[i].hei &&
-			cub->sprt[i].x + pos.x < cub->win.wid)
+			cub->sprt[i].pos_x + pos.x < cub->win.wid)
 	{
-		dist = cub->rays[(int)(cub->sprt[i].x + pos.x)].dist;
+		dist = cub->rays[(int)(cub->sprt[i].pos_x + pos.x)].dist;
 		if (dist > cub->sprt[i].dist)
 		{
 			text.x = pos.x * cub->text[4].wid / cub->sprt[i].hei;
@@ -81,8 +81,9 @@ void	sprt_display(t_cub *cub, int i)
 /*
 ** In the case where our sprite is visible. Just like walls render we need to
 ** determine his top + bot pixel & height. Then we'll display it to the screen.
-** First x, determine where we should render the sprite on x axis.
+** pos_x, determine where we should render the sprite on x axis.
 */
+
 
 void	fill_sprt_data(t_cub *cub)
 {
@@ -105,8 +106,9 @@ void	fill_sprt_data(t_cub *cub)
 				bot_px = cub->win.hei;
 			cub->sprt[i].bot_px = bot_px;
 			cub->sprt[i].top_px = top_px;
-			cub->sprt[i].x = cub->data.dist_proj_plane * tan(cub->sprt[i].ang)
-				+ (cub->win.wid / 2) - (cub->sprt[i].hei / 2);
+			cub->sprt[i].pos_x = cub->data.dist_proj_plane *
+				tan(cub->sprt[i].ang) + (cub->win.wid / 2) -
+				(cub->sprt[i].hei / 2);
 			sprt_display(cub, i);
 		}
 	}
