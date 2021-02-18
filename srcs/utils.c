@@ -6,11 +6,15 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 01:18:48 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/15 01:28:38 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 17:09:04 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub.h"
+
+/*
+** Keep any angle in [0-180].
+*/
 
 float	normalize(float ray_ang)
 {
@@ -19,6 +23,10 @@ float	normalize(float ray_ang)
 		ray_ang += 2 * M_PI;
 	return (ray_ang);
 }
+
+/*
+** Check if [y,x] position is a wall or not.
+*/
 
 int		grid_is_wall(float x, float y, t_cub *cub)
 {
@@ -37,10 +45,18 @@ int		grid_is_wall(float x, float y, t_cub *cub)
 		return (FALSE);
 }
 
+/*
+** Determine the distance between 2 points.
+*/
+
 float	p_dist(float x1, float y1, float x2, float y2)
 {
 	return (sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
 }
+
+/*
+** Return the pixel color located on the [y,x] position of our texture.
+*/
 
 int		grep_color(t_text text, int x, int y)
 {

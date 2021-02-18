@@ -6,11 +6,17 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:59:14 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/15 00:25:10 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 18:58:25 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub.h"
+
+/*
+** We are checking all the positions around the position we currently are.
+** In case where we found out that the surrounding position doesn't exist
+** or is a ' ', we have an invalid map.
+*/
 
 int		check_surrounding(char **grid, int x, int y)
 {
@@ -30,6 +36,12 @@ int		check_surrounding(char **grid, int x, int y)
 		return (0);
 	return (1);
 }
+
+/*
+** If the char we check is 0 or 2 & is on border of the map or his surrounding
+** positions aren't valid. Map isn't closed.
+** Then we check if the char isn't something else than a valid map char.
+*/
 
 int		is_grid(t_cub *cub, int cols, int y, int len)
 {
@@ -58,6 +70,10 @@ int		is_grid(t_cub *cub, int cols, int y, int len)
 	}
 	return (1);
 }
+
+/*
+** Check the validity of each rows in the map.
+*/
 
 int		check_grid(t_cub *cub)
 {

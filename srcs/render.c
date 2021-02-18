@@ -6,11 +6,15 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/16 02:18:01 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 16:35:47 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub.h"
+
+/*
+** Render floor from bot pixel to window height.
+*/
 
 void	render_floor(t_cub *cub, t_ray rays, int i)
 {
@@ -24,6 +28,10 @@ void	render_floor(t_cub *cub, t_ray rays, int i)
 	}
 }
 
+/*
+** Render ceil from 0 to top pixel position.
+*/
+
 void	render_ceil(t_cub *cub, t_ray rays, int i)
 {
 	int j;
@@ -32,6 +40,11 @@ void	render_ceil(t_cub *cub, t_ray rays, int i)
 	while (++j < rays.top_px)
 		my_mlx_pixel_put(&cub->win, i, j, cub->data.ceil);
 }
+
+/*
+** Render wall from top pixel to bot pixel. We calculate the corresponding
+** pixel position of our texture then save the texture color to render it.
+*/
 
 void	render_wall(t_cub *cub, int i, float wall_hei)
 {
@@ -55,6 +68,12 @@ void	render_wall(t_cub *cub, int i, float wall_hei)
 		my_mlx_pixel_put(&cub->win, i, j, color);
 	}
 }
+
+/*
+** For each ray, we will calculate the distance between player and the wall &
+** his height, then determine the top and bottom pos. We can start rendering
+** pixels columns by columns.
+*/
 
 void	render_3d(t_cub *cub)
 {

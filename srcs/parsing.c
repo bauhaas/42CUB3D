@@ -6,11 +6,16 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:31:08 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/16 02:16:39 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 18:58:49 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub.h"
+
+/*
+** Each line of the map is saved into a list element and added at the end
+** to have it in the good order.
+*/
 
 int		fill_list_grid(char *line, t_list **list)
 {
@@ -20,6 +25,11 @@ int		fill_list_grid(char *line, t_list **list)
 	ft_lstadd_back(list, new_elem);
 	return (1);
 }
+
+/*
+** Help us to determine the content of the line then save the data to our
+** cub3d parameter. grid_flag is here to know when we reached map parameter.
+*/
 
 int		line_data(t_cub *cub, char *line, t_list **list)
 {
@@ -47,6 +57,10 @@ int		line_data(t_cub *cub, char *line, t_list **list)
 	return (cub->data.res);
 }
 
+/*
+** Last malloc and data attribution before loading the game.
+*/
+
 int		last_load(t_cub *cub)
 {
 	init_healthbar(cub);
@@ -56,6 +70,10 @@ int		last_load(t_cub *cub)
 		return (is_error("Malloc space rays"));
 	return (1);
 }
+
+/*
+** Check if we have all the required parameters to load the game.
+*/
 
 int		check_missing(t_cub *cub)
 {
@@ -79,6 +97,11 @@ int		check_missing(t_cub *cub)
 		return (is_error("There is no sprite texture"));
 	return (last_load(cub));
 }
+
+/*
+** Read the .cub file and analyse it line by line. Then check if there is no
+** error on map / sprt / txtr and all parameters here.
+*/
 
 int		parsing(t_cub *cub, char *map_file)
 {

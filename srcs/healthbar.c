@@ -6,11 +6,16 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 21:43:28 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/16 02:33:48 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 16:40:21 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub.h"
+
+/*
+** Determine position of our healthbar. The specific numbers  multiplication
+** allow us to have always the same padding regardless of the resolution used.
+*/
 
 void	init_healthbar(t_cub *cub)
 {

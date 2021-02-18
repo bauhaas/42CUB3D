@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 17:54:11 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/16 02:22:52 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 16:26:14 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@ void	free_sprt(t_cub *cub)
 	free(cub->sprt);
 	cub->sprt = NULL;
 }
+
+/*
+** Fill sprites structure with map position of each sprites.
+*/
 
 int		load_sprt(t_cub *cub)
 {
@@ -51,6 +55,10 @@ int		load_sprt(t_cub *cub)
 	return (1);
 }
 
+/*
+** If our current position value is 2, add 1 to total sprites.
+*/
+
 void	num_sprt(t_cub *cub)
 {
 	int	i;
@@ -67,6 +75,10 @@ void	num_sprt(t_cub *cub)
 		}
 	}
 }
+
+/*
+** Find the number of sprites and malloc the required space.
+*/
 
 int		check_sprt(t_cub *cub)
 {

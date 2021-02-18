@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/16 02:54:06 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 17:52:41 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,6 @@ typedef struct	s_data
 typedef struct	s_sprt
 {
 	int			visibility;
-	float 		first_x;
 	int			texture;
 	int 		top_px;
 	int 		bot_px;
@@ -180,6 +179,7 @@ typedef struct	s_sprt
 	float		ang;
 	float 		hei;
 	int 		id;
+	float 		x;
 }				t_sprt;
 
 typedef struct	s_health

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:03:12 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 20:59:36 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 15:53:19 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,13 @@ int		is_rgb(char *color)
 	return (is_error("Invalid RGB color"));
 }
 
-int		rgb_to_hex(int r, int g, int b)
+/*
+** Since each byte contains 2^8 values, and rgb values range from 0 to 255,
+** we can perfeclty fit a integer (as an int is 4 bytes).
+** In order to set the values programatically we use bitshifting.
+*/
+
+int		rgb_value(int r, int g, int b)
 {
 	return (0x0 | r << 16 | g << 8 | b);
 }
@@ -47,11 +53,17 @@ int		fill_floor(t_cub *cub, int hex_color)
 	return (1);
 }
 
+/*
+** I consider only the following format correct : [0-255],[0-255],[0-255].
+** If the content of each color is valid, I'll convert it to a single rgb value
+** Then fill ceil/floor color parameter.
+*/
+
 int		fill_color(t_cub *cub, char **line)
 {
 	char	**color;
 	int		int_color[3];
-	int		hex_color;
+	int		rgb;
 	int		i;
 
 	color = ft_split(line[1], ',');
@@ -65,11 +77,11 @@ int		fill_color(t_cub *cub, char **line)
 		}
 		int_color[i] = ft_atoi(color[i]);
 	}
-	hex_color = rgb_to_hex(int_color[0], int_color[1], int_color[2]);
+	rgb = rgb_value(int_color[0], int_color[1], int_color[2]);
 	if (strcmp(line[0], "C") == 0)
-		fill_ceil(cub, hex_color);
+		fill_ceil(cub, rgb);
 	else
-		fill_floor(cub, hex_color);
+		fill_floor(cub, rgb);
 	free_split(&color);
 	return (1);
 }

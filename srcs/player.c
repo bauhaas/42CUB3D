@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:13:53 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/16 01:16:02 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 18:58:58 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ void	init_player(t_player *player)
 	player->mov_speed = 0.3;
 	player->rot_speed = 3 * (M_PI / 180);
 }
+
+/*
+** After each movement. Determine the new position of our player.
+** Knowing our player rotation angle and lenght of his step. We can find x & y
+** with cos and sin.
+*/
 
 void	update(t_cub *cub, t_player *player)
 {
@@ -50,6 +56,10 @@ void	update(t_cub *cub, t_player *player)
 	}
 }
 
+/*
+** Save player pos & orientation in our structure
+*/
+
 void	pos_player(t_player *player, int x, int y, char orientation)
 {
 	if (player->pos.x == -1 && player->pos.y == -1)
@@ -66,6 +76,11 @@ void	pos_player(t_player *player, int x, int y, char orientation)
 			player->rot_ang = M_PI;
 	}
 }
+
+/*
+** After filling the map. We are looking at if there is only one player pos
+** & find his orientation.
+*/
 
 int		check_player(t_cub *cub)
 {

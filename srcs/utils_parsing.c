@@ -6,11 +6,15 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:43:26 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/15 20:34:43 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 18:59:40 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub.h"
+
+/*
+** PARse each line of the map and save the length of the longest one.
+*/
 
 int		count_cols(t_list *list)
 {
@@ -28,6 +32,10 @@ int		count_cols(t_list *list)
 	return (max);
 }
 
+/*
+** Check if string sent has only numeric values.
+*/
+
 int		is_num(char *num)
 {
 	int i;
@@ -43,11 +51,19 @@ int		is_num(char *num)
 	return (1);
 }
 
+/*
+** Display error message and lead to the end of the program.
+*/
+
 int		is_error(char *str)
 {
 	printf("Error : %s\n", str);
 	return (0);
 }
+
+/*
+** Free the content used during the parsing analysis of each line.
+*/
 
 void	free_split(char ***split)
 {
@@ -62,6 +78,10 @@ void	free_split(char ***split)
 	free(*split);
 	*split = NULL;
 }
+
+/*
+** Check if map file has the correct extension.
+*/
 
 int		cub_ext(char *map_file)
 {

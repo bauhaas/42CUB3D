@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:21:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/15 00:28:06 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 18:59:25 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,11 @@ int		load_texture(t_cub *cub)
 	return (1);
 }
 
+/*
+** Determine if the line will contain the path of a valid texture and
+** try to open file related to it.
+*/
+
 int		is_texture(char **line_data)
 {
 	int fd;
@@ -88,6 +93,11 @@ int		is_texture(char **line_data)
 	}
 	return (0);
 }
+
+/*
+** Check if texture isn't already declared and fill it the name with the path
+** given.
+*/
 
 int		fill_texture(t_cub *cub, char **line_data)
 {

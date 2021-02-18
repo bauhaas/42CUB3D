@@ -6,11 +6,15 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 22:22:51 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/16 02:34:37 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 17:05:39 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub.h"
+
+/*
+** Render pixel on the image.
+*/
 
 void	my_mlx_pixel_put(t_win *win, int x, int y, int color)
 {
@@ -24,6 +28,10 @@ void	my_mlx_pixel_put(t_win *win, int x, int y, int color)
 	}
 }
 
+/*
+** Render rectangle, starting from position a.
+*/
+
 void	rect(t_cub *cub, t_pos a, t_pos b, int color)
 {
 	int	i;
@@ -34,11 +42,13 @@ void	rect(t_cub *cub, t_pos a, t_pos b, int color)
 	{
 		j = -1;
 		while (++j < b.y)
-		{
 			my_mlx_pixel_put(&cub->win, a.x + i, a.y + j, color);
-		}
 	}
 }
+
+/*
+** Render square of size pixel, starting from position.
+*/
 
 void	square(t_pos pos, int size, t_cub *cub, int color)
 {
@@ -53,6 +63,11 @@ void	square(t_pos pos, int size, t_cub *cub, int color)
 			my_mlx_pixel_put(&cub->win, pos.x + j, pos.y + i, color);
 	}
 }
+
+/*
+** Find the length of the line to render. tmp is set to increment each point
+** of our line. then render it till len is reached.
+*/
 
 void	render_line(t_line *line, t_cub *cub, int color)
 {

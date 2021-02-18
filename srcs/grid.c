@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:19:13 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/15 00:24:47 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 15:56:33 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@ void	free_grid(t_cub *cub)
 	free(cub->grid);
 }
 
+/*
+** Duplicate the content of my list in my cub structure.
+*/
+
 int		fill_grid(t_cub *cub, t_list *list)
 {
 	int i;
@@ -50,6 +54,11 @@ int		fill_grid(t_cub *cub, t_list *list)
 	}
 	return (1);
 }
+
+/*
+** Find number of rows and cols of the map. Malloc the required space to save
+** the map parameter then fill it in my cub structure.
+*/
 
 int		grid_alloc(t_cub *cub, t_list *list)
 {
@@ -68,6 +77,10 @@ int		grid_alloc(t_cub *cub, t_list *list)
 	fill_grid(cub, list);
 	return (1);
 }
+
+/*
+** Malloc and fill my map. Then check if it's a valid map.
+*/
 
 int		grid_parsing(t_cub *cub, t_list *list)
 {

@@ -6,11 +6,16 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:05:33 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 20:32:53 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 17:14:23 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub.h"
+
+/*
+** If given resolution is bigger than your screen size, set it to your screen
+** size.
+*/
 
 void	check_res(t_cub *cub)
 {
@@ -23,6 +28,11 @@ void	check_res(t_cub *cub)
 	if (cub->win.hei > y)
 		cub->win.hei = y;
 }
+
+/*
+** Check if resolution isn't decalred twice and determine if it's a valid
+** resolution.
+*/
 
 int		fill_res(t_cub *cub, char **data)
 {

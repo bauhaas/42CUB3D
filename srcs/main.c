@@ -6,11 +6,15 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 16:12:03 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/16 02:20:25 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 16:41:03 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub.h"
+
+/*
+** Init all of our ressources and then start the game.
+*/
 
 void	init_cub(t_cub *cub, char *map)
 {
@@ -21,6 +25,10 @@ void	init_cub(t_cub *cub, char *map)
 	init_texture(cub);
 	load_cub(cub, map);
 }
+
+/*
+** Free all of our ressources.
+*/
 
 int		end_cub(t_cub *cub)
 {
@@ -34,6 +42,10 @@ int		end_cub(t_cub *cub)
 	exit(0);
 }
 
+/*
+** If we have a valid map, load the game.
+*/
+
 void	load_cub(t_cub *cub, char *map)
 {
 	if (parsing(cub, map))
@@ -43,6 +55,10 @@ void	load_cub(t_cub *cub, char *map)
 		end_cub(cub);
 	}
 }
+
+/*
+** If save arg true, then just copy the 1st image. Otherwise, loop the render.
+*/
 
 void	run_cub(t_cub *cub)
 {
