@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 17:54:11 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 16:26:14 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 23:28:15 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	init_sprt(t_cub *cub, int i, int x, int y)
 {
-	cub->sprt[i].pos.x = x + 0.001;
-	cub->sprt[i].pos.y = y + 0.001;
+	cub->sprt[i].pos.x = x + 0.5;
+	cub->sprt[i].pos.y = y + 0.5;
 	cub->sprt[i].dist = -1;
 	cub->sprt[i].ang = 0;
 	cub->sprt[i].texture = 0;

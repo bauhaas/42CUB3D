@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:13:53 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 18:58:58 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 23:42:32 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ void	pos_player(t_player *player, int x, int y, char orientation)
 {
 	if (player->pos.x == -1 && player->pos.y == -1)
 	{
-		player->pos.x = x + 0.1;
-		player->pos.y = y + 0.1;
+		player->pos.x = x + 0.5;
+		player->pos.y = y + 0.5;
 		if (orientation == 'N')
 			player->rot_ang = 1.5 * M_PI;
 		else if (orientation == 'S')

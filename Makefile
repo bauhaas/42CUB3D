@@ -6,7 +6,7 @@
 #    By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/11 12:08:52 by bahaas            #+#    #+#              #
-#    Updated: 2021/02/15 21:44:34 by bahaas           ###   ########.fr        #
+#    Updated: 2021/02/18 23:30:28 by bahaas           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ OBJS_BONUS	= ${SRCS_BONUS:.c=.o}
 
 $(NAME):	${OBJS}
 			make -C ${LIB_D}
-			${CC} ${HEADER} ${OBJS} -o ${NAME} -L ${LIB_D} -lft -L ${MLX_D} -lmlx -lXext -lX11 -lm
+			${CC} ${HEADER} -pg ${OBJS} -o ${NAME} -O -O3 -L ${LIB_D} -lft -L ${MLX_D} -lmlx -lXext -lX11 -lm
 
 all:		${NAME}
 

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 22:29:18 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 20:31:21 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 20:32:43 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	sprt_display(t_cub *cub, int i)
 ** determine his top + bot pixel & height. Then we'll display it to the screen.
 ** pos_x, determine where we should render the sprite on x axis.
 */
-
 
 void	fill_sprt_data(t_cub *cub)
 {
