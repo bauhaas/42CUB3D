@@ -1,38 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   window.c                                           :+:      :+:    :+:   */
+/*   save.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/04 19:15:43 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/12 20:26:22 by bahaas           ###   ########.fr       */
+/*   Created: 2021/02/15 21:33:39 by bahaas            #+#    #+#             */
+/*   Updated: 2021/02/16 02:32:11 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub.h"
 
-void	init_win(t_win *win)
+/*
+int	save_bmp(t_cub *cub)
 {
-	win->mlx_p = NULL;
-	win->win_p = NULL;
-	win->wid = -1;
-	win->hei = -1;
-}
+	int fd;
 
-void	free_win(t_cub *cub)
-{
-	if (cub->win.mlx_p)
-	{
-		if (cub->win.win_p)
-			mlx_destroy_window(cub->win.mlx_p, cub->win.win_p);
-		mlx_destroy_display(cub->win.mlx_p);
-		free(cub->win.mlx_p);
-	}
-	cub->win.mlx_p = NULL;
-}
-
-void	load_win(t_win *win)
-{
-	win->win_p = mlx_new_window(win->mlx_p, win->wid, win->hei, "cub3D");
-}
+	fd = open("screen.bmp", O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
+	if (fd == -1)
+		return (is_error("Couldn't create bmp file"));
+	close(fd);
+}*/

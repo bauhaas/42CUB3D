@@ -6,83 +6,87 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:19:13 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/09 17:01:21 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 15:56:33 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub.h"
 
-void init_grid(t_data *data)
+void	init_grid(t_cub *cub)
 {
-	data->rows = 0;
-	data->cols = 0;
-	data->ceil = -1;
-	data->floor = -1;
+	cub->data.rows = 0;
+	cub->data.cols = 0;
+	cub->data.ceil = -1;
+	cub->data.floor = -1;
+	cub->data.grid_flag = 0;
+	cub->data.res = 0;
+	cub->data.dist_proj_plane = 0;
+	cub->data.num_sprt = 0;
 }
 
-void free_grid(t_cub3d *cub3d)
+void	free_grid(t_cub *cub)
 {
 	int i;
 
-	i = 0;
-	while (i < cub3d->data.rows)
+	i = -1;
+	while (++i < cub->data.rows)
 	{
-		free(cub3d->grid[i]);
-		cub3d->grid[i] = NULL;
-		i++;
+		free(cub->grid[i]);
+		cub->grid[i] = NULL;
 	}
-	free(cub3d->grid);
+	free(cub->grid);
 }
 
-int fill_grid(t_cub3d *cub3d, t_list *list, int cols, int rows)
+/*
+** Duplicate the content of my list in my cub structure.
+*/
+
+int		fill_grid(t_cub *cub, t_list *list)
 {
 	int i;
-	
+
 	i = 0;
 	while (list)
 	{
-		cub3d->grid[i] = ft_strdup(list->content);
+		cub->grid[i] = ft_strdup(list->content);
 		i++;
 		list = list->next;
 	}
 	return (1);
 }
 
-int grid_alloc(t_cub3d *cub3d, t_list *list)
+/*
+** Find number of rows and cols of the map. Malloc the required space to save
+** the map parameter then fill it in my cub structure.
+*/
+
+int		grid_alloc(t_cub *cub, t_list *list)
 {
 	int cols;
 	int rows;
 
 	cols = count_cols(list);
 	rows = ft_lstsize(list);
-	//printf("rows tot : %d\n", rows);
-	//printf("cols tot : %d\n", cols);
 	if (!cols || !rows)
 		return (is_error("grid has no cols or no rows"));
-	cub3d->grid = malloc(sizeof(char *) * rows);
-	cub3d->data.cols = cols;
-	cub3d->data.rows = rows;
-	if (!cub3d->grid)
+	cub->grid = malloc(sizeof(char *) * rows);
+	cub->data.cols = cols;
+	cub->data.rows = rows;
+	if (!cub->grid)
 		return (is_error("not enough memory to malloc"));
-	fill_grid(cub3d, list, cols, rows);
-	return (1);
-
-}
-
-int	fill_list_grid(t_cub3d *cub3d, char *line, t_list **list)
-{
-	t_list *new_elem;
-
-	new_elem = ft_lstnew(ft_strdup(line));
-	ft_lstadd_back(list, new_elem);
+	fill_grid(cub, list);
 	return (1);
 }
 
-int grid_parsing(t_cub3d *cub3d, t_list *list)
+/*
+** Malloc and fill my map. Then check if it's a valid map.
+*/
+
+int		grid_parsing(t_cub *cub, t_list *list)
 {
-	grid_alloc(cub3d, list);
+	grid_alloc(cub, list);
 	ft_lstclear(&list, &ft_free);
-	if (!check_player(cub3d) || !check_grid(cub3d))
+	if (!check_player(cub) || !check_grid(cub) || !check_sprt(cub))
 		return (0);
 	return (1);
 }

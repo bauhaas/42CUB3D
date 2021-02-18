@@ -6,59 +6,110 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:31:08 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/09 19:37:57 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 18:58:49 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub.h"
 
-int	cub_ext(char *map_file)
+/*
+** Each line of the map is saved into a list element and added at the end
+** to have it in the good order.
+*/
+
+int		fill_list_grid(char *line, t_list **list)
 {
-	int i;
+	t_list	*new_elem;
 
-	i = 0;
-	while (map_file[i])
-		i++;
-	i -= 4;
-	if (!strcmp(&map_file[i], ".cub"))
-		return (1);
-	return (is_error("Map argument is not ending with .cub"));
+	new_elem = ft_lstnew(ft_strdup(line));
+	ft_lstadd_back(list, new_elem);
+	return (1);
 }
 
-int line_data(t_cub3d *cub3d, char *line, t_list **list)
-{
-	char **line_data;
-	int res;
-	static int grid_flag;
+/*
+** Help us to determine the content of the line then save the data to our
+** cub3d parameter. grid_flag is here to know when we reached map parameter.
+*/
 
-	int i = 0;
+int		line_data(t_cub *cub, char *line, t_list **list)
+{
+	char		**line_data;
+
 	line_data = ft_split(line, ' ');
-	if (*line_data && *line_data[0] == 'R')
-		res = fill_res(cub3d, line_data);
+	if (!*line_data && !cub->data.grid_flag)
+		cub->data.res = 1;
+	else if (*line_data && *line_data[0] == 'R')
+		cub->data.res = fill_res(cub, line_data);
 	else if (*line_data && is_texture(line_data))
-		res = fill_texture(cub3d, line_data);
+		cub->data.res = fill_texture(cub, line_data);
 	else if (*line_data && (*line_data[0] == 'F' || *line_data[0] == 'C'))
-		res = fill_color(cub3d, line_data);
+		cub->data.res = fill_color(cub, line_data);
 	else if (*line_data && *line_data[0] == '1')
 	{
-		grid_flag = 1;
-		res = fill_list_grid(cub3d, line, list);
+		cub->data.grid_flag = 1;
+		cub->data.res = fill_list_grid(line, list);
 	}
-	else if (!*line_data && grid_flag)
-		res = is_error("empty line in or after grid parameter");
-	else if (grid_flag)
-		res = is_error("args after grid");
+	else if (!*line_data && cub->data.grid_flag)
+		cub->data.res = is_error("empty line in or after grid parameter");
+	else if (cub->data.grid_flag)
+		cub->data.res = is_error("args after grid");
 	free_split(&line_data);
-	return (res);
+	return (cub->data.res);
 }
 
-int	parsing(t_cub3d *cub3d, char *map_file)
+/*
+** Last malloc and data attribution before loading the game.
+*/
+
+int		last_load(t_cub *cub)
 {
-	int fd;
-	int valid;
-	int i;
-	char *line;
-	t_list *list;
+	init_healthbar(cub);
+	cub->data.dist_proj_plane = (cub->win.wid / 2) / (tan(FOV / 2));
+	cub->rays = malloc(sizeof(t_ray) * cub->win.wid);
+	if (!cub->rays)
+		return (is_error("Malloc space rays"));
+	return (1);
+}
+
+/*
+** Check if we have all the required parameters to load the game.
+*/
+
+int		check_missing(t_cub *cub)
+{
+	if (!cub->data.grid_flag)
+		return (is_error("There is no map in file"));
+	if (!cub->data.ceil)
+		return (is_error("There is no ceil color"));
+	if (!cub->data.floor)
+		return (is_error("There is no floor color"));
+	if (!cub->win.wid)
+		return (is_error("There is no resolution"));
+	if (!cub->text[0].name)
+		return (is_error("There is no north texture"));
+	if (!cub->text[1].name)
+		return (is_error("There is no south texture"));
+	if (!cub->text[2].name)
+		return (is_error("There is no west texture"));
+	if (!cub->text[3].name)
+		return (is_error("There is no east texture"));
+	if (!cub->text[4].name)
+		return (is_error("There is no sprite texture"));
+	return (last_load(cub));
+}
+
+/*
+** Read the .cub file and analyse it line by line. Then check if there is no
+** error on map / sprt / txtr and all parameters here.
+*/
+
+int		parsing(t_cub *cub, char *map_file)
+{
+	int		fd;
+	int		valid;
+	int		i;
+	char	*line;
+	t_list	*list;
 
 	i = 1;
 	list = NULL;
@@ -67,61 +118,16 @@ int	parsing(t_cub3d *cub3d, char *map_file)
 		return (is_error("map file couldn't open"));
 	while (i > 0)
 	{
-		i  = get_next_line(fd, &line);
-		//printf("gnl value : %d  ", i);
-		//printf("line : %s\n", line);
+		i = get_next_line(fd, &line);
 		if (i != 0)
-			valid = line_data(cub3d, line, &list);
+			valid = line_data(cub, line, &list);
 		free(line);
-		if (valid = 0)
+		if (valid == 0)
 			return (0);
 	}
 	close(fd);
-	if (!grid_parsing(cub3d, list))
+	if (!grid_parsing(cub, list) || !load_texture(cub) ||
+			!load_sprt(cub) || !check_missing(cub))
 		return (0);
 	return (1);
-}
-
-void	init_cub3d(t_cub3d *cub3d, char *file)
-{
-	init_win(&cub3d->win);
-	init_img(&cub3d->img, &cub3d->win);
-	init_grid(&cub3d->data);
-	init_player(&cub3d->player);
-	init_texture(cub3d);
-}
-
-int		end_cub3d(t_cub3d *cub3d)
-{
-	free_text(cub3d->text);
-	//sprites to free;
-	free_grid(cub3d);
-	if(cub3d->img.img)
-		free_img(&cub3d->win);
-	free_win(&cub3d->win);
-}
-
-int main(int ac, char **av)
-{
-	t_cub3d cub3d;
-
-	if (ac == 3 && av[2] == "--save")
-		return (0);
-	//else if (ac == 3)
-	else
-	{
-		if (cub_ext(av[1]))
-		{
-			init_cub3d(&cub3d, av[1]);
-			if (parsing(&cub3d, av[1]))
-			{
-				printf("Cub3d is launching..\n");
-				run_cub3d(&cub3d);
-			}
-			end_cub3d(&cub3d);
-		}
-	}
-	//else
-	//	return(is_error("Wrong numbers of arguments"));
-	return (0);
 }

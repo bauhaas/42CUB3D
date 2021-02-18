@@ -6,13 +6,13 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:19:50 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/09 19:36:00 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/14 23:49:19 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub.h"
 
-void	init_img(t_img *img, t_win *win)
+void	init_img(t_img *img)
 {
 	img->img = NULL;
 	img->addr = NULL;
@@ -23,6 +23,13 @@ void	init_img(t_img *img, t_win *win)
 	img->hei = 0;
 }
 
+void	free_img(t_cub *cub)
+{
+	mlx_destroy_image(cub->win.mlx_p, cub->win.img.img);
+	cub->win.img.img = NULL;
+	cub->win.img.addr = NULL;
+}
+
 void	load_img(t_win *win)
 {
 	win->img.img = mlx_new_image(win->mlx_p, win->wid, win->hei);
@@ -30,11 +37,4 @@ void	load_img(t_win *win)
 			&win->img.line_length, &win->img.endian);
 	win->img.wid = win->wid;
 	win->img.hei = win->hei;
-}
-
-void	free_img(t_win *win)
-{
-	mlx_destroy_image(win->mlx_p, win->img.img);
-	win->img.img = NULL;
-	win->img.addr = NULL;
 }

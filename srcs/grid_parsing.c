@@ -6,13 +6,19 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:59:14 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/09 17:16:54 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 18:58:25 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub.h"
 
-int check_surrounding(char **grid, int x, int y)
+/*
+** We are checking all the positions around the position we currently are.
+** In case where we found out that the surrounding position doesn't exist
+** or is a ' ', we have an invalid map.
+*/
+
+int		check_surrounding(char **grid, int x, int y)
 {
 	if (grid[y + 1][x] == ' '
 			|| grid[y - 1][x] == ' '
@@ -26,55 +32,60 @@ int check_surrounding(char **grid, int x, int y)
 	if (!grid[y + 1][x - 1]
 			|| !grid[y + 1][x + 1]
 			|| !grid[y - 1][x - 1]
-			|| !grid[y - 1][x + 1]
-	   )
+			|| !grid[y - 1][x + 1])
 		return (0);
 	return (1);
 }
 
-int		is_valid_grid(t_cub3d *cub3d, int cols, int y, int row_length)
+/*
+** If the char we check is 0 or 2 & is on border of the map or his surrounding
+** positions aren't valid. Map isn't closed.
+** Then we check if the char isn't something else than a valid map char.
+*/
+
+int		is_grid(t_cub *cub, int cols, int y, int len)
 {
 	int		x;
 	int		next_row;
 	int		prev_row;
 
 	x = -1;
+	next_row = 0;
 	if (y > 0)
-		prev_row = ft_strlen(cub3d->grid[y - 1]);
-	if (y < cub3d->data.rows - 1)
+		prev_row = ft_strlen(cub->grid[y - 1]);
+	if (y < cub->data.rows - 1)
 	{
-		if (y + 1 != cub3d->data.cols - 1)
-			next_row = ft_strlen(cub3d->grid[y + 1]);
-		else
-			next_row = 0;
+		if (y + 1 != cub->data.cols - 1)
+			next_row = ft_strlen(cub->grid[y + 1]);
 	}
-	else
-		next_row = 0;
-	while (cub3d->grid[y][++x])
+	while (cub->grid[y][++x])
 	{
-		if ((ft_strchr("02", cub3d->grid[y][x])) && (y == 0 || x == 0
-			|| y == (cols - 1) || x == (row_length - 1)
+		if ((ft_strchr("02", cub->grid[y][x])) && (y == 0 || x == 0
+			|| y == (cols - 1) || x == (len - 1)
 			|| x - 1 > prev_row || x + 1 > next_row
-			|| !check_surrounding(cub3d->grid, x, y)))
+			|| !check_surrounding(cub->grid, x, y)))
 			return (is_error("Grid not fully closed"));
-		if (!ft_strchr(" 012", cub3d->grid[y][x]))
+		if (!ft_strchr(" 012", cub->grid[y][x]))
 			return (is_error("Invalid char in grid"));
 	}
 	return (1);
 }
 
-int		check_grid(t_cub3d *cub3d)
+/*
+** Check the validity of each rows in the map.
+*/
+
+int		check_grid(t_cub *cub)
 {
 	int		y;
-	int		row_length;
+	int		len;
 
-	y = 0;
-	while (y < cub3d->data.rows)
+	y = -1;
+	while (++y < cub->data.rows)
 	{
-		row_length = ft_strlen(cub3d->grid[y]);
-		if (!is_valid_grid(cub3d, cub3d->data.cols - 1, y, row_length))
+		len = ft_strlen(cub->grid[y]);
+		if (!is_grid(cub, cub->data.cols - 1, y, len))
 			return (0);
-		y++;
 	}
 	printf("Grid OK\n");
 	return (1);

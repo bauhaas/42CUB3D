@@ -6,33 +6,40 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 18:04:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/01/27 23:55:06 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 23:37:19 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub.h"
 
-int		key_pressed(int keycode, t_cub3d *cub3d)
+int		key_pressed(int key, t_cub *cub)
 {
-	if (keycode == 'z' || keycode == KEY_W)
-		cub3d->player.walk_d = +1;
-	else if (keycode == 's')
-		cub3d->player.walk_d = -1;
-	if (keycode == 'q' || keycode == KEY_A)
-		cub3d->player.turn_d = -1;
-	if (keycode == 'd')
-		cub3d->player.turn_d = +1;
-	render(cub3d);
+	if (key == KEY_Z || key == KEY_UP)
+		cub->player.walk_d = 1;
+	else if (key == KEY_S || key == KEY_DOWN)
+		cub->player.walk_d = -1;
+	else if (key == KEY_LEFT)
+		cub->player.turn_d = -1;
+	else if (key == KEY_RIGHT)
+		cub->player.turn_d = 1;
+	else if (key == KEY_Q)
+		cub->player.lateral_d = -1;
+	else if (key == KEY_D)
+		cub->player.lateral_d = 1;
+	else if (key == KEY_ESC)
+		end_cub(cub);
+	update(cub, &cub->player);
+	render(cub);
+	return (0);
 }
 
-int		key_released(int keycode, t_player *player)
+int		key_released(int key, t_player *player)
 {
-	if (keycode == 'z' || keycode == KEY_W)
+	if (key == KEY_Z || key == KEY_S || key == KEY_UP || key == KEY_DOWN)
 		player->walk_d = 0;
-	else if (keycode == 's')
-		player->walk_d = 0;
-	if (keycode == 'q' || keycode == KEY_A)
+	else if (key == KEY_LEFT || key == KEY_RIGHT)
 		player->turn_d = 0;
-	if (keycode == 'd')
-		player->turn_d = 0;
+	else if (key == KEY_Q || key == KEY_D)
+		player->lateral_d = 0;
+	return (0);
 }

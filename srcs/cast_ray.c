@@ -6,63 +6,97 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 17:50:16 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/04 20:43:13 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 18:44:55 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub.h"
 
-t_ray	cast(t_ray ray, t_cub3d *cub3d)
+void	select_texture(t_ray *rays, float hz_dist, float vt_dist)
+{
+	rays->id = 3;
+	if (rays->is_right)
+		rays->id = 2;
+	if (vt_dist > hz_dist)
+		rays->id = 1;
+	if (vt_dist > hz_dist && rays->is_up)
+		rays->id = 0;
+}
+
+/*
+** Return the distance of the ray depending on vt or hz dist..
+*/
+
+float	find_ray_dist(float hz_dist, float vt_dist)
+{
+	if (hz_dist < vt_dist)
+		return (hz_dist);
+	return (vt_dist);
+}
+
+/*
+** Return the point of the wall hit depending on vt or hz dist.
+*/
+
+float	find_ray_hit(float hz_dist, float vt_dist, float hz_hit, float vt_hit)
+{
+	if (hz_dist < vt_dist)
+		return (hz_hit);
+	return (vt_hit);
+}
+
+/*
+** 1. Perform vt and hz intersections check separatly
+** 2. When wall is either a vt or hz intersection, the checking stop
+** 3. Distance of both are comparend and we select the closest one
+**
+** Save wall_hit position and distance from player to the hit position.
+** Then save the line between the 2 positions.
+** Finally find the texture related to the ray. FLT_MAX is highest float value.
+*/
+
+t_ray	cast(t_ray ray, t_cub *cub)
 {
 	float		hz_dist;
 	float		vt_dist;
-	t_line		line;
-	t_coord		wall_hit;
+	t_pos		wall_hit;
 
-	hz_cast(&ray, cub3d);
-	vt_cast(&ray, cub3d);
+	hz_cast(&ray, cub, 0);
+	vt_cast(&ray, cub, 0);
 	hz_dist = FLT_MAX;
 	vt_dist = FLT_MAX;
 	if (ray.found_hz_wall)
-		hz_dist = p_dist(cub3d->player.pos.x, cub3d->player.pos.y,
+		hz_dist = p_dist(cub->player.pos.x, cub->player.pos.y,
 				ray.hz_hit.x, ray.hz_hit.y);
 	if (ray.found_vt_wall)
-		vt_dist = p_dist(cub3d->player.pos.x, cub3d->player.pos.y,
+		vt_dist = p_dist(cub->player.pos.x, cub->player.pos.y,
 				ray.vt_hit.x, ray.vt_hit.y);
-	//printf("vt_hitx = %f\n", ray.vt_hit.x);
-	//printf("vt_hity = %f\n", ray.vt_hit.y);
-	//printf("vt_dist = %f\n", vt_dist);
-	//printf("found_vt_wall = %d\n", ray.found_vt_wall);
-	//printf("hz_dist = %f\n", hz_dist);
-	ray.wall_hit_x = (hz_dist < vt_dist) ? ray.hz_hit.x : ray.vt_hit.x;
-	ray.wall_hit_y = (hz_dist < vt_dist) ? ray.hz_hit.y : ray.vt_hit.y;
-	ray.distance = (hz_dist < vt_dist) ? hz_dist : vt_dist;
+	ray.wall_hit_x = find_ray_hit(hz_dist, vt_dist, ray.hz_hit.x, ray.vt_hit.x);
+	ray.wall_hit_y = find_ray_hit(hz_dist, vt_dist, ray.hz_hit.y, ray.vt_hit.y);
+	ray.dist = find_ray_dist(hz_dist, vt_dist);
 	ray.was_vt_hit = (vt_dist < hz_dist);
-	wall_hit = init_coord(ray.wall_hit_x, ray.wall_hit_y);
-	//printf("wall hit x = %f\n", wall_hit.x);
-	//printf("wall hit y = %f\n", wall_hit.y);
-	line = init_line(cub3d->player.pos, wall_hit);
-//	render_view_line(&line, cub3d, GREEN);
+	wall_hit = init_pos(ray.wall_hit_x, ray.wall_hit_y);
+	ray.line = init_line(cub->player.pos, wall_hit);
+	select_texture(&ray, hz_dist, vt_dist);
 	return (ray);
 }
 
-t_ray *cast_all_rays(t_cub3d *cub3d)
-{
-	t_ray	*rays;
-	float	ray_ang;
-	int i;
+/*
+** Init each ray with his own angle and save all the data of his cast.
+*/
 
-	i = 0;
-	rays = malloc(sizeof(t_ray) * WIN_WID);
-	if (!rays)
-		return 0;
-	while (i < WIN_WID)
+void	cast_all_rays(t_cub *cub)
+{
+	float	ray_ang;
+	int		i;
+
+	i = -1;
+	while (++i < cub->win.wid)
 	{
-		ray_ang = cub3d->player.rot_ang + atan((i - WIN_WID / 2) / DIST_PROJ_PLANE);
-		rays[i].ray_ang = normalize(ray_ang);
-		init_ray(&rays[i], rays[i].ray_ang);
-		rays[i] = cast(rays[i], cub3d);
-		i++;
+		ray_ang = cub->player.rot_ang + atan((i - cub->win.wid / 2) /
+				cub->data.dist_proj_plane);
+		cub->rays[i].ray_ang = normalize(ray_ang);
+		init_ray(&cub->rays[i], cub->rays[i].ray_ang);
+		cub->rays[i] = cast(cub->rays[i], cub);
 	}
-	return (rays);
 }

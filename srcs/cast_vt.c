@@ -6,25 +6,33 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:45:15 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/04 20:44:56 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/18 18:57:21 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes/cub.h"
 
-t_dcast	fill_vt_data(t_cub3d *cub3d, t_ray *ray)
+/*
+** Fill all data required to find if wall was hz hit.
+** hit_x & hit_y = points where it hits the wall.
+** yinter & xinter = coordinates of the closest hz intersection
+** xstep & ystep = calculate the incrementation required
+*/
+
+t_dcast	fill_vt_data(t_cub *cub, t_ray *ray)
 {
 	t_dcast	vt_data;
 
 	vt_data.found_wall = 0;
 	vt_data.hit_x = 0;
 	vt_data.hit_y = 0;
-	vt_data.xinter = floor(cub3d->player.pos.x / TILE_SIZE) * TILE_SIZE;
-	vt_data.xinter +=  ray->is_right ? TILE_SIZE : 0;
-	vt_data.yinter = cub3d->player.pos.y + (vt_data.xinter - cub3d->player.pos.x) * tan(ray->ray_ang);
-	vt_data.xstep = TILE_SIZE;
+	vt_data.xinter = floor(cub->player.pos.x);
+	vt_data.xinter += ray->is_right ? 1.0 : 0;
+	vt_data.yinter = cub->player.pos.y + (vt_data.xinter -
+			cub->player.pos.x) * tan(ray->ray_ang);
+	vt_data.xstep = 1.0;
 	vt_data.xstep *= ray->is_left ? -1 : 1;
-	vt_data.ystep = TILE_SIZE * tan(ray->ray_ang);
+	vt_data.ystep = 1.0 * tan(ray->ray_ang);
 	vt_data.ystep *= (ray->is_up && vt_data.ystep > 0) ? -1 : 1;
 	vt_data.ystep *= (ray->is_down && vt_data.ystep < 0) ? -1 : 1;
 	vt_data.next_x = vt_data.xinter;
@@ -32,27 +40,27 @@ t_dcast	fill_vt_data(t_cub3d *cub3d, t_ray *ray)
 	return (vt_data);
 }
 
-void 	vt_cast(t_ray *ray, t_cub3d *cub3d)
+/*
+** Check if we hit a wall, if not, Increment by x and ystep and loop till
+** we found a wall or reached the border of our window.
+*/
+
+void	vt_cast(t_ray *ray, t_cub *cub, int i)
 {
 	t_dcast	vt_data;
-	int i;
 
-	i = 0;
-	vt_data = fill_vt_data(cub3d, ray);
+	vt_data = fill_vt_data(cub, ray);
 	if (ray->is_left)
 		i = 1;
-	//printf("pos x %f\n", cub3d->player.pos.x);
-	//printf("pos y %f\n", cub3d->player.pos.y);
-	while (vt_data.next_x >= 0 && vt_data.next_x <= WIN_WID && vt_data.next_y >= 0 && vt_data.next_y <= WIN_HEI)
+	while (vt_data.next_x >= 0 && vt_data.next_x <= cub->win.wid &&
+			vt_data.next_y >= 0 && vt_data.next_y <= cub->win.hei)
 	{
-		//my_mlx_pixel_put(&cub3d->img, vt_data.next_x, vt_data.next_y, RED);
-		if (grid_is_wall(vt_data.next_x - i, vt_data.next_y, cub3d))
+		if (grid_is_wall(vt_data.next_x - i, vt_data.next_y, cub))
 		{
-			//printf("test\n");
 			vt_data.hit_y = vt_data.next_y;
 			vt_data.hit_x = vt_data.next_x;
 			vt_data.found_wall = 1;
-			break;
+			break ;
 		}
 		else
 		{
