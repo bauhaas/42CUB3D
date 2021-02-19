@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:31:08 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 18:58:49 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/19 05:35:00 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,11 @@
 ** to have it in the good order.
 */
 
-int		fill_list_grid(char *line, t_list **list)
+int		fill_list_grid(t_cub *cub, char *line, t_list **list)
 {
 	t_list	*new_elem;
 
+	cub->data.grid_flag = 1;
 	new_elem = ft_lstnew(ft_strdup(line));
 	ft_lstadd_back(list, new_elem);
 	return (1);
@@ -45,10 +46,7 @@ int		line_data(t_cub *cub, char *line, t_list **list)
 	else if (*line_data && (*line_data[0] == 'F' || *line_data[0] == 'C'))
 		cub->data.res = fill_color(cub, line_data);
 	else if (*line_data && *line_data[0] == '1')
-	{
-		cub->data.grid_flag = 1;
-		cub->data.res = fill_list_grid(line, list);
-	}
+		cub->data.res = fill_list_grid(cub, line, list);
 	else if (!*line_data && cub->data.grid_flag)
 		cub->data.res = is_error("empty line in or after grid parameter");
 	else if (cub->data.grid_flag)
@@ -95,39 +93,37 @@ int		check_missing(t_cub *cub)
 		return (is_error("There is no east texture"));
 	if (!cub->text[4].name)
 		return (is_error("There is no sprite texture"));
+	if (cub->win.wid == -1 || cub->win.hei == -1)
+		return (is_error("There is no resolution or has a 0 value"));
 	return (last_load(cub));
 }
 
 /*
-** Read the .cub file and analyse it line by line. Then check if there is no
-** error on map / sprt / txtr and all parameters here.
+** Read the .cub file and analyse it line by line.
 */
 
-int		parsing(t_cub *cub, char *map_file)
+int		parsing(t_cub *cub, char *map_file, t_list **list)
 {
 	int		fd;
 	int		valid;
 	int		i;
 	char	*line;
-	t_list	*list;
 
 	i = 1;
-	list = NULL;
 	fd = open(map_file, O_RDONLY);
+	if (read(fd, 0, 0) < 0)
+		return (is_error("file args isn't valid"));
 	if (fd < 0)
 		return (is_error("map file couldn't open"));
 	while (i > 0)
 	{
 		i = get_next_line(fd, &line);
 		if (i != 0)
-			valid = line_data(cub, line, &list);
+			valid = line_data(cub, line, list);
 		free(line);
 		if (valid == 0)
 			return (0);
 	}
 	close(fd);
-	if (!grid_parsing(cub, list) || !load_texture(cub) ||
-			!load_sprt(cub) || !check_missing(cub))
-		return (0);
 	return (1);
 }

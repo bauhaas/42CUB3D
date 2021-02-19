@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 16:12:03 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 16:41:03 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/19 04:07:02 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 void	init_cub(t_cub *cub, char *map)
 {
+	printf("test\n");
 	init_win(&cub->win);
 	init_img(&cub->img);
 	init_grid(cub);
@@ -48,11 +49,16 @@ int		end_cub(t_cub *cub)
 
 void	load_cub(t_cub *cub, char *map)
 {
-	if (parsing(cub, map))
+	t_list	*list;
+
+	list = NULL;
+	if (parsing(cub, map, &list))
 	{
+		if (!check_missing(cub) || !grid_parsing(cub, list) ||
+		!load_texture(cub) || !load_sprt(cub))
+			end_cub(cub);
 		printf("Cub3d is launching..\n");
 		run_cub(cub);
-		end_cub(cub);
 	}
 }
 
@@ -70,8 +76,8 @@ void	run_cub(t_cub *cub)
 	//	save_bmp(cub);
 	//	end_cub(cub);
 	//}
-	mlx_hook(cub->win.win_p, 2, 1L << 0, key_pressed, cub);
 	mlx_hook(cub->win.win_p, 3, 1L << 1, key_released, &cub->player);
+	mlx_hook(cub->win.win_p, 2, 1L << 0, key_pressed, cub);
 	mlx_hook(cub->win.win_p, 9, 1L << 21, &render, cub);
 	mlx_hook(cub->win.win_p, 33, 1L << 17, &end_cub, cub);
 	render(cub);

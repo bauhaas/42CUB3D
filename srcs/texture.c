@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:21:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 18:59:25 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/19 00:51:13 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,5 @@ int		fill_texture(t_cub *cub, char **line_data)
 	if (cub->text[i].name)
 		return (is_error("A texture is declared twice"));
 	cub->text[i].name = ft_strdup(line_data[1]);
-	printf("Texture %s OK\n", line_data[0]);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 20:30:43 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/19 05:29:50 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@
 # define TRUE 1
 # define FALSE 0
 # define FOV  90 * (M_PI / 180)
-# define MINIMAP_SCALE 15
+# define MINIMAP_SCALE 10
 
 typedef struct	s_pos
 {
@@ -245,14 +245,14 @@ int				grid_is_sprt(float x, float y, t_cub *cub);
 float			normalize(float ray_ang);
 float			p_dist(float x1, float y1, float x2, float y2);
 
-
+int check_missing(t_cub *cub);
 
 //grid
 int grid_parsing(t_cub *cub, t_list *list);
 int fill_grid(t_cub *cub, t_list *list);
 int grid_alloc(t_cub *cub, t_list *list);
 int check_grid(t_cub *cub);
-int fill_list_grid(char *line, t_list **list);
+int fill_list_grid(t_cub *cub, char *line, t_list **list);
 int check_surrounding(char **grid, int x, int y);
 void free_grid(t_cub *cub);
 
@@ -300,7 +300,7 @@ void			is_visible(t_cub *cub, int i);
 float			find_angle(t_cub *cub, int i);
 
 int grep_color(t_text text, int x, int y);
-int parsing(t_cub *cub, char *map_file);
+int parsing(t_cub *cub, char *map_file, t_list **list);
 void run_cub(t_cub *cub);
 int end_cub(t_cub *cub);
 #endif

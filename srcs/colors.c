@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:03:12 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 15:53:19 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/19 01:41:36 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		fill_color(t_cub *cub, char **line)
 	i = -1;
 	while (++i < 3)
 	{
-		if (!is_rgb(color[i]) && !is_num(color[i]))
+		if (!is_rgb(color[i]) || !is_num(color[i]))
 		{
 			free_split(&color);
 			return (0);

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:19:13 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 15:56:33 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/19 01:54:08 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ int		grid_alloc(t_cub *cub, t_list *list)
 
 	cols = count_cols(list);
 	rows = ft_lstsize(list);
+	printf("cols : %d\n", cols);
+	printf("rows : %d\n", rows);
 	if (!cols || !rows)
 		return (is_error("grid has no cols or no rows"));
 	cub->grid = malloc(sizeof(char *) * rows);
