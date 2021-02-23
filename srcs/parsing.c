@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:31:08 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/19 05:35:00 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/23 16:27:00 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ int		line_data(t_cub *cub, char *line, t_list **list)
 	else if (*line_data && is_texture(line_data))
 		cub->data.res = fill_texture(cub, line_data);
 	else if (*line_data && (*line_data[0] == 'F' || *line_data[0] == 'C'))
-		cub->data.res = fill_color(cub, line_data);
+		cub->data.res = fill_color(cub, line);
 	else if (*line_data && *line_data[0] == '1')
 		cub->data.res = fill_list_grid(cub, line, list);
 	else if (!*line_data && cub->data.grid_flag)
 		cub->data.res = is_error("empty line in or after grid parameter");
 	else if (cub->data.grid_flag)
 		cub->data.res = is_error("args after grid");
-	free_split(&line_data);
+	free_split(&line_data, 0);
 	return (cub->data.res);
 }
 
@@ -75,6 +75,8 @@ int		last_load(t_cub *cub)
 
 int		check_missing(t_cub *cub)
 {
+	printf("ceil color value : %d\n", cub->data.ceil);
+	printf("floor color value : %d\n", cub->data.floor);
 	if (!cub->data.grid_flag)
 		return (is_error("There is no map in file"));
 	if (!cub->data.ceil)
@@ -112,7 +114,7 @@ int		parsing(t_cub *cub, char *map_file, t_list **list)
 	i = 1;
 	fd = open(map_file, O_RDONLY);
 	if (read(fd, 0, 0) < 0)
-		return (is_error("file args isn't valid"));
+		return (is_error("map file isn't valid"));
 	if (fd < 0)
 		return (is_error("map file couldn't open"));
 	while (i > 0)

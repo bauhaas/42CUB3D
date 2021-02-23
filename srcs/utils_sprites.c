@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 22:07:23 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 16:59:26 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/23 14:17:31 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	sort_sprt(t_cub *cub)
 	int			j;
 
 	i = -1;
-	while (++i < cub->data.num_sprt)
+	while (++i < cub->data.num_sprt - 1)
 	{
 		j = i + 1;
 		if (cub->sprt[i].dist < cub->sprt[j].dist)

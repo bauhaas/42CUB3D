@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 17:54:11 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 23:28:15 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/23 14:14:39 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int		load_sprt(t_cub *cub)
 	while (++i < cub->data.rows)
 	{
 		j = -1;
-		while (++j < cub->data.cols)
+		//while (++j < cub->data.cols)
+		while (cub->grid[i][++j])
 		{
 			if (cub->grid[i][j] == '2' && id < cub->data.num_sprt)
 			{
@@ -68,7 +69,8 @@ void	num_sprt(t_cub *cub)
 	while (++i < cub->data.rows)
 	{
 		j = -1;
-		while (++j < cub->data.cols)
+		//while (++j < cub->data.cols)
+		while (cub->grid[i][++j])
 		{
 			if (cub->grid[i][j] == '2')
 				cub->data.num_sprt++;

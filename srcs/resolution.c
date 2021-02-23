@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:05:33 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/19 01:36:02 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/23 16:30:03 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,13 @@ void	check_res(t_cub *cub)
 	int y;
 
 	mlx_get_screen_size(cub->win.mlx_p, &x, &y);
-	if (cub->win.wid > x)
-		cub->win.wid = x;
-	if (cub->win.hei > y)
-		cub->win.hei = y;
+	if (!cub->save)
+	{
+		if (cub->win.wid > x)
+			cub->win.wid = x;
+		if (cub->win.hei > y)
+			cub->win.hei = y;
+	}
 }
 
 void	win_size(t_cub *cub, char **data)
@@ -70,6 +73,8 @@ int		fill_res(t_cub *cub, char **data)
 	{
 		if (cub->win.wid == -1 && cub->win.hei == -1)
 		{
+			printf("res x : %s\n", data[1]);
+			printf("res y : %s\n", data[2]);
 			if (data[1] && data[2] && is_num(data[1]) && is_num(data[2]))
 			{
 				win_size(cub, data);

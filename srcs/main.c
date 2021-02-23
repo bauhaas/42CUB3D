@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 16:12:03 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/19 04:07:02 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/23 16:01:26 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 
 void	init_cub(t_cub *cub, char *map)
 {
-	printf("test\n");
 	init_win(&cub->win);
 	init_img(&cub->img);
 	init_grid(cub);
@@ -36,7 +35,8 @@ int		end_cub(t_cub *cub)
 	free(cub->rays);
 	free_texture(cub);
 	free_sprt(cub);
-	free_grid(cub);
+	if (cub->data.rows)
+		free_grid(cub);
 	if (cub->win.img.img)
 		free_img(cub);
 	free_win(cub);
@@ -89,9 +89,15 @@ int		main(int ac, char **av)
 	t_cub cub;
 
 	if (ac == 3 && cub_ext(av[1]) && !strcmp(av[2], "--save"))
+	{
+		cub.save = 1;
 		init_cub(&cub, av[1]);
+	}
 	else if (ac == 2 && cub_ext(av[1]))
+	{
+		cub.save = 0;
 		init_cub(&cub, av[1]);
+	}
 	else
 		return (is_error("Wrong numbers of arguments"));
 	return (0);
