@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:24:15 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/23 16:27:13 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 17:25:36 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	init_ray(t_ray *ray, float ray_ang)
 	ray->wall_hit_x = 0;
 	ray->wall_hit_y = 0;
 	ray->dist = 0;
-	ray->was_vt_hit = FALSE;
+	ray->was_vt_hit = 0;
 	ray->is_down = ray_ang > 0 && ray_ang < M_PI;
 	ray->is_up = !ray->is_down;
 	ray->is_right = ray_ang < 0.5 * M_PI || ray_ang > 1.5 * M_PI;

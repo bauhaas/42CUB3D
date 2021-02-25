@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:13:53 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/23 20:02:01 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 17:51:29 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	init_player(t_player *player)
 {
 	player->pos.x = -1;
 	player->pos.y = -1;
-	player->radius = 6;
 	player->turn_d = 0;
 	player->walk_d = 0;
 	player->lateral_d = 0;

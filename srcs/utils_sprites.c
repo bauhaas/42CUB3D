@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 22:07:23 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/23 14:17:31 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 17:49:59 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	is_visible(t_cub *cub, int i)
 	if (angle < -M_PI)
 		angle += M_PI * 2;
 	angle = abs(angle);
-	if (angle < (FOV / 2))
+	if (angle < (cub->data.fov / 2))
 		cub->sprt[i].visibility = 1;
 	else
 		cub->sprt[i].visibility = 0;

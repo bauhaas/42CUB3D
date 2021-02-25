@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:31:08 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/23 21:02:10 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 17:51:58 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ int		line_data(t_cub *cub, char *line, t_list **list)
 int		last_load(t_cub *cub)
 {
 	init_healthbar(cub);
-	cub->data.dist_proj_plane = (cub->win.wid / 2) / (tan(FOV / 2));
+	cub->data.fov = 85 * (M_PI / 180);
+	cub->data.dist_proj_plane = (cub->win.wid / 2) / (tan(cub->data.fov / 2));
 	cub->rays = malloc(sizeof(t_ray) * cub->win.wid);
 	if (!cub->rays)
 		return (is_error("Malloc space rays"));
@@ -119,7 +120,6 @@ int		parsing(t_cub *cub, char *map_file, t_list **list)
 	while (i > 0)
 	{
 		i = get_next_line(fd, &line);
-		printf("line : %s\n", line);
 		if (i != 0)
 			valid = line_data(cub, line, list);
 		free(line);
