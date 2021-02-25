@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:19:13 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/25 15:33:10 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 18:41:10 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	init_grid(t_cub *cub)
 	cub->data.floor = 0;
 	cub->data.grid_flag = 0;
 	cub->data.res = 0;
-	cub->data.dist_proj_plane = 0;
+	cub->data.dist_pplane = 0;
 	cub->data.num_sprt = 0;
 }
 
@@ -73,7 +73,7 @@ int		grid_alloc(t_cub *cub, t_list *list)
 	cub->data.cols = cols;
 	cub->data.rows = rows;
 	if (!cub->grid)
-		return (is_error("not enough memory to malloc"));
+		return (is_error("Not enough memory to malloc the map"));
 	fill_grid(cub, list);
 	return (1);
 }

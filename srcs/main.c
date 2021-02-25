@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 16:12:03 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/25 16:10:40 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 21:10:35 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	init_cub(t_cub *cub, char *map)
 	init_texture(cub);
 	cub->ray_load = 0;
 	cub->sprt_load = 0;
+	cub->data.txtr_err = 0;
 	load_cub(cub, map);
 }
 
@@ -58,6 +59,14 @@ void	load_cub(t_cub *cub, char *map)
 	list = NULL;
 	if (parsing(cub, map, &list))
 	{
+		if (cub->data.txtr_err == 1)
+			end_cub(cub);
+		if (cub->win.wid < 1)
+		{
+			is_error("Map has no valid resolution");
+			ft_lstclear(&list, &ft_free);
+			end_cub(cub);
+		}
 		if (!grid_parsing(cub, list) || !load_texture(cub) || !load_sprt(cub) ||
 				!check_missing(cub))
 			end_cub(cub);

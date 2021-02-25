@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:03:12 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/25 16:10:13 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 21:09:57 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int		check_char(char *line)
 ** Check if our RGB parameters has 2 ','
 */
 
-int		check_format(char *line, int total)
+int		check_format(char *line, int total, char **colors, t_cub *cub)
 {
 	int i;
 	int count;
@@ -54,7 +54,11 @@ int		check_format(char *line, int total)
 		return (0);
 	if (count == total)
 		return (1);
-	return (is_error("Color line has bad format"));
+	if (!strcmp(colors[0], "C"))
+		cub->data.ceil = -1;
+	else if (!strcmp(colors[0], "F"))
+		cub->data.floor = -1;
+	return (is_error("One of the RGB has bad format"));
 }
 
 /*
@@ -69,10 +73,7 @@ int		check_params(char **colors)
 	while (colors[i])
 		i++;
 	if (i != 4)
-	{
-		printf("wrong numbers of parameters in colors\n");
-		return (free_split(&colors, 0));
-	}
+		return (is_error("One of the RGB has less/more params than expected"));
 	return (1);
 }
 
@@ -107,9 +108,9 @@ int		fill_color(t_cub *cub, char *line)
 {
 	char	**colors;
 
-	if (check_format(line, 2))
+	colors = ft_split_charset(line, " ,");
+	if (check_format(line, 2, colors, cub))
 	{
-		colors = ft_split_charset(line, " ,");
 		if (!colors)
 			return (is_error("Malloc fail for RGB colors"));
 		if (!check_params(colors))
@@ -118,5 +119,5 @@ int		fill_color(t_cub *cub, char *line)
 			return (free_split(&colors, 0));
 		return (free_split(&colors, 1));
 	}
-	return (1);
+	return (free_split(&colors, 1));
 }

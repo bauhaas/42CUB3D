@@ -95,7 +95,7 @@ void	fill_sprt_data(t_cub *cub)
 	{
 		if (cub->sprt[i].visibility)
 		{
-			cub->sprt[i].hei = cub->data.dist_proj_plane /
+			cub->sprt[i].hei = cub->data.dist_pplane /
 				(cos(cub->sprt[i].ang) * cub->sprt[i].dist);
 			top_px = (cub->win.hei / 2) - (cub->sprt[i].hei / 2);
 			bot_px = (cub->win.hei / 2) + (cub->sprt[i].hei / 2);
@@ -105,7 +105,7 @@ void	fill_sprt_data(t_cub *cub)
 				bot_px = cub->win.hei;
 			cub->sprt[i].bot_px = bot_px;
 			cub->sprt[i].top_px = top_px;
-			cub->sprt[i].pos_x = cub->data.dist_proj_plane *
+			cub->sprt[i].pos_x = cub->data.dist_pplane *
 				tan(cub->sprt[i].ang) + (cub->win.wid / 2) -
 				(cub->sprt[i].hei / 2);
 			sprt_display(cub, i);

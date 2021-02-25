@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 15:41:05 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/23 20:03:02 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 19:05:03 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int		is_rgb(char *color)
 {
 	int	res;
 
+	if (!is_num(color))
+		return (is_error("One of the R/G/B value is non-numeric"));
 	res = ft_atoi(color);
 	if (res >= 0 && res <= 255)
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:05:33 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/23 20:03:22 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 20:25:12 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int		num_args(char **data, int i, int tot)
 {
 	while (data[i])
 		i++;
-	if (i > tot)
+	if (i != tot)
 		return (0);
 	return (1);
 }
@@ -64,7 +64,7 @@ int		num_args(char **data, int i, int tot)
 int		fill_res(t_cub *cub, char **data)
 {
 	if (!num_args(data, 0, 3))
-		return (is_error("Resolution has more args than expected"));
+		return (is_error("Resolution has less/more params than expected"));
 	cub->win.mlx_p = mlx_init();
 	if (!cub->win.mlx_p)
 		return (is_error("Couldn't init MLX"));

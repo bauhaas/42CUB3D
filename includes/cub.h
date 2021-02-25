@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/25 17:53:39 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 21:14:12 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,8 +149,9 @@ typedef struct	s_text
 
 typedef struct	s_data
 {
-	double			dist_proj_plane;
+	double			dist_pplane;
 	int				grid_flag;
+	int				txtr_err;
 	int				num_sprt;
 	int				floor;
 	int				ceil;
@@ -269,13 +270,13 @@ int				cub_ext(char *map_file);
 void			init_texture(t_cub *cub);
 void			free_texture(t_cub *cub);
 int				load_texture(t_cub *cub);
-int				is_texture(char **line_data);
+int				is_texture(char **line_data, t_cub *cub);
 int				fill_texture(t_cub *cub, char **line_data);
 int				is_rgb(char *color);
 int				rgb_value(int r, int g, int b);
 int				fill_ceil(t_cub *cub, int hex_color);
 int				fill_floor(t_cub *cub, int hex_color);
-int				check_format(char *line, int total);
+int				check_format(char *line, int total, char **colors, t_cub *cub);
 int				fill_color(t_cub *cub, char *line);
 void			check_res(t_cub *cub);
 void			win_size(t_cub *cub, char **data);

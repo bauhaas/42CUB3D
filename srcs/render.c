@@ -88,7 +88,7 @@ void	render_3d(t_cub *cub)
 	{
 		wall_dist = cub->rays[i].dist * cos(cub->rays[i].ray_ang -
 			cub->player.rot_ang);
-		wall_hei = cub->data.dist_proj_plane / wall_dist;
+		wall_hei = cub->data.dist_pplane / wall_dist;
 		top_px = (cub->win.hei / 2) - (wall_hei / 2);
 		bot_px = (cub->win.hei / 2) + (wall_hei / 2);
 		if (top_px < 0)

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:59:14 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/25 16:27:20 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 18:41:36 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ int		is_grid(t_cub *cub, int rows, int y, int len)
 			|| y == (rows - 1) || x == (len - 1)
 			|| x - 1 > prev_row || x + 1 > next_row
 			|| !check_surrounding(cub->grid, x, y)))
-			return (is_error("Grid not fully closed"));
+			return (is_error("Map is not fully closed"));
 		if (!ft_strchr(" 012", cub->grid[y][x]))
-			return (is_error("Invalid char in grid"));
+			return (is_error("Invalid char in map"));
 	}
 	return (1);
 }

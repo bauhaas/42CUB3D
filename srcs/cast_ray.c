@@ -94,7 +94,7 @@ void	cast_all_rays(t_cub *cub)
 	while (++i < cub->win.wid)
 	{
 		ray_ang = cub->player.rot_ang + atan((i - cub->win.wid / 2) /
-				cub->data.dist_proj_plane);
+				cub->data.dist_pplane);
 		cub->rays[i].ray_ang = normalize(ray_ang);
 		init_ray(&cub->rays[i], cub->rays[i].ray_ang);
 		cub->rays[i] = cast(cub->rays[i], cub);

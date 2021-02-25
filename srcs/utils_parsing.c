@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:43:26 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/25 16:11:03 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 21:12:26 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int		is_num(char *num)
 		if (num[i] >= '0' && num[i] <= '9')
 			i++;
 		else
-			return (is_error("Argument sent to is_num isn't a valid number"));
+			return (0);
 	}
 	return (1);
 }
@@ -94,5 +94,5 @@ int		cub_ext(char *map_file)
 	i -= 4;
 	if (!strcmp(&map_file[i], ".cub"))
 		return (1);
-	return (is_error("Map argument is not ending with .cub"));
+	return (is_error("File extension is not ending with .cub"));
 }

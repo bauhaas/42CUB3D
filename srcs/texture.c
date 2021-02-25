@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:21:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/23 19:59:09 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 21:13:18 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int		load_texture(t_cub *cub)
 			cub->text[i].ptr = mlx_xpm_file_to_image(cub->win.mlx_p,
 				cub->text[i].name, &cub->text[i].wid, &cub->text[i].hei);
 			if (!cub->text[i].ptr)
-				return (is_error("bad texture content"));
+				return (is_error("Bad texture content"));
 			cub->text[i].data = mlx_get_data_addr(cub->text[i].ptr,
 				&cub->text[i].bits_per_pixel, &cub->text[i].line_length,
 				&cub->text[i].endian);
@@ -78,20 +78,30 @@ int		load_texture(t_cub *cub)
 ** try to open file related to it.
 */
 
-int		is_texture(char **line_data)
+int		is_texture(char **line_data, t_cub *cub)
 {
 	int fd;
+	int i;
 
-	if (!strcmp(line_data[0], "SO")
-			|| !strcmp(line_data[0], "EA")
-			|| !strcmp(line_data[0], "NO")
-			|| !strcmp(line_data[0], "S")
-			|| !strcmp(line_data[0], "WE"))
+	i = 0;
+	if (!strcmp(line_data[0], "SO") || !strcmp(line_data[0], "EA") ||
+			!strcmp(line_data[0], "NO") || !strcmp(line_data[0], "S") ||
+			!strcmp(line_data[0], "WE"))
 	{
 		fd = open(line_data[1], O_RDONLY);
 		if (fd < 0)
-			return (is_error("Texture load problem"));
+		{
+			cub->data.txtr_err = 1;
+			return (is_error("Couldn't open a texture file or file missing"));
+		}
 		close(fd);
+		while (line_data[i])
+			i++;
+		if (i != 2)
+		{
+			cub->data.txtr_err = 1;
+			return (is_error("A texture has more parameters than expected"));
+		}
 		return (1);
 	}
 	return (0);

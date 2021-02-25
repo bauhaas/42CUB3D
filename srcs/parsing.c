@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:31:08 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/25 17:51:58 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 21:11:27 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,24 +34,28 @@ int		fill_list_grid(t_cub *cub, char *line, t_list **list)
 
 int		line_data(t_cub *cub, char *line, t_list **list)
 {
-	char		**line_data;
+	char		**data;
 
-	line_data = ft_split(line, ' ');
-	if (!*line_data && !cub->data.grid_flag)
+	data = ft_split(line, ' ');
+	if (!*data && !cub->data.grid_flag)
 		cub->data.res = 1;
-	else if (*line_data && *line_data[0] == 'R')
-		cub->data.res = fill_res(cub, line_data);
-	else if (*line_data && is_texture(line_data))
-		cub->data.res = fill_texture(cub, line_data);
-	else if (*line_data && (*line_data[0] == 'F' || *line_data[0] == 'C'))
+	else if (*data && cub->data.grid_flag && !ft_strchr("NSEW102", data[0][0]))
+		cub->data.res = is_error("Parameters after map or invalid one in map");
+	else if (*data && *data[0] == 'R')
+		cub->data.res = fill_res(cub, data);
+	else if (*data && is_texture(data, cub))
+		cub->data.res = fill_texture(cub, data);
+	else if (*data && (*data[0] == 'F' || *data[0] == 'C'))
 		cub->data.res = fill_color(cub, line);
-	else if (*line_data && *line_data[0] == '1')
+	else if (*data && ft_strchr("102", *data[0]))
 		cub->data.res = fill_list_grid(cub, line, list);
-	else if (!*line_data && cub->data.grid_flag)
-		cub->data.res = is_error("empty line in or after grid parameter");
-	else if (cub->data.grid_flag)
-		cub->data.res = is_error("args after grid");
-	free_split(&line_data, 0);
+	else if (!*data && cub->data.grid_flag)
+		cub->data.res = is_error("Empty line in or after map declaration");
+	else if (*data && ft_strchr("NSEW", data[0][0]) && cub->data.grid_flag)
+		cub->data.res = is_error("Player outside/border of the map");
+	else
+		cub->data.res = 1;
+	free_split(&data, 0);
 	return (cub->data.res);
 }
 
@@ -63,11 +67,16 @@ int		last_load(t_cub *cub)
 {
 	init_healthbar(cub);
 	cub->data.fov = 85 * (M_PI / 180);
-	cub->data.dist_proj_plane = (cub->win.wid / 2) / (tan(cub->data.fov / 2));
-	cub->rays = malloc(sizeof(t_ray) * cub->win.wid);
-	if (!cub->rays)
-		return (is_error("Malloc space rays"));
-	cub->ray_load = 1;
+	if (cub->win.wid >= 1)
+	{
+		cub->data.dist_pplane = (cub->win.wid / 2) / (tan(cub->data.fov / 2));
+		cub->rays = malloc(sizeof(t_ray) * cub->win.wid);
+		if (!cub->rays)
+			return (is_error("Not enough memory to malloc rays"));
+		cub->ray_load = 1;
+	}
+	else
+		return (is_error("Map has invalid resolution"));
 	return (1);
 }
 
@@ -95,8 +104,8 @@ int		check_missing(t_cub *cub)
 		return (is_error("East texture is missing"));
 	if (!cub->text[4].name)
 		return (is_error("Sprite texture is missing"));
-	if (cub->win.wid == -1 || cub->win.hei == -1)
-		return (is_error(" resolution or has a 0 value"));
+	if (cub->data.floor == -1 || cub->data.ceil == -1)
+		return (0);
 	return (last_load(cub));
 }
 
@@ -114,9 +123,9 @@ int		parsing(t_cub *cub, char *map_file, t_list **list)
 	i = 1;
 	fd = open(map_file, O_RDONLY);
 	if (read(fd, 0, 0) < 0)
-		return (is_error("map file isn't valid"));
+		return (is_error("Map file isn't valid"));
 	if (fd < 0)
-		return (is_error("map file couldn't open"));
+		return (is_error("Map file couldn't open"));
 	while (i > 0)
 	{
 		i = get_next_line(fd, &line);
