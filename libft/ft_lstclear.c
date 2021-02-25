@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/16 22:52:09 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/05 01:31:23 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 18:09:15 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,3 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 		(*lst) = tmp;
 	}
 }
-
-/*
-void		ft_lstclear(t_list **lst, void (*del)(void *))
-{
-	t_list		*ptr_list;
-	t_list		*ptr_next;
-
-	ptr_list = *lst;
-	while (ptr_list)
-	{
-		ptr_next = ptr_list->next;
-		(*del)(ptr_list->content);
-		free(ptr_list);
-		ptr_list = ptr_next;
-	}
-	*lst = NULL;
-}*/

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 01:18:48 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 17:09:04 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 17:25:18 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,15 @@ int		grid_is_wall(float x, float y, t_cub *cub)
 	int grid_y;
 
 	if (x < 0 || x > cub->win.wid || y < 0 || y > cub->win.hei)
-		return (TRUE);
+		return (1);
 	grid_x = floor(x);
 	grid_y = floor(y);
 	if (grid_x >= cub->data.cols || grid_y >= cub->data.rows)
-		return (TRUE);
+		return (1);
 	if (cub->grid[grid_y][grid_x] == '1')
-		return (TRUE);
+		return (1);
 	else
-		return (FALSE);
+		return (0);
 }
 
 /*

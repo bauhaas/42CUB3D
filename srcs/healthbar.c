@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 21:43:28 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 16:40:21 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/20 11:19:51 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	render_healthbar(t_cub *cub)
 	rect(cub, cub->healthbar.start, cub->healthbar.end, GREEN);
 }
 
-void	render_health_text(t_cub *cub)
+void	render_healthbar_text(t_cub *cub)
 {
 	float x;
 	float y;

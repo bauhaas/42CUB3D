@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/12 23:03:02 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/05 02:51:32 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/23 21:43:28 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 32
+# define BUFFER_SIZE 1
 #endif
 
 # include <unistd.h>

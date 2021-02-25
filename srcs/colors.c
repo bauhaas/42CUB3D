@@ -6,82 +6,117 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:03:12 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 15:53:19 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 16:10:13 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub.h"
 
-int		is_rgb(char *color)
-{
-	int	res;
-
-	res = ft_atoi(color);
-	if (res >= 0 && res <= 255)
-		return (1);
-	return (is_error("Invalid RGB color"));
-}
-
 /*
-** Since each byte contains 2^8 values, and rgb values range from 0 to 255,
-** we can perfeclty fit a integer (as an int is 4 bytes).
-** In order to set the values programatically we use bitshifting.
+** Looking at the first string split of our line and check if it matches C/F
 */
 
-int		rgb_value(int r, int g, int b)
+int		check_char(char *line)
 {
-	return (0x0 | r << 16 | g << 8 | b);
-}
+	char **line_data;
 
-int		fill_ceil(t_cub *cub, int hex_color)
-{
-	if (cub->data.ceil == -1)
-		cub->data.ceil = hex_color;
-	else
-		return (is_error("Ceil color is declared twice"));
-	printf("ceiling color OK\n");
-	return (1);
-}
-
-int		fill_floor(t_cub *cub, int hex_color)
-{
-	if (cub->data.floor == -1)
-		cub->data.floor = hex_color;
-	else
-		return (is_error("Floor color is declared twice"));
-	printf("floor color OK\n");
-	return (1);
-}
-
-/*
-** I consider only the following format correct : [0-255],[0-255],[0-255].
-** If the content of each color is valid, I'll convert it to a single rgb value
-** Then fill ceil/floor color parameter.
-*/
-
-int		fill_color(t_cub *cub, char **line)
-{
-	char	**color;
-	int		int_color[3];
-	int		rgb;
-	int		i;
-
-	color = ft_split(line[1], ',');
-	i = -1;
-	while (++i < 3)
+	line_data = ft_split(line, ' ');
+	if (*line_data[0] == 'C')
 	{
-		if (!is_rgb(color[i]) && !is_num(color[i]))
-		{
-			free_split(&color);
+		if (!strcmp(line_data[0], "C"))
+			return (free_split(&line_data, 1));
+	}
+	else if (*line_data[0] == 'F')
+	{
+		if (!strcmp(line_data[0], "F"))
+			return (free_split(&line_data, 1));
+	}
+	return (free_split(&line_data, 0));
+}
+
+/*
+** Check if our RGB parameters has 2 ','
+*/
+
+int		check_format(char *line, int total)
+{
+	int i;
+	int count;
+
+	count = 0;
+	i = -1;
+	while (line[++i])
+	{
+		if (line[i] == ',')
+			count++;
+	}
+	if (!check_char(line))
+		return (0);
+	if (count == total)
+		return (1);
+	return (is_error("Color line has bad format"));
+}
+
+/*
+** Check if our splitted line has 4 params : C/F R G B
+*/
+
+int		check_params(char **colors)
+{
+	int i;
+
+	i = 0;
+	while (colors[i])
+		i++;
+	if (i != 4)
+	{
+		printf("wrong numbers of parameters in colors\n");
+		return (free_split(&colors, 0));
+	}
+	return (1);
+}
+
+int		fill_rgb(t_cub *cub, char **colors, char *line)
+{
+	int		i;
+	int		rgb;
+	int		int_color[3];
+
+	i = 0;
+	while (++i < 4)
+	{
+		if (!is_rgb(colors[i]) || !is_num(colors[i]))
 			return (0);
-		}
-		int_color[i] = ft_atoi(color[i]);
+		int_color[i - 1] = ft_atoi(colors[i]);
 	}
 	rgb = rgb_value(int_color[0], int_color[1], int_color[2]);
-	if (strcmp(line[0], "C") == 0)
-		fill_ceil(cub, rgb);
+	if (line[0] == 'C')
+	{
+		if (!fill_ceil(cub, rgb))
+			return (0);
+	}
 	else
-		fill_floor(cub, rgb);
-	free_split(&color);
+	{
+		if (!fill_floor(cub, rgb))
+			return (0);
+	}
+	return (1);
+}
+
+int		fill_color(t_cub *cub, char *line)
+{
+	char	**colors;
+
+	if (check_format(line, 2))
+	{
+		colors = ft_split_charset(line, " ,");
+		if (!colors)
+			return (is_error("Malloc fail for RGB colors"));
+		if (!check_params(colors))
+			return (free_split(&colors, 0));
+		if (!fill_rgb(cub, colors, line))
+			return (free_split(&colors, 0));
+		return (free_split(&colors, 1));
+	}
 	return (1);
 }

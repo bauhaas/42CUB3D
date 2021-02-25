@@ -6,13 +6,13 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:36:42 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/04 18:36:57 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 18:07:44 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void ft_free(void *content_to_free)
+void	ft_free(void *content_to_free)
 {
 	free(content_to_free);
 	content_to_free = NULL;

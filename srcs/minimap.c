@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 23:44:01 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/23 16:29:51 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,14 @@ void	render_mini_map(t_cub *cub)
 	while (++i < cub->data.rows)
 	{
 		j = -1;
-		while (++j < cub->data.cols)
+		while (cub->grid[i][++j])
 		{
 			pos.x = MINIMAP_SCALE * j + (cub->win.wid * 0.01);
 			pos.y = MINIMAP_SCALE * i + (cub->win.hei * 0.03);
 			if (cub->grid[i][j] == '0' || cub->grid[i][j] == '2')
 				square(pos, MINIMAP_SCALE, cub, GRAY);
+			else if (cub->grid[i][j] == '1')
+				square(pos, MINIMAP_SCALE, cub, D_GRAY);
 		}
 	}
 }
@@ -68,12 +70,12 @@ void	render_mini_sprt(t_cub *cub)
 	while (++i < cub->data.rows)
 	{
 		j = -1;
-		while (++j < cub->data.cols)
+		while (cub->grid[i][++j])
 		{
-			pos.x = MINIMAP_SCALE * j;
-			pos.y = MINIMAP_SCALE * i;
+			pos.x = MINIMAP_SCALE * j + (cub->win.wid * 0.01);
+			pos.y = MINIMAP_SCALE * i + (cub->win.hei * 0.03);
 			if (cub->grid[i][j] == '2')
-				my_mlx_pixel_put(&cub->win, pos.x, pos.y, BLUE);
+				square(pos, MINIMAP_SCALE, cub, BLUE);
 		}
 	}
 }

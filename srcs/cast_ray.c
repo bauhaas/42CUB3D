@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 17:50:16 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 18:44:55 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/23 16:27:06 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	select_texture(t_ray *rays, float hz_dist, float vt_dist)
 {
-	rays->id = 3;
+	rays->id = 2;
 	if (rays->is_right)
-		rays->id = 2;
+		rays->id = 3;
 	if (vt_dist > hz_dist)
 		rays->id = 1;
 	if (vt_dist > hz_dist && rays->is_up)

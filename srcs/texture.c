@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:21:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 18:59:25 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/23 19:59:09 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,16 @@ int		load_texture(t_cub *cub)
 	i = -1;
 	while (++i < 5)
 	{
-		cub->text[i].ptr = mlx_xpm_file_to_image(cub->win.mlx_p,
+		if (cub->text[i].name)
+		{
+			cub->text[i].ptr = mlx_xpm_file_to_image(cub->win.mlx_p,
 				cub->text[i].name, &cub->text[i].wid, &cub->text[i].hei);
-		if (!cub->text[i].ptr)
-			return (is_error("bad texture content"));
-		cub->text[i].data = mlx_get_data_addr(cub->text[i].ptr,
-			&cub->text[i].bits_per_pixel, &cub->text[i].line_length,
-			&cub->text[i].endian);
+			if (!cub->text[i].ptr)
+				return (is_error("bad texture content"));
+			cub->text[i].data = mlx_get_data_addr(cub->text[i].ptr,
+				&cub->text[i].bits_per_pixel, &cub->text[i].line_length,
+				&cub->text[i].endian);
+		}
 	}
 	return (1);
 }
@@ -116,6 +119,5 @@ int		fill_texture(t_cub *cub, char **line_data)
 	if (cub->text[i].name)
 		return (is_error("A texture is declared twice"));
 	cub->text[i].name = ft_strdup(line_data[1]);
-	printf("Texture %s OK\n", line_data[0]);
 	return (1);
 }

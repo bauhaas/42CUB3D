@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 16:12:03 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/18 16:41:03 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 16:10:40 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@
 void	init_cub(t_cub *cub, char *map)
 {
 	init_win(&cub->win);
-	init_img(&cub->img);
+	init_img(&cub->win.img);
 	init_grid(cub);
 	init_player(&cub->player);
 	init_texture(cub);
+	cub->ray_load = 0;
+	cub->sprt_load = 0;
 	load_cub(cub, map);
 }
 
@@ -32,10 +34,13 @@ void	init_cub(t_cub *cub, char *map)
 
 int		end_cub(t_cub *cub)
 {
-	free(cub->rays);
 	free_texture(cub);
-	free_sprt(cub);
-	free_grid(cub);
+	if (cub->sprt_load == 1)
+		free_sprt(cub);
+	if (cub->ray_load == 1)
+		free(cub->rays);
+	if (cub->data.rows)
+		free_grid(cub);
 	if (cub->win.img.img)
 		free_img(cub);
 	free_win(cub);
@@ -48,10 +53,20 @@ int		end_cub(t_cub *cub)
 
 void	load_cub(t_cub *cub, char *map)
 {
-	if (parsing(cub, map))
+	t_list	*list;
+
+	list = NULL;
+	if (parsing(cub, map, &list))
 	{
+		if (!grid_parsing(cub, list) || !load_texture(cub) || !load_sprt(cub) ||
+				!check_missing(cub))
+			end_cub(cub);
 		printf("Cub3d is launching..\n");
 		run_cub(cub);
+	}
+	else
+	{
+		ft_lstclear(&list, &ft_free);
 		end_cub(cub);
 	}
 }
@@ -62,16 +77,16 @@ void	load_cub(t_cub *cub, char *map)
 
 void	run_cub(t_cub *cub)
 {
-	load_win(&cub->win);
 	load_img(&cub->win);
-	//if (cub->save)
-	//{
-	//	render(cub);
-	//	save_bmp(cub);
-	//	end_cub(cub);
-	//}
-	mlx_hook(cub->win.win_p, 2, 1L << 0, key_pressed, cub);
+	if (cub->save)
+	{
+		render(cub);
+		save_bmp(cub);
+		end_cub(cub);
+	}
+	load_win(&cub->win);
 	mlx_hook(cub->win.win_p, 3, 1L << 1, key_released, &cub->player);
+	mlx_hook(cub->win.win_p, 2, 1L << 0, key_pressed, cub);
 	mlx_hook(cub->win.win_p, 9, 1L << 21, &render, cub);
 	mlx_hook(cub->win.win_p, 33, 1L << 17, &end_cub, cub);
 	render(cub);
@@ -82,10 +97,24 @@ int		main(int ac, char **av)
 {
 	t_cub cub;
 
-	if (ac == 3 && cub_ext(av[1]) && !strcmp(av[2], "--save"))
-		init_cub(&cub, av[1]);
-	else if (ac == 2 && cub_ext(av[1]))
-		init_cub(&cub, av[1]);
+	if (ac == 3 && !strcmp(av[2], "--save"))
+	{
+		if (cub_ext(av[1]))
+		{
+			cub.save = 1;
+			init_cub(&cub, av[1]);
+		}
+		return (0);
+	}
+	else if (ac == 2)
+	{
+		if (cub_ext(av[1]))
+		{
+			cub.save = 0;
+			init_cub(&cub, av[1]);
+		}
+		return (0);
+	}
 	else
 		return (is_error("Wrong numbers of arguments"));
 	return (0);

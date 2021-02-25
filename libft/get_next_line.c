@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/12 13:07:08 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/05 02:50:17 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 18:09:54 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int					get_next_line(const int fd, char **line)
 	char			buf[BUFFER_SIZE + 1];
 	int				ret;
 
-	if(BUFFER_SIZE <= 0 || fd < 0 || !line || read(fd, buf, 0) < 0)
+	if (BUFFER_SIZE <= 0 || fd < 0 || !line || read(fd, buf, 0) < 0)
 		return (-1);
 	ret = 1;
 	while (!check_line(leftover) && ret != 0)
