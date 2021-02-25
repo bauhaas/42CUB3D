@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:43:26 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/23 15:36:56 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 16:11:03 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int		is_num(char *num)
 
 int		is_error(char *str)
 {
-	printf("Error : %s\n", str);
+	printf("Error\n%s\n", str);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:59:14 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/19 05:33:16 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 16:27:20 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		is_grid(t_cub *cub, int rows, int y, int len)
 }
 
 /*
-** Check the validity of each rows in the map.
+** Check the validity of each rows in the map & if there isn't empty columns.
 */
 
 int		check_grid(t_cub *cub)
@@ -85,6 +85,5 @@ int		check_grid(t_cub *cub)
 		if (!is_grid(cub, cub->data.rows, y, len))
 			return (0);
 	}
-	printf("Grid OK\n");
 	return (1);
 }

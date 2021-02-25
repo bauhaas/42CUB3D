@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:31:08 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/23 16:27:00 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/23 21:02:10 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int		last_load(t_cub *cub)
 	cub->rays = malloc(sizeof(t_ray) * cub->win.wid);
 	if (!cub->rays)
 		return (is_error("Malloc space rays"));
+	cub->ray_load = 1;
 	return (1);
 }
 
@@ -75,28 +76,26 @@ int		last_load(t_cub *cub)
 
 int		check_missing(t_cub *cub)
 {
-	printf("ceil color value : %d\n", cub->data.ceil);
-	printf("floor color value : %d\n", cub->data.floor);
 	if (!cub->data.grid_flag)
-		return (is_error("There is no map in file"));
+		return (is_error("Map is missing"));
 	if (!cub->data.ceil)
-		return (is_error("There is no ceil color"));
+		return (is_error("Ceil color is missing"));
 	if (!cub->data.floor)
-		return (is_error("There is no floor color"));
+		return (is_error("Floor color is missing"));
 	if (!cub->win.wid)
-		return (is_error("There is no resolution"));
+		return (is_error("Resolution is missing"));
 	if (!cub->text[0].name)
-		return (is_error("There is no north texture"));
+		return (is_error("North texture is missing"));
 	if (!cub->text[1].name)
-		return (is_error("There is no south texture"));
+		return (is_error("South texture is missing"));
 	if (!cub->text[2].name)
-		return (is_error("There is no west texture"));
+		return (is_error("West texture is missing"));
 	if (!cub->text[3].name)
-		return (is_error("There is no east texture"));
+		return (is_error("East texture is missing"));
 	if (!cub->text[4].name)
-		return (is_error("There is no sprite texture"));
+		return (is_error("Sprite texture is missing"));
 	if (cub->win.wid == -1 || cub->win.hei == -1)
-		return (is_error("There is no resolution or has a 0 value"));
+		return (is_error(" resolution or has a 0 value"));
 	return (last_load(cub));
 }
 
@@ -120,6 +119,7 @@ int		parsing(t_cub *cub, char *map_file, t_list **list)
 	while (i > 0)
 	{
 		i = get_next_line(fd, &line);
+		printf("line : %s\n", line);
 		if (i != 0)
 			valid = line_data(cub, line, list);
 		free(line);

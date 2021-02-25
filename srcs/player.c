@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:13:53 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/23 16:14:21 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/23 20:02:01 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,5 @@ int		check_player(t_cub *cub)
 	}
 	if (num_position == 0)
 		return (is_error("No player position in map"));
-	printf("player OK\n");
 	return (1);
 }

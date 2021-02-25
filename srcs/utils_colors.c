@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/23 15:41:05 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/23 16:30:13 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/23 20:03:02 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int		fill_ceil(t_cub *cub, int hex_color)
 		cub->data.ceil = hex_color;
 	else
 		return (is_error("Ceil color is declared twice"));
-	printf("ceiling color OK\n");
 	return (1);
 }
 
@@ -49,6 +48,5 @@ int		fill_floor(t_cub *cub, int hex_color)
 		cub->data.floor = hex_color;
 	else
 		return (is_error("Floor color is declared twice"));
-	printf("floor color OK\n");
 	return (1);
 }

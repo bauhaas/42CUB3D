@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 19:03:12 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/23 16:30:53 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 16:10:13 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,15 @@ int		fill_rgb(t_cub *cub, char **colors, char *line)
 	}
 	rgb = rgb_value(int_color[0], int_color[1], int_color[2]);
 	if (line[0] == 'C')
-		fill_ceil(cub, rgb);
+	{
+		if (!fill_ceil(cub, rgb))
+			return (0);
+	}
 	else
-		fill_floor(cub, rgb);
+	{
+		if (!fill_floor(cub, rgb))
+			return (0);
+	}
 	return (1);
 }
 

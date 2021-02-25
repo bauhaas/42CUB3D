@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/23 16:27:27 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 14:25:24 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,21 @@ typedef struct	s_health
 	t_pos		end;
 }				t_health;
 
+typedef struct	s_bmp
+{
+	char		*signature;
+	int			size_file;
+	int			reserved;
+	int			data_offset;
+	int			size_infoheader;
+	int			wid;
+	int			hei;
+	int			planes;
+	int			bpp;
+	int			*addr;
+	double		padding_trash;
+}				t_bmp;
+
 typedef struct	s_cub
 {
 	t_health	healthbar;
@@ -196,10 +211,9 @@ typedef struct	s_cub
 	t_sprt		*sprt;
 	t_data		data;
 	int			save;
-	t_img		img;
 	t_win		win;
-	int			mini_hei;
-	int			mini_wid;
+	int			ray_load;
+	int			sprt_load;
 }				t_cub;
 
 //save.c

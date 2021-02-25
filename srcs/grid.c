@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:19:13 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/23 15:19:14 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 15:33:10 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,9 @@ int		grid_alloc(t_cub *cub, t_list *list)
 
 	cols = count_cols(list);
 	rows = ft_lstsize(list);
-	printf("cols : %d\n", cols);
-	printf("rows : %d\n", rows);
 	if (!cols || !rows)
-		return (is_error("grid has no cols or no rows"));
-	cub->grid = malloc(sizeof(char *) * rows);
+		return (is_error("Map has 0 cols or 0 rows"));
+	cub->grid = malloc(sizeof(char *) * rows + 1);
 	cub->data.cols = cols;
 	cub->data.rows = rows;
 	if (!cub->grid)
@@ -86,7 +84,11 @@ int		grid_alloc(t_cub *cub, t_list *list)
 
 int		grid_parsing(t_cub *cub, t_list *list)
 {
-	grid_alloc(cub, list);
+	if (!grid_alloc(cub, list))
+	{
+		ft_lstclear(&list, &ft_free);
+		return (0);
+	}
 	ft_lstclear(&list, &ft_free);
 	if (!check_player(cub) || !check_grid(cub) || !check_sprt(cub))
 		return (0);
