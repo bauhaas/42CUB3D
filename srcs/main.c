@@ -106,7 +106,7 @@ int		main(int ac, char **av)
 {
 	t_cub cub;
 
-	if (ac == 3 && !strcmp(av[2], "--save"))
+	if (ac == 3 && !ft_strcmp(av[2], "--save"))
 	{
 		if (cub_ext(av[1]))
 		{

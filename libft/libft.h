@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 10:46:26 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/19 20:51:57 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/26 18:15:11 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,9 @@ void			ft_lstiter(t_list *lst, void (*f)(void *));
 t_list			*ft_lstmap(t_list *lst, void *(*f)(void *)
 				, void (*del)(void *));
 
-int get_next_line(int fd, char **line);
-int ft_atoi_base(char *str, char *base);
-void ft_free(void *content_to_free);
-char **ft_split_charset(char *str, char *charset);
+int				get_next_line(int fd, char **line);
+int				ft_atoi_base(char *str, char *base);
+void			ft_free(void *content_to_free);
+char			**ft_split_charset(char *str, char *charset);
+int				ft_strcmp(char *s1, char *s2);
 #endif

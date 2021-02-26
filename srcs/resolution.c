@@ -68,7 +68,7 @@ int		fill_res(t_cub *cub, char **data)
 	cub->win.mlx_p = mlx_init();
 	if (!cub->win.mlx_p)
 		return (is_error("Couldn't init MLX"));
-	if (!strcmp(data[0], "R"))
+	if (!ft_strcmp(data[0], "R"))
 	{
 		if (cub->win.wid == -1 && cub->win.hei == -1)
 		{

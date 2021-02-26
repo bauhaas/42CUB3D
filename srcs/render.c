@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 02:37:21 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/25 14:33:50 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/26 17:59:52 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ void	render_ceil(t_cub *cub, t_ray rays, int i)
 
 void	render_wall(t_cub *cub, int i, float wall_hei)
 {
-	int				text_x;
-	int				text_y;
-	int				color;
-	int				j;
+	float	text_x;
+	float	text_y;
+	int		color;
+	int		j;
 
 	if (cub->rays[i].was_vt_hit)
 		text_x = fmod(cub->rays[i].wall_hit_y, 1) *
@@ -63,7 +63,7 @@ void	render_wall(t_cub *cub, int i, float wall_hei)
 	while (++j < cub->rays[i].bot_px)
 	{
 		text_y = (j + (wall_hei / 2) - (cub->win.hei / 2)) *
-			(cub->text[cub->rays[i].id].hei / wall_hei);
+			((float)cub->text[cub->rays[i].id].hei / wall_hei);
 		color = grep_color(cub->text[cub->rays[i].id], text_x, text_y);
 		my_mlx_pixel_put(&cub->win, i, j, color);
 	}

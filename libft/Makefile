@@ -6,7 +6,7 @@
 #    By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/17 13:18:59 by bahaas            #+#    #+#              #
-#    Updated: 2021/02/19 20:51:26 by bahaas           ###   ########.fr        #
+#    Updated: 2021/02/26 18:06:23 by bahaas           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SRCS		= ft_atoi.c ft_bzero.c ft_calloc.c \
 				ft_strncmp.c ft_strnstr.c ft_strrchr.c \
 				ft_strtrim.c ft_substr.c ft_tolower.c \
 				ft_toupper.c ft_atoi_base.c ft_free.c \
-				ft_split_charset.c
+				ft_split_charset.c ft_strcmp.c
 SRCS_BONUS	= ft_lstnew.c ft_lstadd_front.c ft_lstsize.c \
 				ft_lstlast.c ft_lstadd_back.c \
 				ft_lstdelone.c ft_lstclear.c \

@@ -23,12 +23,12 @@ int		check_char(char *line)
 	line_data = ft_split(line, ' ');
 	if (*line_data[0] == 'C')
 	{
-		if (!strcmp(line_data[0], "C"))
+		if (!ft_strcmp(line_data[0], "C"))
 			return (free_split(&line_data, 1));
 	}
 	else if (*line_data[0] == 'F')
 	{
-		if (!strcmp(line_data[0], "F"))
+		if (!ft_strcmp(line_data[0], "F"))
 			return (free_split(&line_data, 1));
 	}
 	return (free_split(&line_data, 0));
@@ -54,9 +54,9 @@ int		check_format(char *line, int total, char **colors, t_cub *cub)
 		return (0);
 	if (count == total)
 		return (1);
-	if (!strcmp(colors[0], "C"))
+	if (!ft_strcmp(colors[0], "C"))
 		cub->data.ceil = -1;
-	else if (!strcmp(colors[0], "F"))
+	else if (!ft_strcmp(colors[0], "F"))
 		cub->data.floor = -1;
 	return (is_error("One of the RGB has bad format"));
 }

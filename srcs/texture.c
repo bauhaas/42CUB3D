@@ -84,9 +84,9 @@ int		is_texture(char **line_data, t_cub *cub)
 	int i;
 
 	i = 0;
-	if (!strcmp(line_data[0], "SO") || !strcmp(line_data[0], "EA") ||
-			!strcmp(line_data[0], "NO") || !strcmp(line_data[0], "S") ||
-			!strcmp(line_data[0], "WE"))
+	if (!ft_strcmp(line_data[0], "SO") || !ft_strcmp(line_data[0], "EA") ||
+			!ft_strcmp(line_data[0], "NO") || !ft_strcmp(line_data[0], "S") ||
+			!ft_strcmp(line_data[0], "WE"))
 	{
 		fd = open(line_data[1], O_RDONLY);
 		if (fd < 0)
@@ -116,15 +116,15 @@ int		fill_texture(t_cub *cub, char **line_data)
 {
 	int i;
 
-	if (!strcmp(line_data[0], "NO"))
+	if (!ft_strcmp(line_data[0], "NO"))
 		i = 0;
-	else if (!strcmp(line_data[0], "SO"))
+	else if (!ft_strcmp(line_data[0], "SO"))
 		i = 1;
-	else if (!strcmp(line_data[0], "WE"))
+	else if (!ft_strcmp(line_data[0], "WE"))
 		i = 2;
-	else if (!strcmp(line_data[0], "EA"))
+	else if (!ft_strcmp(line_data[0], "EA"))
 		i = 3;
-	else if (!strcmp(line_data[0], "S"))
+	else if (!ft_strcmp(line_data[0], "S"))
 		i = 4;
 	if (cub->text[i].name)
 		return (is_error("A texture is declared twice"));

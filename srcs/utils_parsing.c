@@ -92,7 +92,7 @@ int		cub_ext(char *map_file)
 	while (map_file[i])
 		i++;
 	i -= 4;
-	if (!strcmp(&map_file[i], ".cub"))
+	if (!ft_strcmp(&map_file[i], ".cub"))
 		return (1);
 	return (is_error("File extension is not ending with .cub"));
 }

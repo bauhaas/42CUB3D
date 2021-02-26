@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/25 21:14:12 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/26 17:51:17 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,9 +191,9 @@ typedef struct	s_bmp
 	int			wid;
 	int			hei;
 	int			planes;
-	int			bpp;
+	int			bits_per_pixel;
 	int			*addr;
-	double		padding_trash;
+	double		option_null;
 }				t_bmp;
 
 typedef struct	s_cub
@@ -212,7 +212,7 @@ typedef struct	s_cub
 }				t_cub;
 
 t_bmp			fill_bmp(t_cub *cub);
-void			write_bmp(int fd, t_bmp bmp);
+void			write_bmp(int fd, t_bmp *bmp);
 int				save_bmp(t_cub *cub);
 int				key_pressed(int key, t_cub *cub);
 int				key_released(int key, t_player *player);
