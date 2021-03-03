@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 16:12:03 by bahaas            #+#    #+#             */
-/*   Updated: 2021/03/04 00:05:08 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/03/03 17:02:28 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,11 @@ void	load_cub(t_cub *cub, char *map)
 	list = NULL;
 	if (parsing(cub, map, &list))
 	{
-		if (cub->data.txtr_err == 1 || cub->win.wid < 1)
+		if (cub->data.txtr_err == 1)
+			end_cub(cub);
+		if (cub->win.wid < 1)
 		{
-			if (cub->win.wid < 1)
-				is_error("Map has no valid resolution");
+			is_error("Map has no valid resolution");
 			ft_lstclear(&list, &ft_free);
 			end_cub(cub);
 		}

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:31:08 by bahaas            #+#    #+#             */
-/*   Updated: 2021/03/03 17:31:24 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/03/03 17:02:13 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int		line_data(t_cub *cub, char *line, t_list **list)
 
 int		last_load(t_cub *cub)
 {
+	init_healthbar(cub);
 	cub->data.fov = 85 * (M_PI / 180);
 	if (cub->win.wid >= 1)
 	{

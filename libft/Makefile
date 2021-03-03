@@ -6,7 +6,7 @@
 #    By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/17 13:18:59 by bahaas            #+#    #+#              #
-#    Updated: 2021/02/26 18:06:23 by bahaas           ###   ########.fr        #
+#    Updated: 2021/03/03 17:17:01 by bahaas           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,34 +24,26 @@ SRCS		= ft_atoi.c ft_bzero.c ft_calloc.c \
 				ft_strncmp.c ft_strnstr.c ft_strrchr.c \
 				ft_strtrim.c ft_substr.c ft_tolower.c \
 				ft_toupper.c ft_atoi_base.c ft_free.c \
-				ft_split_charset.c ft_strcmp.c
-SRCS_BONUS	= ft_lstnew.c ft_lstadd_front.c ft_lstsize.c \
+				ft_split_charset.c ft_strcmp.c \
+				ft_lstnew.c ft_lstadd_front.c ft_lstsize.c \
 				ft_lstlast.c ft_lstadd_back.c \
 				ft_lstdelone.c ft_lstclear.c \
-				ft_lstiter.c ft_lstmap.c
-
-SRCS_GNL	= get_next_line.c get_next_line_utils.c
+				ft_lstiter.c ft_lstmap.c \
+				get_next_line.c get_next_line_utils.c
 
 CC			= gcc
 CFLAGS		= -Wall -Wextra -Werror
 RM			= rm -f
 OBJS		= ${SRCS:.c=.o}
-OBJS_BONUS	= ${SRCS_BONUS:.c=.o}
-OBJS_GNL	= ${SRCS_GNL:.c=.o}
 
 .c.o:
 			${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
-$(NAME):	gnl
+$(NAME):	${OBJS}
 			ar rc ${NAME} ${OBJS}
 
 all:		${NAME}
 
-bonus:		${OBJS} ${OBJS_BONUS}
-			ar rc ${NAME} ${OBJS} ${OBJS_BONUS}
-
-gnl	:		${OBJS} ${OBJS_BONUS} ${OBJS_GNL}
-			ar rc ${NAME} ${OBJS} ${OBJS_BONUS} ${OBJS_GNL}
 clean:
 			${RM} ${OBJS} ${OBJS_BONUS} ${OBJS_GNL}
 
@@ -60,4 +52,4 @@ fclean:		clean
 
 re:			fclean all
 
-.PHONY:		all clean bonus fclean re bonus gnl
+.PHONY:		all clean fclean re

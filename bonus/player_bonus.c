@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 18:13:53 by bahaas            #+#    #+#             */
-/*   Updated: 2021/03/03 17:37:06 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/02/25 17:51:29 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	init_player(t_player *player)
 	player->lateral_d = 0;
 	player->rot_ang = 0;
 	player->mov_speed = 0.3;
-	player->rot_speed = 1.5 * (M_PI / 180);
+	player->rot_speed = 3 * (M_PI / 180);
 }
 
 /*

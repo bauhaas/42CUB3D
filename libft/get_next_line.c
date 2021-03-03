@@ -6,13 +6,13 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/12 13:07:08 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/25 18:09:54 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/03/03 17:14:09 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int			check_line(char *str)
+static int	check_line(char *str)
 {
 	int				i;
 
@@ -28,7 +28,7 @@ static int			check_line(char *str)
 	return (0);
 }
 
-static char			*grep_line(char *str)
+static char	*grep_line(char *str)
 {
 	int				i;
 	char			*dest;
@@ -61,13 +61,10 @@ static char			*grep_line(char *str)
 **	free the old str
 */
 
-static char			*store_leftover(char *str)
+static char	*store_leftover(char *str, int i, int j)
 {
-	int				i;
-	int				j;
 	char			*dest;
 
-	i = 0;
 	if (!str)
 		return (NULL);
 	while (str[i] && str[i] != '\n')
@@ -77,7 +74,6 @@ static char			*store_leftover(char *str)
 		free(str);
 		return (NULL);
 	}
-	j = 0;
 	dest = (char *)malloc(sizeof(char) * (ft_strlen(str) - i));
 	if (!dest)
 		return (NULL);
@@ -85,6 +81,11 @@ static char			*store_leftover(char *str)
 	while (str[i])
 		dest[j++] = str[i++];
 	dest[j] = '\0';
+	if (dest[0] == '\0')
+	{
+		free(dest);
+		dest = NULL;
+	}
 	free(str);
 	return (dest);
 }
@@ -101,7 +102,7 @@ static char			*store_leftover(char *str)
 **		we returned 0, otherwise 1 because there is still something to read.
 */
 
-int					get_next_line(const int fd, char **line)
+int			get_next_line(const int fd, char **line)
 {
 	static char		*leftover;
 	char			buf[BUFFER_SIZE + 1];
@@ -119,7 +120,7 @@ int					get_next_line(const int fd, char **line)
 		leftover = ft_strjoin(leftover, buf);
 	}
 	*line = grep_line(leftover);
-	leftover = store_leftover(leftover);
+	leftover = store_leftover(leftover, 0, 0);
 	ret = (ret == 0 && ft_strlen(leftover) == 0) ? 0 : 1;
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/26 17:51:17 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/03/03 17:02:57 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,7 @@ typedef struct	s_cub
 	t_win		win;
 	int			ray_load;
 	int			sprt_load;
+	int			mlx_load;
 }				t_cub;
 
 t_bmp			fill_bmp(t_cub *cub);
