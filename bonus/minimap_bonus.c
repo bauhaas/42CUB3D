@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minimap.c                                          :+:      :+:    :+:   */
+/*   minimap_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:58:31 by bahaas            #+#    #+#             */
-/*   Updated: 2021/02/23 16:29:51 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/03/10 12:05:54 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ void	render_mini_map(t_cub *cub)
 			pos.y = MINIMAP_SCALE * i + (cub->win.hei * 0.03);
 			if (cub->grid[i][j] == '0' || cub->grid[i][j] == '2')
 				square(pos, MINIMAP_SCALE, cub, GRAY);
-			else if (cub->grid[i][j] == '1')
-				square(pos, MINIMAP_SCALE, cub, D_GRAY);
 		}
 	}
 }

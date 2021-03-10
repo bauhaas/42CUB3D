@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:31:08 by bahaas            #+#    #+#             */
-/*   Updated: 2021/03/03 17:31:24 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/03/10 12:13:06 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,9 @@ int		line_data(t_cub *cub, char *line, t_list **list)
 
 int		last_load(t_cub *cub)
 {
-	cub->data.fov = 85 * (M_PI / 180);
 	if (cub->win.wid >= 1)
 	{
-		cub->data.dist_pplane = (cub->win.wid / 2) / (tan(cub->data.fov / 2));
+		cub->data.dist_pplane = (cub->win.wid / 2) / tan(FOV / 2);
 		cub->rays = malloc(sizeof(t_ray) * cub->win.wid);
 		if (!cub->rays)
 			return (is_error("Not enough memory to malloc rays"));

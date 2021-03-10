@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 16:12:03 by bahaas            #+#    #+#             */
-/*   Updated: 2021/03/04 00:05:08 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/03/10 11:50:20 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,8 @@ void	run_cub(t_cub *cub)
 	load_win(&cub->win);
 	mlx_hook(cub->win.win_p, 3, 1L << 1, key_released, &cub->player);
 	mlx_hook(cub->win.win_p, 2, 1L << 0, key_pressed, cub);
-	mlx_hook(cub->win.win_p, 9, 1L << 21, &render, cub);
+	mlx_loop_hook(cub->win.mlx_p, render, cub);
 	mlx_hook(cub->win.win_p, 33, 1L << 17, &end_cub, cub);
-	render(cub);
 	mlx_loop(cub->win.mlx_p);
 }
 

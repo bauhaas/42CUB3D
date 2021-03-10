@@ -6,7 +6,7 @@
 /*   By: bahaas <bahaas@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:27:44 by bahaas            #+#    #+#             */
-/*   Updated: 2021/03/03 17:02:57 by bahaas           ###   ########.fr       */
+/*   Updated: 2021/03/10 12:04:22 by bahaas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,15 @@
 ** https://www.rapidtables.com/web/color/RGB_Color.html#color-table
 */
 
-# define GRAY	0x00C7C9D1
 # define V_GRAY	0x00E1E3E8
-# define D_GRAY	0x00818591
+# define GRAY	0x00818591
 # define BLUE	0x000000FF
 # define WHITE	0x00FFFFFF
 # define GREEN	0x0074B44A
 
 # define CARDINAL_POINTS "NSEW"
 # define MINIMAP_SCALE 10
+# define FOV 1.04719755
 
 typedef struct	s_pos
 {
@@ -149,7 +149,7 @@ typedef struct	s_text
 
 typedef struct	s_data
 {
-	double			dist_pplane;
+	float			dist_pplane;
 	int				grid_flag;
 	int				txtr_err;
 	int				num_sprt;
@@ -158,7 +158,6 @@ typedef struct	s_data
 	int				cols;
 	int				rows;
 	int				res;
-	float			fov;
 }				t_data;
 
 typedef struct	s_sprt
